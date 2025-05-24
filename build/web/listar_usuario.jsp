@@ -1,7 +1,10 @@
-<%-- 
-    Document   : listar_usuario
-    Adaptado para o Projeto da Ótica
---%>
+<%@page import="model.Usuario" %>
+<%@page import="controller.GerenciarLogin" %>
+
+<%
+    Usuario ulogado = GerenciarLogin.verificarAcesso(request, response);
+    request.setAttribute("ulogado", ulogado);
+%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
