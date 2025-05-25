@@ -1,11 +1,3 @@
-<%@page import="model.Usuario" %>
-<%@page import="controller.GerenciarLogin" %>
-
-<%
-    Usuario ulogado = GerenciarLogin.verificarAcesso(request, response);
-    request.setAttribute("ulogado", ulogado);
-%>
-
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <nav>

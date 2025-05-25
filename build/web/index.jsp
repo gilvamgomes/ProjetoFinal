@@ -1,12 +1,3 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="model.Usuario" %>
-<%@page import="controller.GerenciarLogin" %>
-
-<%
-    Usuario ulogado = GerenciarLogin.verificarAcesso(request, response);
-    request.setAttribute("ulogado", ulogado);
-%>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -16,7 +7,7 @@
     <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
-    <title>Sistema da Ã“tica - PÃ¡gina Inicial</title>
+    <title>Sistema da Ótica - Página Inicial</title>
 </head>
 <body>
 
@@ -27,11 +18,11 @@
     <%@include file="menu.jsp" %>
 
     <div class="content">
-        <h1>Bem-vindo ao Sistema da Ã“tica!</h1>
+        <h1>Bem-vindo ao Sistema da Ótica!</h1>
         
-        <p>OlÃ¡, <strong><c:out value="${ulogado.nome}"/></strong>! Seja bem-vindo(a).</p>
+        <p>Olá, <strong><c:out value="${ulogado.nome}"/></strong>! Seja bem-vindo(a).</p>
 
-        <p>Escolha uma das opÃ§Ãµes no menu acima para continuar.</p>
+        <p>Escolha uma das opções no menu acima para continuar.</p>
 
         <a href="GerenciarLogin" class="btn btn-danger">Logout</a>
     </div>

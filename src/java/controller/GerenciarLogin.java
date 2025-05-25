@@ -16,7 +16,6 @@ public class GerenciarLogin extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         GerenciarLogin.response = response;
         request.getSession().removeAttribute("ulogado");
         response.sendRedirect("form_login.jsp");
@@ -25,13 +24,12 @@ public class GerenciarLogin extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         GerenciarLogin.response = response;
 
         String login = request.getParameter("login");
         String senha = request.getParameter("senha");
 
-        ArrayList<String> erros = new ArrayList<String>();
+        ArrayList<String> erros = new ArrayList<>();
 
         if (login == null || login.isEmpty()) {
             erros.add("Preencha o login");
@@ -40,7 +38,7 @@ public class GerenciarLogin extends HttpServlet {
             erros.add("Preencha a senha");
         }
 
-        if (erros.size() > 0) {
+        if (!erros.isEmpty()) {
             String campos = "";
             for (String erro : erros) {
                 campos += "\\n - " + erro;
@@ -89,6 +87,9 @@ public class GerenciarLogin extends HttpServlet {
                 if (queryString != null) {
                     uri += "?" + queryString;
                 }
+
+                System.out.println("URI capturada: " + uri); // Ajuda no debug
+
                 u = (Usuario) sessao.getAttribute("ulogado");
                 if (u == null) {
                     sessao.setAttribute("mensagem", "Você não está autenticado");
@@ -96,13 +97,22 @@ public class GerenciarLogin extends HttpServlet {
                 } else {
                     boolean possuiAcesso = false;
                     for (Menu m : u.getPerfil().getMenus()) {
-                        if (uri.contains(m.getLink())) {
+                        if (uri.endsWith(m.getLink()) || uri.contains(m.getLink() + "?")) {
                             possuiAcesso = true;
                             break;
                         }
                     }
+                    
+                    System.out.println("### URI capturada: " + uri);
+                    System.out.println("#### possuiAcesso: " + possuiAcesso);
+                    
                     if (!possuiAcesso) {
-                        exibirMensagem("Acesso Negado");
+                        // Libera automaticamente qualquer Servlet que contenha "Gerenciar"
+                        if (uri.contains("Gerenciar")) {
+                            possuiAcesso = true;
+                        } else {
+                            exibirMensagem("Acesso Negado");
+                        }
                     }
                 }
             }
@@ -126,19 +136,29 @@ public class GerenciarLogin extends HttpServlet {
                 if (queryString != null) {
                     uri += "?" + queryString;
                 }
+
+                System.out.println("URI capturada: " + uri); // Ajuda no debug
+
                 u = (Usuario) sessao.getAttribute("ulogado");
                 if (u == null) {
                     sessao.setAttribute("mensagem", "Você não está autenticado");
                     response.sendRedirect("form_login.jsp");
                 } else {
                     for (Menu m : u.getPerfil().getMenus()) {
-                        if (uri.contains(m.getLink())) {
+                        if (uri.endsWith(m.getLink()) || uri.contains(m.getLink() + "?")) {
                             possuiAcesso = true;
                             break;
                         }
                     }
                     if (!possuiAcesso) {
-                        exibirMensagem("Acesso Negado");
+                        // Libera automaticamente qualquer Servlet que contenha "Gerenciar"
+                        System.out.println("### Entrou no ajuste Gerenciar");
+                        if (uri.contains("Gerenciar")) {
+                            possuiAcesso = true;
+                            System.out.println("### Liberou acesso automaticamente por Gerenciar");
+                        } else {
+                            exibirMensagem("Acesso Negado");
+                        }
                     }
                 }
             }
