@@ -25,6 +25,10 @@
         <servlet-name>GerenciarFuncionario</servlet-name>
         <servlet-class>controller.GerenciarFuncionario</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GerenciarBeneficio</servlet-name>
+        <servlet-class>controller.GerenciarBeneficio</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GerenciarLogin</servlet-name>
         <url-pattern>/GerenciarLogin</url-pattern>
@@ -49,6 +53,10 @@
     <servlet-mapping>
         <servlet-name>GerenciarFuncionario</servlet-name>
         <url-pattern>/GerenciarFuncionario</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GerenciarBeneficio</servlet-name>
+        <url-pattern>/GerenciarBeneficio</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
