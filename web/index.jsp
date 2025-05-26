@@ -1,4 +1,14 @@
+<%@page import="model.Usuario" %>
+<%@page import="controller.GerenciarLogin" %>
+<%
+    Usuario ulogado = GerenciarLogin.verificarAcesso(request, response);
+    request.setAttribute("ulogado", ulogado);
+%>
+
+
 <!DOCTYPE html>
+
+
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
