@@ -32,6 +32,10 @@
         <servlet-name>GerenciarContraCheque</servlet-name>
         <servlet-class>controller.GerenciarContraCheque</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GerenciarPagamento</servlet-name>
+        <servlet-class>controller.GerenciarPagamento</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GerenciarLogin</servlet-name>
         <url-pattern>/GerenciarLogin</url-pattern>
@@ -63,6 +67,10 @@
     <servlet-mapping>
         <servlet-name>GerenciarContraCheque</servlet-name>
         <url-pattern>/GerenciarContraCheque</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GerenciarPagamento</servlet-name>
+        <url-pattern>/GerenciarPagamento</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
