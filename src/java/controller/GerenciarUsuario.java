@@ -83,7 +83,7 @@ public class GerenciarUsuario extends HttpServlet {
         String nome = request.getParameter("nome");
         String login = request.getParameter("login");
         String senha = request.getParameter("senha");
-        String dataNasc = request.getParameter("dataNasc");
+        
         String status = request.getParameter("status");
         String idPerfil = request.getParameter("idPerfil");
 
@@ -92,7 +92,7 @@ public class GerenciarUsuario extends HttpServlet {
         if (nome == null || nome.trim().isEmpty()) erros.add("Preencha o nome");
         if (login == null || login.trim().isEmpty()) erros.add("Preencha o login");
         if (senha == null || senha.trim().isEmpty()) erros.add("Preencha a senha");
-        if (dataNasc == null || dataNasc.trim().isEmpty()) erros.add("Preencha a data de nascimento");
+        
         if (status == null || status.trim().isEmpty()) erros.add("Preencha o status");
         if (idPerfil == null || idPerfil.trim().isEmpty()) erros.add("Selecione o perfil");
 
@@ -117,14 +117,7 @@ public class GerenciarUsuario extends HttpServlet {
             u.setLogin(login);
             u.setSenha(senha);
 
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            try {
-                u.setDataNasc(df.parse(dataNasc));
-            } catch (ParseException ex) {
-                ex.printStackTrace();
-                exibirMensagem("Data de nascimento inválida", false);
-                return;
-            }
+            
 
             u.setStatus(Integer.parseInt(status));
 

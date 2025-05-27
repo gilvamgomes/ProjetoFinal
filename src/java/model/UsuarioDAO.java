@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Date;
 
 public class UsuarioDAO extends DataBaseDAO {
 
@@ -26,9 +25,8 @@ public class UsuarioDAO extends DataBaseDAO {
                 u.setNome(rs.getString("nome"));
                 u.setLogin(rs.getString("login"));
                 u.setSenha(rs.getString("senha"));
-                u.setDataNasc(rs.getDate("dataNasc"));
                 u.setStatus(rs.getInt("status"));
-                
+
                 PerfilDAO pDAO = new PerfilDAO();
                 u.setPerfil(pDAO.getCarregaPorID(rs.getInt("idPerfil")));
 
@@ -46,22 +44,28 @@ public class UsuarioDAO extends DataBaseDAO {
         try {
             this.conectar();
             String sql;
+            PreparedStatement pstm;
+
             if (u.getIdUsuario() == 0) {
-                sql = "INSERT INTO usuario (nome, login, senha, dataNasc, status, idPerfil) VALUES (?, ?, ?, ?, ?, ?)";
+                sql = "INSERT INTO usuario (nome, login, senha, status, idPerfil) VALUES (?, ?, ?, ?, ?)";
+                pstm = conn.prepareStatement(sql);
+
+                pstm.setString(1, u.getNome());
+                pstm.setString(2, u.getLogin());
+                pstm.setString(3, u.getSenha());
+                pstm.setInt(4, u.getStatus());
+                pstm.setInt(5, u.getPerfil().getIdPerfil());
+
             } else {
-                sql = "UPDATE usuario SET nome=?, login=?, senha=?, dataNasc=?, status=?, idPerfil=? WHERE idUsuario=?";
-            }
+                sql = "UPDATE usuario SET nome=?, login=?, senha=?, status=?, idPerfil=? WHERE idUsuario=?";
+                pstm = conn.prepareStatement(sql);
 
-            PreparedStatement pstm = conn.prepareStatement(sql);
-            pstm.setString(1, u.getNome());
-            pstm.setString(2, u.getLogin());
-            pstm.setString(3, u.getSenha());
-            pstm.setDate(4, new Date(u.getDataNasc().getTime()));
-            pstm.setInt(5, u.getStatus());
-            pstm.setInt(6, u.getPerfil().getIdPerfil());
-
-            if (u.getIdUsuario() > 0) {
-                pstm.setInt(7, u.getIdUsuario());
+                pstm.setString(1, u.getNome());
+                pstm.setString(2, u.getLogin());
+                pstm.setString(3, u.getSenha());
+                pstm.setInt(4, u.getStatus());
+                pstm.setInt(5, u.getPerfil().getIdPerfil());
+                pstm.setInt(6, u.getIdUsuario());
             }
 
             pstm.execute();
@@ -88,9 +92,8 @@ public class UsuarioDAO extends DataBaseDAO {
             u.setNome(rs.getString("u.nome"));
             u.setLogin(rs.getString("u.login"));
             u.setSenha(rs.getString("u.senha"));
-            u.setDataNasc(rs.getDate("u.dataNasc"));
             u.setStatus(rs.getInt("u.status"));
-            
+
             Perfil p = new Perfil();
             p.setIdPerfil(rs.getInt("u.idPerfil"));
             p.setNome(rs.getString("p.nome"));
@@ -132,7 +135,6 @@ public class UsuarioDAO extends DataBaseDAO {
                 u.setNome(rs.getString("nome"));
                 u.setLogin(rs.getString("login"));
                 u.setSenha(rs.getString("senha"));
-                u.setDataNasc(rs.getDate("dataNasc"));
                 u.setStatus(rs.getInt("status"));
 
                 PerfilDAO pDAO = new PerfilDAO();

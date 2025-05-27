@@ -38,7 +38,7 @@
                     <th>ID</th>
                     <th>Nome</th>
                     <th>Login</th>
-                    <th>Data de Nascimento</th>
+                    
                     <th>Status</th>
                     <th>Perfil</th>
                     <th>Opções</th>
@@ -49,7 +49,7 @@
                     <th>ID</th>
                     <th>Nome</th>
                     <th>Login</th>
-                    <th>Data de Nascimento</th>
+         
                     <th>Status</th>
                     <th>Perfil</th>
                     <th>Opções</th>
@@ -63,7 +63,7 @@
                         <td>${u.idUsuario}</td>
                         <td>${u.nome}</td>
                         <td>${u.login}</td>
-                        <td><fmt:formatDate pattern="dd/MM/yyyy" value="${u.dataNasc}"/></td>
+                        
                         <td>
                             <c:if test="${u.status == 1}">Ativo</c:if>
                             <c:if test="${u.status == 2}">Inativo</c:if>

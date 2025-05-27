@@ -8,16 +8,16 @@ public class Usuario {
     private String nome;
     private String login;
     private String senha;
-    private Date dataNasc;
+    
     private int status;
     private Perfil perfil;
 
-    public Usuario(int idUsuario, String nome, String login, String senha, Date dataNasc, int status, Perfil perfil) {
+    public Usuario(int idUsuario, String nome, String login, String senha, int status, Perfil perfil) {
         this.idUsuario = idUsuario;
         this.nome = nome;
         this.login = login;
         this.senha = senha;
-        this.dataNasc = dataNasc;
+        
         this.status = status;
         this.perfil = perfil;
     }
@@ -57,13 +57,7 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public Date getDataNasc() {
-        return dataNasc;
-    }
-
-    public void setDataNasc(Date dataNasc) {
-        this.dataNasc = dataNasc;
-    }
+    
 
     public int getStatus() {
         return status;

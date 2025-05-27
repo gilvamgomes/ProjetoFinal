@@ -43,8 +43,7 @@
             <label for="senha" class="control-label">Senha do Usuário</label>
             <input type="password" class="form-control" id="senha" name="senha" value="${u.senha}">
 
-            <label for="dataNasc" class="control-label">Data de Nascimento</label>
-            <input type="date" class="form-control" id="dataNasc" name="dataNasc" required value="${u.dataNasc}">
+            
 
             <label for="idPerfil" class="control-label">Perfil</label>
             <select name="idPerfil" id="idPerfil" required class="form-control">
