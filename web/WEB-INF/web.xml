@@ -36,6 +36,10 @@
         <servlet-name>GerenciarPagamento</servlet-name>
         <servlet-class>controller.GerenciarPagamento</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GerenciarImposto</servlet-name>
+        <servlet-class>controller.GerenciarImposto</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GerenciarLogin</servlet-name>
         <url-pattern>/GerenciarLogin</url-pattern>
@@ -71,6 +75,10 @@
     <servlet-mapping>
         <servlet-name>GerenciarPagamento</servlet-name>
         <url-pattern>/GerenciarPagamento</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GerenciarImposto</servlet-name>
+        <url-pattern>/GerenciarImposto</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
