@@ -1,0 +1,63 @@
+package model;
+
+import java.math.BigDecimal;
+
+public class ContraCheque {
+
+    private int idContraCheque;
+    private BigDecimal valorBruto;
+    private BigDecimal descontos;
+    private BigDecimal valorLiquido;
+    private int funcionarioId;
+
+    public ContraCheque() {
+    }
+
+    public ContraCheque(int idContraCheque, BigDecimal valorBruto, BigDecimal descontos, BigDecimal valorLiquido, int funcionarioId) {
+        this.idContraCheque = idContraCheque;
+        this.valorBruto = valorBruto;
+        this.descontos = descontos;
+        this.valorLiquido = valorLiquido;
+        this.funcionarioId = funcionarioId;
+    }
+
+    public int getIdContraCheque() {
+        return idContraCheque;
+    }
+
+    public void setIdContraCheque(int idContraCheque) {
+        this.idContraCheque = idContraCheque;
+    }
+
+    public BigDecimal getValorBruto() {
+        return valorBruto;
+    }
+
+    public void setValorBruto(BigDecimal valorBruto) {
+        this.valorBruto = valorBruto;
+    }
+
+    public BigDecimal getDescontos() {
+        return descontos;
+    }
+
+    public void setDescontos(BigDecimal descontos) {
+        this.descontos = descontos;
+    }
+
+    public BigDecimal getValorLiquido() {
+        return valorLiquido;
+    }
+
+    public void setValorLiquido(BigDecimal valorLiquido) {
+        this.valorLiquido = valorLiquido;
+    }
+
+    public int getFuncionarioId() {
+        return funcionarioId;
+    }
+
+    public void setFuncionarioId(int funcionarioId) {
+        this.funcionarioId = funcionarioId;
+    }
+}
