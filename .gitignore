@@ -1,1 +1,49 @@
-/dist/
+# Pasta de distribuição com arquivos compilados (ex: .jar, .war, .class empacotados)
+dist/
+
+# Pasta de build com arquivos gerados durante a compilação
+build/
+
+# Pasta de configuração privada do NetBeans (arquivos com caminhos locais e sensíveis)
+nbproject/private/
+
+# Arquivos de classe compilados Java (não versionar)
+*.class
+
+# Logs e arquivos temporários que podem ser gerados durante a execução
+*.log
+*.tmp
+*.temp
+
+# Arquivos de sistema do Windows
+Thumbs.db
+
+# Arquivos de sistema do macOS
+.DS_Store
+
+# Configurações e pastas específicas de IDEs (caso use outras junto com NetBeans)
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Visual Studio Code
+.vscode/
+
+# Arquivos de backup e swap dos editores de texto (vim, nano, etc)
+*~
+*.swp
+*.swo
+
+# Configurações pessoais que não devem ser versionadas
+*.user
+*.sublime-workspace
+*.sublime-project
+
+# Logs gerais e pastas de logs
+logs/
+*.err
+
+# Arquivos empacotados gerados (não subir)
+*.jar
+*.war
+*.ear
