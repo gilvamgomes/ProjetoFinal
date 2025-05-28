@@ -47,3 +47,4 @@ logs/
 *.jar
 *.war
 *.ear
+nbproject/private/private.properties
