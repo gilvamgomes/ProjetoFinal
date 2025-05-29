@@ -58,8 +58,8 @@
                 <c:forEach var="f" items="${fDAO.lista}">
                     <tr>
                         <td>${f.idFerias}</td>
-                        <td><fmt:formatDate value="${f.dataInicio}" pattern="yyyy-MM-dd"/></td>
-                        <td><fmt:formatDate value="${f.dataFim}" pattern="yyyy-MM-dd"/></td>
+                        <td><fmt:formatDate value="${f.dataInicio}" pattern="dd/MM/yyyy"/></td>
+                        <td><fmt:formatDate value="${f.dataFim}" pattern="dd/MM/yyyy"/></td>
                         <td>${f.status}</td>
                         <td>${f.funcionario_idFfuncionario}</td>
                         <td>
