@@ -45,6 +45,10 @@ public class RegistroPontoDAO extends DataBaseDAO {
     }
 
     public List<RegistroPonto> listar() {
+        return listarTodos(); // redireciona pro novo método
+    }
+
+    public List<RegistroPonto> listarTodos() {
         List<RegistroPonto> lista = new ArrayList<>();
         try {
             this.conectar();
@@ -69,7 +73,7 @@ public class RegistroPontoDAO extends DataBaseDAO {
             }
             this.desconectar();
         } catch (Exception e) {
-            System.out.println("Erro ao listar registro de ponto: " + e.getMessage());
+            System.out.println("Erro ao listar todos os registros de ponto: " + e.getMessage());
             e.printStackTrace();
         }
         return lista;

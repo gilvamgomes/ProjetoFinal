@@ -48,7 +48,7 @@ public class GerenciarRegistroPonto extends HttpServlet {
                         request.setAttribute("lista", java.util.Collections.emptyList());
                     }
                 } else {
-                    request.setAttribute("lista", rdao.listar());
+                    request.setAttribute("lista", rdao.listarTodos());
                 }
 
                 RequestDispatcher rd = request.getRequestDispatcher("listar_registro_ponto.jsp");
