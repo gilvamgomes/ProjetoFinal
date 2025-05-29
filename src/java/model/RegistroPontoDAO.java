@@ -11,25 +11,37 @@ public class RegistroPontoDAO extends DataBaseDAO {
         try {
             this.conectar();
             String sql;
+            PreparedStatement pstm;
+
             if (r.getIdRegistro_ponto() == 0) {
                 sql = "INSERT INTO registro_ponto (data, horaEntrada, horaSaida, funcionario_idFfuncionario) VALUES (?, ?, ?, ?)";
+                pstm = this.conn.prepareStatement(sql);
+
+                pstm.setDate(1, r.getData());
+                pstm.setTime(2, r.getHoraEntrada());
+
+                if (r.getHoraSaida() != null) {
+                    pstm.setTime(3, r.getHoraSaida());
+                } else {
+                    pstm.setNull(3, java.sql.Types.TIME);
+                }
+
+                pstm.setInt(4, r.getFuncionario_idFfuncionario());
+
             } else {
                 sql = "UPDATE registro_ponto SET data=?, horaEntrada=?, horaSaida=?, funcionario_idFfuncionario=? WHERE idRegistro_ponto=?";
-            }
-            PreparedStatement pstm = this.conn.prepareStatement(sql);
+                pstm = this.conn.prepareStatement(sql);
 
-            pstm.setDate(1, r.getData());
-            pstm.setTime(2, r.getHoraEntrada());
+                pstm.setDate(1, r.getData());
+                pstm.setTime(2, r.getHoraEntrada());
 
-            if (r.getHoraSaida() != null) {
-                pstm.setTime(3, r.getHoraSaida());
-            } else {
-                pstm.setNull(3, java.sql.Types.TIME);
-            }
+                if (r.getHoraSaida() != null) {
+                    pstm.setTime(3, r.getHoraSaida());
+                } else {
+                    pstm.setNull(3, java.sql.Types.TIME);
+                }
 
-            pstm.setInt(4, r.getFuncionario_idFfuncionario());
-
-            if (r.getIdRegistro_ponto() != 0) {
+                pstm.setInt(4, r.getFuncionario_idFfuncionario());
                 pstm.setInt(5, r.getIdRegistro_ponto());
             }
 

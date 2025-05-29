@@ -127,48 +127,50 @@ public class GerenciarRegistroPonto extends HttpServlet {
 
             RegistroPontoDAO rdao = new RegistroPontoDAO();
             FuncionarioDAO fdao = new FuncionarioDAO();
-            Funcionario funcionarioLogado = fdao.getFuncionarioPorUsuario(ulogado.getIdUsuario());
 
-            if (funcionarioLogado == null) {
-                System.out.println("⚠ Nenhum funcionário vinculado ao usuário logado.");
-                response.sendRedirect("GerenciarRegistroPonto?acao=listar");
-                return;
-            }
+            if ("registrarEntrada".equals(acao) || "registrarSaida".equals(acao)) {
+                Funcionario funcionarioLogado = fdao.getFuncionarioPorUsuario(ulogado.getIdUsuario());
 
-            if ("registrarEntrada".equals(acao)) {
-                boolean completo = rdao.temRegistroCompletoHoje(funcionarioLogado.getIdFuncionario(), java.time.LocalDate.now());
+                if (funcionarioLogado == null) {
+                    System.out.println("⚠ Nenhum funcionário vinculado ao usuário logado.");
+                    response.sendRedirect("GerenciarRegistroPonto?acao=listar");
+                    return;
+                }
 
-                if (!completo) {
-                    RegistroPonto existente = rdao.getRegistroSemSaida(funcionarioLogado.getIdFuncionario(), java.time.LocalDate.now());
+                if ("registrarEntrada".equals(acao)) {
+                    boolean completo = rdao.temRegistroCompletoHoje(funcionarioLogado.getIdFuncionario(), java.time.LocalDate.now());
 
-                    if (existente == null) {
-                        RegistroPonto novo = new RegistroPonto();
-                        novo.setFuncionario_idFfuncionario(funcionarioLogado.getIdFuncionario());
-                        novo.setData(java.sql.Date.valueOf(java.time.LocalDate.now()));
-                        novo.setHoraEntrada(java.sql.Time.valueOf(java.time.LocalTime.now()));
+                    if (!completo) {
+                        RegistroPonto existente = rdao.getRegistroSemSaida(funcionarioLogado.getIdFuncionario(), java.time.LocalDate.now());
 
-                        boolean sucesso = rdao.gravarEntrada(novo);
-                        System.out.println("Registro de entrada: " + sucesso);
+                        if (existente == null) {
+                            RegistroPonto novo = new RegistroPonto();
+                            novo.setFuncionario_idFfuncionario(funcionarioLogado.getIdFuncionario());
+                            novo.setData(java.sql.Date.valueOf(java.time.LocalDate.now()));
+                            novo.setHoraEntrada(java.sql.Time.valueOf(java.time.LocalTime.now()));
+
+                            boolean sucesso = rdao.gravarEntrada(novo);
+                            System.out.println("Registro de entrada: " + sucesso);
+                        } else {
+                            System.out.println("Entrada já registrada hoje.");
+                        }
                     } else {
-                        System.out.println("Entrada já registrada hoje.");
+                        System.out.println("Registro completo (entrada e saída) já existe hoje.");
                     }
-                } else {
-                    System.out.println("Registro completo (entrada e saída) já existe hoje.");
                 }
-                response.sendRedirect("GerenciarRegistroPonto?acao=listar");
-                return;
-            }
 
-            if ("registrarSaida".equals(acao)) {
-                RegistroPonto aberto = rdao.getRegistroSemSaida(funcionarioLogado.getIdFuncionario(), java.time.LocalDate.now());
+                if ("registrarSaida".equals(acao)) {
+                    RegistroPonto aberto = rdao.getRegistroSemSaida(funcionarioLogado.getIdFuncionario(), java.time.LocalDate.now());
 
-                if (aberto != null) {
-                    aberto.setHoraSaida(java.sql.Time.valueOf(java.time.LocalTime.now()));
-                    boolean sucesso = rdao.atualizarSaida(aberto);
-                    System.out.println("Atualização de saída: " + sucesso);
-                } else {
-                    System.out.println("Nenhum registro aberto para saída.");
+                    if (aberto != null) {
+                        aberto.setHoraSaida(java.sql.Time.valueOf(java.time.LocalTime.now()));
+                        boolean sucesso = rdao.atualizarSaida(aberto);
+                        System.out.println("Atualização de saída: " + sucesso);
+                    } else {
+                        System.out.println("Nenhum registro aberto para saída.");
+                    }
                 }
+
                 response.sendRedirect("GerenciarRegistroPonto?acao=listar");
                 return;
             }
@@ -177,23 +179,37 @@ public class GerenciarRegistroPonto extends HttpServlet {
                 if (!perfilNome.equalsIgnoreCase("Funcionario")) {
                     RegistroPonto r = new RegistroPonto();
 
-                    String idStr = request.getParameter("idRegistro_ponto");
-                    if (idStr != null && !idStr.isEmpty()) {
-                        r.setIdRegistro_ponto(Integer.parseInt(idStr));
+                    try {
+                        String idStr = request.getParameter("idRegistro_ponto");
+                        String dataStr = request.getParameter("data");
+                        String horaEntradaStr = request.getParameter("horaEntrada");
+                        String horaSaidaStr = request.getParameter("horaSaida");
+                        String funcIdStr = request.getParameter("funcionario_idFfuncionario");
+
+                        if (dataStr == null || horaEntradaStr == null || funcIdStr == null ||
+                                dataStr.isEmpty() || horaEntradaStr.isEmpty() || funcIdStr.isEmpty()) {
+                            throw new Exception("Campos obrigatórios não preenchidos.");
+                        }
+
+                        if (idStr != null && !idStr.isEmpty()) {
+                            r.setIdRegistro_ponto(Integer.parseInt(idStr));
+                        }
+
+                        r.setData(java.sql.Date.valueOf(dataStr));
+                        r.setHoraEntrada(java.sql.Time.valueOf(horaEntradaStr));
+
+                        if (horaSaidaStr != null && !horaSaidaStr.isEmpty()) {
+                            r.setHoraSaida(java.sql.Time.valueOf(horaSaidaStr));
+                        }
+
+                        r.setFuncionario_idFfuncionario(Integer.parseInt(funcIdStr));
+
+                        boolean sucesso = rdao.gravar(r);
+                        System.out.println("Gravação de registro: " + sucesso);
+                    } catch (Exception ex) {
+                        System.out.println("Erro ao preencher campos do registro: " + ex.getMessage());
+                        throw ex;
                     }
-
-                    r.setData(java.sql.Date.valueOf(request.getParameter("data")));
-                    r.setHoraEntrada(java.sql.Time.valueOf(request.getParameter("horaEntrada")));
-
-                    String horaSaidaStr = request.getParameter("horaSaida");
-                    if (horaSaidaStr != null && !horaSaidaStr.isEmpty()) {
-                        r.setHoraSaida(java.sql.Time.valueOf(horaSaidaStr));
-                    }
-
-                    r.setFuncionario_idFfuncionario(Integer.parseInt(request.getParameter("funcionario_idFfuncionario")));
-
-                    boolean sucesso = rdao.gravar(r);
-                    System.out.println("Gravação de registro: " + sucesso);
                 }
                 response.sendRedirect("GerenciarRegistroPonto?acao=listar");
                 return;

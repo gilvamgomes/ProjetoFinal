@@ -31,6 +31,8 @@
     <h2>Cadastro / Edição de Registro de Ponto</h2>
 
     <form action="GerenciarRegistroPonto" method="POST">
+        <!-- AÇÃO definida aqui -->
+        <input type="hidden" name="acao" value="${registroPonto.idRegistro_ponto == 0 ? 'gravar' : 'alterar'}" />
         <input type="hidden" id="idRegistro_ponto" name="idRegistro_ponto" value="${registroPonto.idRegistro_ponto}" />
 
         <label for="data" class="control-label">Data</label>
