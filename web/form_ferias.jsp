@@ -44,25 +44,27 @@
         <input type="date" class="form-control" id="dataFim" name="dataFim" required
                value="<fmt:formatDate value='${ferias.dataFim}' pattern='yyyy-MM-dd'/>"/>
 
-        <label for="status" class="control-label">Status</label>
-        <input type="text" class="form-control" id="status" name="status" required value="${ferias.status}"/>
+        <c:choose>
+            <c:when test="${ulogado.perfil.nome != 'Funcionario'}">
+                <label for="status" class="control-label">Status</label>
+                <select id="status" name="status" class="form-control" required>
+                    <option value="Em analise" <c:if test="${ferias.status == 'Em analise'}">selected</c:if>>Em análise</option>
+                    <option value="Aprovado" <c:if test="${ferias.status == 'Aprovado'}">selected</c:if>>Aprovado</option>
+                    <option value="Recusado" <c:if test="${ferias.status == 'Recusado'}">selected</c:if>>Recusado</option>
+                </select>
+            </c:when>
+            <c:otherwise>
+                <input type="hidden" id="status" name="status" value="${empty ferias.status ? 'Em analise' : ferias.status}"/>
+            </c:otherwise>
+        </c:choose>
 
-        <label for="funcionario_idFfuncionario" class="control-label">ID Funcionário</label>
-        <input type="number" class="form-control" id="funcionario_idFfuncionario"
-               name="funcionario_idFfuncionario" required value="${ferias.funcionario_idFfuncionario}"/>
+        <input type="hidden" name="funcionario_idFfuncionario" value="${ulogado.funcionario.idFuncionario}">
 
         <br>
         <button class="btn btn-success">Gravar</button>
         <a href="listar_ferias.jsp" class="btn btn-warning">Voltar</a>
     </form>
 </div>
-
-<script>
-    function toggleMenu(){
-        var menu = document.getElementById("nav-links");
-        menu.classList.toggle("show");
-    }
-</script>
 
 </body>
 </html>

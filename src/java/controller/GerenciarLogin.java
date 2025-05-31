@@ -5,9 +5,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
-import model.Menu;
-import model.Usuario;
-import model.UsuarioDAO;
+import model.*;
 
 public class GerenciarLogin extends HttpServlet {
 
@@ -50,6 +48,12 @@ public class GerenciarLogin extends HttpServlet {
                 Usuario u = uDAO.getRecuperarUsuario(login);
 
                 if (u.getIdUsuario() > 0 && u.getSenha().equals(senha)) {
+
+                    // 🔥 Carrega o funcionário correspondente ao usuário logado
+                    FuncionarioDAO fDAO = new FuncionarioDAO();
+                    Funcionario func = fDAO.getFuncionarioPorUsuario(u.getIdUsuario());
+                    u.setFuncionario(func);
+
                     HttpSession sessao = request.getSession();
                     sessao.setAttribute("ulogado", u);
                     response.sendRedirect("index.jsp");
@@ -88,9 +92,8 @@ public class GerenciarLogin extends HttpServlet {
                     uri += "?" + queryString;
                 }
 
-                System.out.println("URI capturada: " + uri);
-
                 u = (Usuario) sessao.getAttribute("ulogado");
+
                 if (u == null) {
                     sessao.setAttribute("mensagem", "Você não está autenticado");
                     response.sendRedirect("form_login.jsp");
@@ -103,9 +106,6 @@ public class GerenciarLogin extends HttpServlet {
                             break;
                         }
                     }
-
-                    System.out.println("### URI capturada: " + uri);
-                    System.out.println("#### possuiAcesso: " + possuiAcesso);
 
                     if (!possuiAcesso) {
                         if (uri.contains("Gerenciar")) {
@@ -137,8 +137,6 @@ public class GerenciarLogin extends HttpServlet {
                     uri += "?" + queryString;
                 }
 
-                System.out.println("URI capturada: " + uri);
-
                 u = (Usuario) sessao.getAttribute("ulogado");
                 if (u == null) {
                     sessao.setAttribute("mensagem", "Você não está autenticado");
@@ -150,8 +148,6 @@ public class GerenciarLogin extends HttpServlet {
                             break;
                         }
                     }
-
-                    System.out.println("#### possuiAcesso: " + possuiAcesso);
 
                     if (!possuiAcesso) {
                         if (uri.contains("Gerenciar")) {

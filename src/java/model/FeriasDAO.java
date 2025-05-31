@@ -6,8 +6,7 @@ import java.util.List;
 
 public class FeriasDAO extends DataBaseDAO {
 
-    public FeriasDAO() throws Exception {
-    }
+    public FeriasDAO() throws Exception {}
 
     public List<Ferias> getLista() throws SQLException {
         List<Ferias> lista = new ArrayList<>();
@@ -24,10 +23,52 @@ public class FeriasDAO extends DataBaseDAO {
                 f.setDataFim(rs.getDate("dataFim"));
                 f.setStatus(rs.getString("status"));
                 f.setFuncionario_idFfuncionario(rs.getInt("funcionario_idFfuncionario"));
+
+                try {
+                    FuncionarioDAO funcDAO = new FuncionarioDAO();
+                    Funcionario func = funcDAO.getCarregaPorID(f.getFuncionario_idFfuncionario());
+                    f.setFuncionario(func);
+                } catch (Exception e) {
+                    System.out.println("Erro ao carregar funcionário na lista geral: " + e.getMessage());
+                }
+
                 lista.add(f);
             }
         } catch (SQLException e) {
             throw new SQLException("Erro ao buscar férias: " + e.getMessage(), e);
+        } finally {
+            this.desconectar();
+        }
+        return lista;
+    }
+
+    public List<Ferias> getListaPorFuncionario(int idFuncionario) throws SQLException {
+        List<Ferias> lista = new ArrayList<>();
+        String SQL = "SELECT * FROM ferias WHERE funcionario_idFfuncionario=?";
+        try {
+            this.conectar();
+            PreparedStatement pstm = conn.prepareStatement(SQL);
+            pstm.setInt(1, idFuncionario);
+            ResultSet rs = pstm.executeQuery();
+
+            while (rs.next()) {
+                Ferias f = new Ferias();
+                f.setIdFerias(rs.getInt("idFerias"));
+                f.setDataInicio(rs.getDate("dataInicio"));
+                f.setDataFim(rs.getDate("dataFim"));
+                f.setStatus(rs.getString("status"));
+                f.setFuncionario_idFfuncionario(rs.getInt("funcionario_idFfuncionario"));
+
+                try {
+                    FuncionarioDAO funcDAO = new FuncionarioDAO();
+                    Funcionario func = funcDAO.getCarregaPorID(f.getFuncionario_idFfuncionario());
+                    f.setFuncionario(func);
+                } catch (Exception e) {
+                    System.out.println("Erro ao carregar funcionário na lista por funcionário: " + e.getMessage());
+                }
+
+                lista.add(f);
+            }
         } finally {
             this.desconectar();
         }
@@ -78,6 +119,14 @@ public class FeriasDAO extends DataBaseDAO {
             f.setDataFim(rs.getDate("dataFim"));
             f.setStatus(rs.getString("status"));
             f.setFuncionario_idFfuncionario(rs.getInt("funcionario_idFfuncionario"));
+
+            try {
+                FuncionarioDAO funcDAO = new FuncionarioDAO();
+                Funcionario func = funcDAO.getCarregaPorID(f.getFuncionario_idFfuncionario());
+                f.setFuncionario(func);
+            } catch (Exception e) {
+                System.out.println("Erro ao carregar funcionário na busca por ID: " + e.getMessage());
+            }
         }
 
         this.desconectar();

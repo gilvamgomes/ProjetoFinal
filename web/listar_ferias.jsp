@@ -34,43 +34,46 @@
         <table class="table table-hover table-striped table-bordered display" id="listarFerias">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Data Início</th>
                     <th>Data Fim</th>
                     <th>Status</th>
-                    <th>ID Funcionário</th>
+                    <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
+                        <th>Funcionário</th>
+                    </c:if>
                     <th>Opções</th>
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <th>ID</th>
-                    <th>Data Início</th>
-                    <th>Data Fim</th>
-                    <th>Status</th>
-                    <th>ID Funcionário</th>
-                    <th>Opções</th>
-                </tr>
-            </tfoot>
 
             <jsp:useBean class="model.FeriasDAO" id="fDAO"/>
             <tbody>
                 <c:forEach var="f" items="${fDAO.lista}">
-                    <tr>
-                        <td>${f.idFerias}</td>
-                        <td><fmt:formatDate value="${f.dataInicio}" pattern="dd/MM/yyyy"/></td>
-                        <td><fmt:formatDate value="${f.dataFim}" pattern="dd/MM/yyyy"/></td>
-                        <td>${f.status}</td>
-                        <td>${f.funcionario_idFfuncionario}</td>
-                        <td>
-                            <a class="btn btn-primary" href="GerenciarFerias?acao=editar&idFerias=${f.idFerias}">
-                                <i class="glyphicon glyphicon-pencil"></i>
-                            </a>
-                            <button class="btn btn-danger" onclick="confirmarExclusao(${f.idFerias})">
-                                <i class="glyphicon glyphicon-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
+                    <c:if test="${ulogado.perfil.nome == 'Administrador' || ulogado.perfil.nome == 'Gerente' || f.funcionario.idFuncionario == ulogado.funcionario.idFuncionario}">
+                        <tr>
+                            <td><fmt:formatDate value="${f.dataInicio}" pattern="dd/MM/yyyy"/></td>
+                            <td><fmt:formatDate value="${f.dataFim}" pattern="dd/MM/yyyy"/></td>
+                            <td>${f.status}</td>
+                            <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
+                                <td>${f.funcionario.nome}</td>
+                            </c:if>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${ulogado.perfil.nome == 'Funcionario' && f.status == 'Em analise'}">
+                                        <a href="GerenciarFerias?acao=alterar&idFerias=${f.idFerias}" class="btn btn-primary">
+                                            <i class="glyphicon glyphicon-pencil"></i>
+                                        </a>
+                                    </c:when>
+                                    <c:when test="${ulogado.perfil.nome != 'Funcionario'}">
+                                        <a href="GerenciarFerias?acao=alterar&idFerias=${f.idFerias}" class="btn btn-primary">
+                                            <i class="glyphicon glyphicon-pencil"></i>
+                                        </a>
+                                        <a href="GerenciarFerias?acao=excluir&idFerias=${f.idFerias}" class="btn btn-danger" onclick="return confirm('Deseja excluir?');">
+                                            <i class="glyphicon glyphicon-trash"></i>
+                                        </a>
+                                    </c:when>
+                                </c:choose>
+                            </td>
+                        </tr>
+                    </c:if>
                 </c:forEach>
             </tbody>
         </table>
@@ -86,12 +89,6 @@
                 }
             });
         });
-
-        function confirmarExclusao(idFerias) {
-            if (confirm('Deseja realmente excluir esse registro de férias?')) {
-                location.href = 'GerenciarFerias?acao=excluir&idFerias=' + idFerias;
-            }
-        }
     </script>
 
 </body>
