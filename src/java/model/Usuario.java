@@ -8,16 +8,17 @@ public class Usuario {
     private String nome;
     private String login;
     private String senha;
-    
     private int status;
     private Perfil perfil;
+
+    // 🔥 Novo atributo
+    private Funcionario funcionario;
 
     public Usuario(int idUsuario, String nome, String login, String senha, int status, Perfil perfil) {
         this.idUsuario = idUsuario;
         this.nome = nome;
         this.login = login;
         this.senha = senha;
-        
         this.status = status;
         this.perfil = perfil;
     }
@@ -57,8 +58,6 @@ public class Usuario {
         this.senha = senha;
     }
 
-    
-
     public int getStatus() {
         return status;
     }
@@ -73,6 +72,15 @@ public class Usuario {
 
     public void setPerfil(Perfil perfil) {
         this.perfil = perfil;
+    }
+
+    // ✅ GETTER/SETTER do Funcionario
+    public Funcionario getFuncionario() {
+        return funcionario;
+    }
+
+    public void setFuncionario(Funcionario funcionario) {
+        this.funcionario = funcionario;
     }
 
     @Override

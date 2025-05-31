@@ -9,6 +9,9 @@ public class Ferias {
     private String status;
     private int funcionario_idFfuncionario;
 
+    // 🔧 Novo atributo completo (objeto Funcionario)
+    private Funcionario funcionario;
+
     public int getIdFerias() {
         return idFerias;
     }
@@ -47,5 +50,14 @@ public class Ferias {
 
     public void setFuncionario_idFfuncionario(int funcionario_idFfuncionario) {
         this.funcionario_idFfuncionario = funcionario_idFfuncionario;
+    }
+
+    // ✅ Get e Set do objeto Funcionario (para exibir nome no JSP)
+    public Funcionario getFuncionario() {
+        return funcionario;
+    }
+
+    public void setFuncionario(Funcionario funcionario) {
+        this.funcionario = funcionario;
     }
 }

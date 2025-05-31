@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee                               http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+
     <servlet>
         <servlet-name>GerenciarLogin</servlet-name>
         <servlet-class>controller.GerenciarLogin</servlet-class>
@@ -44,6 +46,11 @@
         <servlet-name>GerenciarRegistroPonto</servlet-name>
         <servlet-class>controller.GerenciarRegistroPonto</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GerenciarFerias</servlet-name>
+        <servlet-class>controller.GerenciarFerias</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>GerenciarLogin</servlet-name>
         <url-pattern>/GerenciarLogin</url-pattern>
@@ -88,10 +95,15 @@
         <servlet-name>GerenciarRegistroPonto</servlet-name>
         <url-pattern>/GerenciarRegistroPonto</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GerenciarFerias</servlet-name>
+        <url-pattern>/GerenciarFerias</url-pattern>
+    </servlet-mapping>
+
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
-    <!-- Definindo qual será a página inicial ao acessar o sistema -->
+
     <welcome-file-list>
         <welcome-file>form_login.jsp</welcome-file>
     </welcome-file-list>

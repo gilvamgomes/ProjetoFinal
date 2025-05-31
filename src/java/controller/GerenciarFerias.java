@@ -10,6 +10,7 @@ import javax.servlet.http.*;
 
 import model.Ferias;
 import model.FeriasDAO;
+import model.Usuario;
 
 public class GerenciarFerias extends HttpServlet {
 
@@ -94,7 +95,6 @@ public class GerenciarFerias extends HttpServlet {
 
         if (dataInicio == null || dataInicio.trim().isEmpty()) erros.add("Preencha a data de início");
         if (dataFim == null || dataFim.trim().isEmpty()) erros.add("Preencha a data de fim");
-        if (status == null || status.trim().isEmpty()) erros.add("Preencha o status");
         if (funcionarioId == null || funcionarioId.trim().isEmpty()) erros.add("Informe o ID do funcionário");
 
         if (!erros.isEmpty()) {
@@ -113,8 +113,14 @@ public class GerenciarFerias extends HttpServlet {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 f.setDataInicio(sdf.parse(dataInicio));
                 f.setDataFim(sdf.parse(dataFim));
-                f.setStatus(status);
                 f.setFuncionario_idFfuncionario(Integer.parseInt(funcionarioId));
+
+                Usuario ulogado = (Usuario) request.getSession().getAttribute("ulogado");
+                if ("Funcionario".equals(ulogado.getPerfil().getNome())) {
+                    f.setStatus("Em analise");
+                } else {
+                    f.setStatus(status);
+                }
 
                 FeriasDAO fDAO = new FeriasDAO();
                 if (fDAO.gravar(f)) {

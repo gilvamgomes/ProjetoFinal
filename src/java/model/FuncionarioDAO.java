@@ -11,7 +11,6 @@ public class FuncionarioDAO extends DataBaseDAO {
 
     public FuncionarioDAO() throws Exception {}
 
-    // Método listar que chama getLista para facilitar uso externo
     public List<Funcionario> listar() throws Exception {
         return getLista();
     }
@@ -34,9 +33,7 @@ public class FuncionarioDAO extends DataBaseDAO {
                 f.setCpf(rs.getString("cpf"));
                 f.setCargo(rs.getString("cargo"));
                 f.setStatus(rs.getInt("status"));
-
                 f.setUsuario(uDAO.getCarregaPorID(rs.getInt("usuario_idUsuario")));
-
                 lista.add(f);
             }
         } catch (SQLException e) {
@@ -124,7 +121,7 @@ public class FuncionarioDAO extends DataBaseDAO {
         }
     }
 
-    // ✅ Método novo: pega o Funcionario pelo ID do usuário
+    // ✅ Novo método para buscar funcionário pelo idUsuario
     public Funcionario getFuncionarioPorUsuario(int idUsuario) throws Exception {
         Funcionario f = null;
         String sql = "SELECT * FROM funcionario WHERE usuario_idUsuario = ?";
@@ -137,7 +134,6 @@ public class FuncionarioDAO extends DataBaseDAO {
                     f = new Funcionario();
                     f.setIdFuncionario(rs.getInt("idFfuncionario"));
                     f.setNome(rs.getString("nome"));
-                    // Se quiser pode setar outros campos também
                 }
             }
         } finally {
