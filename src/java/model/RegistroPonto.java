@@ -7,14 +7,14 @@ public class RegistroPonto {
     private int idRegistro_ponto;
     private LocalDate data;
     private LocalTime horaEntrada;
-    private LocalTime horaSaidaAlmoco;
-    private LocalTime horaVoltaAlmoco;
-    private LocalTime horaSaidaFinal;
+    private LocalTime horaAlmocoSaida;
+    private LocalTime horaAlmocoVolta;
+    private LocalTime horaSaida;
     private double horasTrabalhadas;
     private int funcionario_idFfuncionario;
-
     private Funcionario funcionario;
 
+    // Getters e setters
     public int getIdRegistro_ponto() {
         return idRegistro_ponto;
     }
@@ -39,28 +39,28 @@ public class RegistroPonto {
         this.horaEntrada = horaEntrada;
     }
 
-    public LocalTime getHoraSaidaAlmoco() {
-        return horaSaidaAlmoco;
+    public LocalTime getHoraAlmocoSaida() {
+        return horaAlmocoSaida;
     }
 
-    public void setHoraSaidaAlmoco(LocalTime horaSaidaAlmoco) {
-        this.horaSaidaAlmoco = horaSaidaAlmoco;
+    public void setHoraAlmocoSaida(LocalTime horaAlmocoSaida) {
+        this.horaAlmocoSaida = horaAlmocoSaida;
     }
 
-    public LocalTime getHoraVoltaAlmoco() {
-        return horaVoltaAlmoco;
+    public LocalTime getHoraAlmocoVolta() {
+        return horaAlmocoVolta;
     }
 
-    public void setHoraVoltaAlmoco(LocalTime horaVoltaAlmoco) {
-        this.horaVoltaAlmoco = horaVoltaAlmoco;
+    public void setHoraAlmocoVolta(LocalTime horaAlmocoVolta) {
+        this.horaAlmocoVolta = horaAlmocoVolta;
     }
 
-    public LocalTime getHoraSaidaFinal() {
-        return horaSaidaFinal;
+    public LocalTime getHoraSaida() {
+        return horaSaida;
     }
 
-    public void setHoraSaidaFinal(LocalTime horaSaidaFinal) {
-        this.horaSaidaFinal = horaSaidaFinal;
+    public void setHoraSaida(LocalTime horaSaida) {
+        this.horaSaida = horaSaida;
     }
 
     public double getHorasTrabalhadas() {

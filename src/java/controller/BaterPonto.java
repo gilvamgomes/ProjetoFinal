@@ -23,17 +23,24 @@ public class BaterPonto extends HttpServlet {
 
         Usuario ulogado = (Usuario) sessao.getAttribute("ulogado");
 
+        // 🚨 Proteção extra: só funcionários podem bater ponto
+        if (!"Funcionario".equalsIgnoreCase(ulogado.getPerfil().getNome())) {
+            sessao.setAttribute("mensagem", "Apenas funcionários podem bater ponto.");
+            response.sendRedirect("GerenciarRegistroPonto?acao=listar");
+            return;
+        }
+
         String mensagem = "";
         try {
             RegistroPontoDAO dao = new RegistroPontoDAO();
 
-            // 🧠 Pega o ID do funcionário associado ao usuário logado
+            // Pega o ID do funcionário vinculado ao usuário logado
             int idFuncionario = dao.getIdFuncionarioPorUsuario(ulogado.getIdUsuario());
 
-            // 🕒 Chama o método que lida com os 4 registros do dia
+            // Chama a lógica que preenche as 4 etapas da batida
             mensagem = dao.registrarPonto(idFuncionario);
 
-            // Armazena a mensagem na sessão pra exibir depois
+            // Salva mensagem na sessão pra exibir no listar
             sessao.setAttribute("mensagem", mensagem);
 
         } catch (Exception e) {
@@ -42,7 +49,7 @@ public class BaterPonto extends HttpServlet {
             sessao.setAttribute("mensagem", mensagem);
         }
 
-        // Redireciona corretamente para a listagem
+        // Redireciona pro listar
         response.sendRedirect("GerenciarRegistroPonto?acao=listar");
     }
 }

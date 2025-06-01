@@ -16,7 +16,6 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="css/estilo.css" />
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css" />
@@ -34,10 +33,12 @@
     <div class="content">
         <h2>Registro de Ponto</h2>
 
-        <form action="GerenciarRegistroPonto" method="post" style="display:inline-block;">
-            <input type="hidden" name="acao" value="registrarPonto" />
-            <button type="submit" class="btn btn-primary">Bater Ponto</button>
-        </form>
+        <c:if test="${ulogado.perfil.nome == 'Funcionario'}">
+            <form action="GerenciarRegistroPonto" method="post" style="display:inline-block;">
+                <input type="hidden" name="acao" value="registrarPonto" />
+                <button type="submit" class="btn btn-primary">Bater Ponto</button>
+            </form>
+        </c:if>
 
         <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
             <a href="GerenciarRegistroPonto?acao=novo" class="btn btn-success" style="margin-left: 20px;">Novo Registro</a>
@@ -46,9 +47,7 @@
         <br/><br/>
 
         <c:if test="${not empty mensagem}">
-            <div class="alert alert-info">
-                ${mensagem}
-            </div>
+            <div class="alert alert-info">${mensagem}</div>
         </c:if>
 
         <c:choose>
@@ -61,10 +60,11 @@
                         <tr>
                             <th>ID</th>
                             <th>Data</th>
-                            <th>Hora Entrada</th>
+                            <th>Entrada</th>
                             <th>Saída Almoço</th>
                             <th>Volta Almoço</th>
                             <th>Saída Final</th>
+                            <th>Horas Trabalhadas</th>
                             <th>Funcionário</th>
                             <th>Opções</th>
                         </tr>
@@ -73,25 +73,26 @@
                         <tr>
                             <th>ID</th>
                             <th>Data</th>
-                            <th>Hora Entrada</th>
+                            <th>Entrada</th>
                             <th>Saída Almoço</th>
                             <th>Volta Almoço</th>
                             <th>Saída Final</th>
+                            <th>Horas Trabalhadas</th>
                             <th>Funcionário</th>
                             <th>Opções</th>
                         </tr>
                     </tfoot>
-
                     <tbody>
                         <c:forEach var="r" items="${lista}">
                             <tr>
                                 <td>${r.idRegistro_ponto}</td>
                                 <td>${r.data}</td>
-                                <td>${r.horaEntrada}</td>
-                                <td>${r.horaSaidaAlmoco}</td>
-                                <td>${r.horaVoltaAlmoco}</td>
-                                <td>${r.horaSaidaFinal}</td>
-                                <td>${r.funcionario.nome}</td>
+                                <td><c:out value="${r.horaEntrada != null ? r.horaEntrada : '-'}" /></td>
+                                <td><c:out value="${r.horaAlmocoSaida != null ? r.horaAlmocoSaida : '-'}" /></td>
+                                <td><c:out value="${r.horaAlmocoVolta != null ? r.horaAlmocoVolta : '-'}" /></td>
+                                <td><c:out value="${r.horaSaida != null ? r.horaSaida : '-'}" /></td>
+                                <td><c:out value="${r.horasTrabalhadas} h" /></td>
+                                <td><c:out value="${r.funcionario.nome}" /></td>
                                 <td>
                                     <c:choose>
                                         <c:when test="${ulogado.perfil.nome == 'Funcionario'}">

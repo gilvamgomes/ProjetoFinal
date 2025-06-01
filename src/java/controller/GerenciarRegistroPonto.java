@@ -8,7 +8,7 @@ import model.RegistroPontoDAO;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
+import java.time.temporal.ChronoUnit;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -128,9 +128,9 @@ public class GerenciarRegistroPonto extends HttpServlet {
                     String idStr = request.getParameter("idRegistro_ponto");
                     String dataStr = request.getParameter("data");
                     String horaEntradaStr = request.getParameter("horaEntrada");
-                    String horaSaidaAlmocoStr = request.getParameter("horaSaidaAlmoco");
-                    String horaVoltaAlmocoStr = request.getParameter("horaVoltaAlmoco");
-                    String horaSaidaFinalStr = request.getParameter("horaSaidaFinal");
+                    String horaAlmocoSaidaStr = request.getParameter("horaAlmocoSaida");
+                    String horaAlmocoVoltaStr = request.getParameter("horaAlmocoVolta");
+                    String horaSaidaStr = request.getParameter("horaSaida");
                     String funcIdStr = request.getParameter("funcionario_idFfuncionario");
 
                     if (idStr != null && !idStr.isEmpty()) {
@@ -145,19 +145,32 @@ public class GerenciarRegistroPonto extends HttpServlet {
                         r.setHoraEntrada(LocalTime.parse(horaEntradaStr));
                     }
 
-                    if (horaSaidaAlmocoStr != null && !horaSaidaAlmocoStr.isEmpty()) {
-                        r.setHoraSaidaAlmoco(LocalTime.parse(horaSaidaAlmocoStr));
+                    if (horaAlmocoSaidaStr != null && !horaAlmocoSaidaStr.isEmpty()) {
+                        r.setHoraAlmocoSaida(LocalTime.parse(horaAlmocoSaidaStr));
                     }
 
-                    if (horaVoltaAlmocoStr != null && !horaVoltaAlmocoStr.isEmpty()) {
-                        r.setHoraVoltaAlmoco(LocalTime.parse(horaVoltaAlmocoStr));
+                    if (horaAlmocoVoltaStr != null && !horaAlmocoVoltaStr.isEmpty()) {
+                        r.setHoraAlmocoVolta(LocalTime.parse(horaAlmocoVoltaStr));
                     }
 
-                    if (horaSaidaFinalStr != null && !horaSaidaFinalStr.isEmpty()) {
-                        r.setHoraSaidaFinal(LocalTime.parse(horaSaidaFinalStr));
+                    if (horaSaidaStr != null && !horaSaidaStr.isEmpty()) {
+                        r.setHoraSaida(LocalTime.parse(horaSaidaStr));
                     }
 
                     r.setFuncionario_idFfuncionario(Integer.parseInt(funcIdStr));
+
+                    // ✅ Cálculo automático das horas trabalhadas
+                    if (r.getHoraEntrada() != null &&
+                        r.getHoraAlmocoSaida() != null &&
+                        r.getHoraAlmocoVolta() != null &&
+                        r.getHoraSaida() != null) {
+
+                        long minutosManha = ChronoUnit.MINUTES.between(r.getHoraEntrada(), r.getHoraAlmocoSaida());
+                        long minutosTarde = ChronoUnit.MINUTES.between(r.getHoraAlmocoVolta(), r.getHoraSaida());
+                        double totalHoras = (minutosManha + minutosTarde) / 60.0;
+                        r.setHorasTrabalhadas(totalHoras);
+                    }
+
                     rdao.gravar(r);
                 }
 

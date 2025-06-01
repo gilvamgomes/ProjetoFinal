@@ -1,15 +1,19 @@
 package model;
 
-
-import java.time.*;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Time;
-import java.sql.Date; // usa esse pra evitar conflito explícito
+import java.sql.SQLException;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 
 public class RegistroPontoDAO extends DataBaseDAO {
@@ -19,6 +23,7 @@ public class RegistroPontoDAO extends DataBaseDAO {
     }
 
     public RegistroPonto getCarregaPorID(int idRegistro) throws Exception {
+        this.conectar();
         RegistroPonto r = new RegistroPonto();
         String sql = "SELECT * FROM registro_ponto WHERE idRegistro_ponto = ?";
         PreparedStatement stmt = conn.prepareStatement(sql);
@@ -29,9 +34,9 @@ public class RegistroPontoDAO extends DataBaseDAO {
             r.setIdRegistro_ponto(rs.getInt("idRegistro_ponto"));
             r.setData(rs.getDate("data").toLocalDate());
             r.setHoraEntrada(rs.getTime("horaEntrada").toLocalTime());
-            r.setHoraSaidaAlmoco(rs.getTime("horaSaidaAlmoco") != null ? rs.getTime("horaSaidaAlmoco").toLocalTime() : null);
-            r.setHoraVoltaAlmoco(rs.getTime("horaVoltaAlmoco") != null ? rs.getTime("horaVoltaAlmoco").toLocalTime() : null);
-            r.setHoraSaidaFinal(rs.getTime("horaSaidaFinal") != null ? rs.getTime("horaSaidaFinal").toLocalTime() : null);
+            r.setHoraAlmocoSaida(rs.getTime("horaAlmocoSaida") != null ? rs.getTime("horaAlmocoSaida").toLocalTime() : null);
+            r.setHoraAlmocoVolta(rs.getTime("horaAlmocoVolta") != null ? rs.getTime("horaAlmocoVolta").toLocalTime() : null);
+            r.setHoraSaida(rs.getTime("horaSaida") != null ? rs.getTime("horaSaida").toLocalTime() : null);
             r.setHorasTrabalhadas(rs.getBigDecimal("horasTrabalhadas") != null ? rs.getBigDecimal("horasTrabalhadas").doubleValue() : 0);
             int idFunc = rs.getInt("funcionario_idFfuncionario");
             r.setFuncionario_idFfuncionario(idFunc);
@@ -41,6 +46,7 @@ public class RegistroPontoDAO extends DataBaseDAO {
             r.setFuncionario(fdao.getCarregaPorID(idFunc));
         }
 
+        this.desconectar();
         return r;
     }
 
@@ -48,17 +54,17 @@ public class RegistroPontoDAO extends DataBaseDAO {
         this.conectar();
         String sql;
         if (r.getIdRegistro_ponto() == 0) {
-            sql = "INSERT INTO registro_ponto (data, horaEntrada, horaSaidaAlmoco, horaVoltaAlmoco, horaSaidaFinal, horasTrabalhadas, funcionario_idFfuncionario) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            sql = "INSERT INTO registro_ponto (data, horaEntrada, horaAlmocoSaida, horaAlmocoVolta, horaSaida, horasTrabalhadas, funcionario_idFfuncionario) VALUES (?, ?, ?, ?, ?, ?, ?)";
         } else {
-            sql = "UPDATE registro_ponto SET data=?, horaEntrada=?, horaSaidaAlmoco=?, horaVoltaAlmoco=?, horaSaidaFinal=?, horasTrabalhadas=?, funcionario_idFfuncionario=? WHERE idRegistro_ponto=?";
+            sql = "UPDATE registro_ponto SET data=?, horaEntrada=?, horaAlmocoSaida=?, horaAlmocoVolta=?, horaSaida=?, horasTrabalhadas=?, funcionario_idFfuncionario=? WHERE idRegistro_ponto=?";
         }
 
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setDate(1, Date.valueOf(r.getData()));
         stmt.setTime(2, Time.valueOf(r.getHoraEntrada()));
-        stmt.setTime(3, r.getHoraSaidaAlmoco() != null ? Time.valueOf(r.getHoraSaidaAlmoco()) : null);
-        stmt.setTime(4, r.getHoraVoltaAlmoco() != null ? Time.valueOf(r.getHoraVoltaAlmoco()) : null);
-        stmt.setTime(5, r.getHoraSaidaFinal() != null ? Time.valueOf(r.getHoraSaidaFinal()) : null);
+        stmt.setTime(3, r.getHoraAlmocoSaida() != null ? Time.valueOf(r.getHoraAlmocoSaida()) : null);
+        stmt.setTime(4, r.getHoraAlmocoVolta() != null ? Time.valueOf(r.getHoraAlmocoVolta()) : null);
+        stmt.setTime(5, r.getHoraSaida() != null ? Time.valueOf(r.getHoraSaida()) : null);
         stmt.setBigDecimal(6, new java.math.BigDecimal(r.getHorasTrabalhadas()));
         stmt.setInt(7, r.getFuncionario_idFfuncionario());
 
@@ -82,6 +88,7 @@ public class RegistroPontoDAO extends DataBaseDAO {
     }
 
     public List<RegistroPonto> listarTodos() throws Exception {
+        this.conectar();
         List<RegistroPonto> lista = new ArrayList<>();
         String sql = "SELECT * FROM registro_ponto ORDER BY data DESC, horaEntrada ASC";
         PreparedStatement stmt = conn.prepareStatement(sql);
@@ -95,9 +102,9 @@ public class RegistroPontoDAO extends DataBaseDAO {
             rp.setIdRegistro_ponto(rs.getInt("idRegistro_ponto"));
             rp.setData(rs.getDate("data").toLocalDate());
             rp.setHoraEntrada(rs.getTime("horaEntrada").toLocalTime());
-            rp.setHoraSaidaAlmoco(rs.getTime("horaSaidaAlmoco") != null ? rs.getTime("horaSaidaAlmoco").toLocalTime() : null);
-            rp.setHoraVoltaAlmoco(rs.getTime("horaVoltaAlmoco") != null ? rs.getTime("horaVoltaAlmoco").toLocalTime() : null);
-            rp.setHoraSaidaFinal(rs.getTime("horaSaidaFinal") != null ? rs.getTime("horaSaidaFinal").toLocalTime() : null);
+            rp.setHoraAlmocoSaida(rs.getTime("horaAlmocoSaida") != null ? rs.getTime("horaAlmocoSaida").toLocalTime() : null);
+            rp.setHoraAlmocoVolta(rs.getTime("horaAlmocoVolta") != null ? rs.getTime("horaAlmocoVolta").toLocalTime() : null);
+            rp.setHoraSaida(rs.getTime("horaSaida") != null ? rs.getTime("horaSaida").toLocalTime() : null);
             rp.setHorasTrabalhadas(rs.getBigDecimal("horasTrabalhadas") != null ? rs.getBigDecimal("horasTrabalhadas").doubleValue() : 0);
             int idFunc = rs.getInt("funcionario_idFfuncionario");
             rp.setFuncionario_idFfuncionario(idFunc);
@@ -105,10 +112,12 @@ public class RegistroPontoDAO extends DataBaseDAO {
             lista.add(rp);
         }
 
+        this.desconectar();
         return lista;
     }
 
     public List<RegistroPonto> listarPorFuncionario(int idFuncionario) throws Exception {
+        this.conectar();
         List<RegistroPonto> lista = new ArrayList<>();
         String sql = "SELECT * FROM registro_ponto WHERE funcionario_idFfuncionario = ? ORDER BY data DESC, horaEntrada ASC";
         PreparedStatement stmt = conn.prepareStatement(sql);
@@ -123,23 +132,26 @@ public class RegistroPontoDAO extends DataBaseDAO {
             rp.setIdRegistro_ponto(rs.getInt("idRegistro_ponto"));
             rp.setData(rs.getDate("data").toLocalDate());
             rp.setHoraEntrada(rs.getTime("horaEntrada").toLocalTime());
-            rp.setHoraSaidaAlmoco(rs.getTime("horaSaidaAlmoco") != null ? rs.getTime("horaSaidaAlmoco").toLocalTime() : null);
-            rp.setHoraVoltaAlmoco(rs.getTime("horaVoltaAlmoco") != null ? rs.getTime("horaVoltaAlmoco").toLocalTime() : null);
-            rp.setHoraSaidaFinal(rs.getTime("horaSaidaFinal") != null ? rs.getTime("horaSaidaFinal").toLocalTime() : null);
+            rp.setHoraAlmocoSaida(rs.getTime("horaAlmocoSaida") != null ? rs.getTime("horaAlmocoSaida").toLocalTime() : null);
+            rp.setHoraAlmocoVolta(rs.getTime("horaAlmocoVolta") != null ? rs.getTime("horaAlmocoVolta").toLocalTime() : null);
+            rp.setHoraSaida(rs.getTime("horaSaida") != null ? rs.getTime("horaSaida").toLocalTime() : null);
             rp.setHorasTrabalhadas(rs.getBigDecimal("horasTrabalhadas") != null ? rs.getBigDecimal("horasTrabalhadas").doubleValue() : 0);
             rp.setFuncionario_idFfuncionario(idFuncionario);
             rp.setFuncionario(fdao.getCarregaPorID(idFuncionario));
             lista.add(rp);
         }
 
+        this.desconectar();
         return lista;
     }
 
     public int getIdFuncionarioPorUsuario(int idUsuario) throws Exception {
+        this.conectar();
         String sql = "SELECT idFfuncionario FROM funcionario WHERE usuario_idUsuario = ?";
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setInt(1, idUsuario);
         ResultSet rs = stmt.executeQuery();
+        this.desconectar();
         if (rs.next()) {
             return rs.getInt("idFfuncionario");
         } else {
@@ -169,19 +181,19 @@ public class RegistroPontoDAO extends DataBaseDAO {
             registro.setHoraEntrada(agora);
             gravar(registro);
             return "Entrada registrada com sucesso!";
-        } else if (registro.getHoraSaidaAlmoco() == null) {
-            registro.setHoraSaidaAlmoco(agora);
+        } else if (registro.getHoraAlmocoSaida() == null) {
+            registro.setHoraAlmocoSaida(agora);
             gravar(registro);
             return "Saída para almoço registrada com sucesso!";
-        } else if (registro.getHoraVoltaAlmoco() == null) {
-            registro.setHoraVoltaAlmoco(agora);
+        } else if (registro.getHoraAlmocoVolta() == null) {
+            registro.setHoraAlmocoVolta(agora);
             gravar(registro);
             return "Volta do almoço registrada com sucesso!";
-        } else if (registro.getHoraSaidaFinal() == null) {
-            registro.setHoraSaidaFinal(agora);
+        } else if (registro.getHoraSaida() == null) {
+            registro.setHoraSaida(agora);
 
-            long minutosManha = ChronoUnit.MINUTES.between(registro.getHoraEntrada(), registro.getHoraSaidaAlmoco());
-            long minutosTarde = ChronoUnit.MINUTES.between(registro.getHoraVoltaAlmoco(), registro.getHoraSaidaFinal());
+            long minutosManha = ChronoUnit.MINUTES.between(registro.getHoraEntrada(), registro.getHoraAlmocoSaida());
+            long minutosTarde = ChronoUnit.MINUTES.between(registro.getHoraAlmocoVolta(), registro.getHoraSaida());
             double totalHoras = (minutosManha + minutosTarde) / 60.0;
             registro.setHorasTrabalhadas(totalHoras);
 
