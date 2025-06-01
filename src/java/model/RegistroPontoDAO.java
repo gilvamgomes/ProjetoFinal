@@ -1,247 +1,194 @@
 package model;
 
-import java.sql.*;
+
+import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Date; // usa esse pra evitar conflito explícito
+
 
 public class RegistroPontoDAO extends DataBaseDAO {
 
-    public RegistroPontoDAO() throws Exception {}
-
-    public boolean gravar(RegistroPonto r) {
-        try {
-            this.conectar();
-            String sql;
-            PreparedStatement pstm;
-
-            if (r.getIdRegistro_ponto() == 0) {
-                sql = "INSERT INTO registro_ponto (data, horaEntrada, horaSaida, funcionario_idFfuncionario) VALUES (?, ?, ?, ?)";
-                pstm = this.conn.prepareStatement(sql);
-
-                pstm.setDate(1, r.getData());
-                pstm.setTime(2, r.getHoraEntrada());
-
-                if (r.getHoraSaida() != null) {
-                    pstm.setTime(3, r.getHoraSaida());
-                } else {
-                    pstm.setNull(3, java.sql.Types.TIME);
-                }
-
-                pstm.setInt(4, r.getFuncionario_idFfuncionario());
-
-            } else {
-                sql = "UPDATE registro_ponto SET data=?, horaEntrada=?, horaSaida=?, funcionario_idFfuncionario=? WHERE idRegistro_ponto=?";
-                pstm = this.conn.prepareStatement(sql);
-
-                pstm.setDate(1, r.getData());
-                pstm.setTime(2, r.getHoraEntrada());
-
-                if (r.getHoraSaida() != null) {
-                    pstm.setTime(3, r.getHoraSaida());
-                } else {
-                    pstm.setNull(3, java.sql.Types.TIME);
-                }
-
-                pstm.setInt(4, r.getFuncionario_idFfuncionario());
-                pstm.setInt(5, r.getIdRegistro_ponto());
-            }
-
-            pstm.execute();
-            this.desconectar();
-            return true;
-
-        } catch (Exception e) {
-            System.out.println("Erro ao gravar registro de ponto: " + e.getMessage());
-            e.printStackTrace();
-            return false;
-        }
+    public RegistroPontoDAO() throws Exception {
+        this.conectar();
     }
 
-    public List<RegistroPonto> listar() {
-        return listarTodos(); // redireciona pro novo método
-    }
-
-    public List<RegistroPonto> listarTodos() {
-        List<RegistroPonto> lista = new ArrayList<>();
-        try {
-            this.conectar();
-            String sql = "SELECT rp.*, f.idFfuncionario, f.nome FROM registro_ponto rp " +
-                         "INNER JOIN funcionario f ON rp.funcionario_idFfuncionario = f.idFfuncionario";
-            PreparedStatement pstm = this.conn.prepareStatement(sql);
-            ResultSet rs = pstm.executeQuery();
-            while (rs.next()) {
-                RegistroPonto r = new RegistroPonto();
-                r.setIdRegistro_ponto(rs.getInt("idRegistro_ponto"));
-                r.setData(rs.getDate("data"));
-                r.setHoraEntrada(rs.getTime("horaEntrada"));
-                r.setHoraSaida(rs.getTime("horaSaida"));
-                r.setFuncionario_idFfuncionario(rs.getInt("funcionario_idFfuncionario"));
-
-                Funcionario f = new Funcionario();
-                f.setIdFuncionario(rs.getInt("idFfuncionario"));
-                f.setNome(rs.getString("nome"));
-                r.setFuncionario(f);
-
-                lista.add(r);
-            }
-            this.desconectar();
-        } catch (Exception e) {
-            System.out.println("Erro ao listar todos os registros de ponto: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return lista;
-    }
-
-    public List<RegistroPonto> listarPorFuncionario(int idFfuncionario) {
-        List<RegistroPonto> lista = new ArrayList<>();
-        try {
-            this.conectar();
-            String sql = "SELECT rp.*, f.idFfuncionario, f.nome FROM registro_ponto rp " +
-                         "INNER JOIN funcionario f ON rp.funcionario_idFfuncionario = f.idFfuncionario " +
-                         "WHERE rp.funcionario_idFfuncionario = ?";
-            PreparedStatement pstm = this.conn.prepareStatement(sql);
-            pstm.setInt(1, idFfuncionario);
-            ResultSet rs = pstm.executeQuery();
-
-            while (rs.next()) {
-                RegistroPonto r = new RegistroPonto();
-                r.setIdRegistro_ponto(rs.getInt("idRegistro_ponto"));
-                r.setData(rs.getDate("data"));
-                r.setHoraEntrada(rs.getTime("horaEntrada"));
-                r.setHoraSaida(rs.getTime("horaSaida"));
-                r.setFuncionario_idFfuncionario(idFfuncionario);
-
-                Funcionario f = new Funcionario();
-                f.setIdFuncionario(rs.getInt("idFfuncionario"));
-                f.setNome(rs.getString("nome"));
-                r.setFuncionario(f);
-
-                lista.add(r);
-            }
-            this.desconectar();
-        } catch (Exception e) {
-            System.out.println("Erro ao listar pontos por funcionário: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return lista;
-    }
-
-    public boolean excluir(int idRegistro) {
-        try {
-            this.conectar();
-            String sql = "DELETE FROM registro_ponto WHERE idRegistro_ponto=?";
-            PreparedStatement pstm = this.conn.prepareStatement(sql);
-            pstm.setInt(1, idRegistro);
-            pstm.execute();
-            this.desconectar();
-            return true;
-        } catch (Exception e) {
-            System.out.println("Erro ao excluir registro de ponto: " + e.getMessage());
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public RegistroPonto getCarregaPorID(int idRegistro) {
+    public RegistroPonto getCarregaPorID(int idRegistro) throws Exception {
         RegistroPonto r = new RegistroPonto();
-        try {
-            this.conectar();
-            String sql = "SELECT * FROM registro_ponto WHERE idRegistro_ponto=?";
-            PreparedStatement pstm = this.conn.prepareStatement(sql);
-            pstm.setInt(1, idRegistro);
-            ResultSet rs = pstm.executeQuery();
-            if (rs.next()) {
-                r.setIdRegistro_ponto(rs.getInt("idRegistro_ponto"));
-                r.setData(rs.getDate("data"));
-                r.setHoraEntrada(rs.getTime("horaEntrada"));
-                r.setHoraSaida(rs.getTime("horaSaida"));
-                r.setFuncionario_idFfuncionario(rs.getInt("funcionario_idFfuncionario"));
-            }
-            this.desconectar();
-        } catch (Exception e) {
-            System.out.println("Erro ao carregar registro de ponto: " + e.getMessage());
-            e.printStackTrace();
+        String sql = "SELECT * FROM registro_ponto WHERE idRegistro_ponto = ?";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, idRegistro);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            r.setIdRegistro_ponto(rs.getInt("idRegistro_ponto"));
+            r.setData(rs.getDate("data").toLocalDate());
+            r.setHoraEntrada(rs.getTime("horaEntrada").toLocalTime());
+            r.setHoraSaidaAlmoco(rs.getTime("horaSaidaAlmoco") != null ? rs.getTime("horaSaidaAlmoco").toLocalTime() : null);
+            r.setHoraVoltaAlmoco(rs.getTime("horaVoltaAlmoco") != null ? rs.getTime("horaVoltaAlmoco").toLocalTime() : null);
+            r.setHoraSaidaFinal(rs.getTime("horaSaidaFinal") != null ? rs.getTime("horaSaidaFinal").toLocalTime() : null);
+            r.setHorasTrabalhadas(rs.getBigDecimal("horasTrabalhadas") != null ? rs.getBigDecimal("horasTrabalhadas").doubleValue() : 0);
+            int idFunc = rs.getInt("funcionario_idFfuncionario");
+            r.setFuncionario_idFfuncionario(idFunc);
+
+            FuncionarioDAO fdao = new FuncionarioDAO();
+            fdao.conectar();
+            r.setFuncionario(fdao.getCarregaPorID(idFunc));
         }
+
         return r;
     }
 
-    public boolean gravarEntrada(RegistroPonto r) {
-        try {
-            this.conectar();
-            String sql = "INSERT INTO registro_ponto (data, horaEntrada, funcionario_idFfuncionario) VALUES (?, ?, ?)";
-            PreparedStatement pstm = this.conn.prepareStatement(sql);
-            pstm.setDate(1, r.getData());
-            pstm.setTime(2, r.getHoraEntrada());
-            pstm.setInt(3, r.getFuncionario_idFfuncionario());
-            pstm.execute();
-            this.desconectar();
-            return true;
-        } catch (Exception e) {
-            System.out.println("Erro ao gravar entrada de ponto: " + e.getMessage());
-            e.printStackTrace();
-            return false;
+    public boolean gravar(RegistroPonto r) throws Exception {
+        this.conectar();
+        String sql;
+        if (r.getIdRegistro_ponto() == 0) {
+            sql = "INSERT INTO registro_ponto (data, horaEntrada, horaSaidaAlmoco, horaVoltaAlmoco, horaSaidaFinal, horasTrabalhadas, funcionario_idFfuncionario) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        } else {
+            sql = "UPDATE registro_ponto SET data=?, horaEntrada=?, horaSaidaAlmoco=?, horaVoltaAlmoco=?, horaSaidaFinal=?, horasTrabalhadas=?, funcionario_idFfuncionario=? WHERE idRegistro_ponto=?";
+        }
+
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setDate(1, Date.valueOf(r.getData()));
+        stmt.setTime(2, Time.valueOf(r.getHoraEntrada()));
+        stmt.setTime(3, r.getHoraSaidaAlmoco() != null ? Time.valueOf(r.getHoraSaidaAlmoco()) : null);
+        stmt.setTime(4, r.getHoraVoltaAlmoco() != null ? Time.valueOf(r.getHoraVoltaAlmoco()) : null);
+        stmt.setTime(5, r.getHoraSaidaFinal() != null ? Time.valueOf(r.getHoraSaidaFinal()) : null);
+        stmt.setBigDecimal(6, new java.math.BigDecimal(r.getHorasTrabalhadas()));
+        stmt.setInt(7, r.getFuncionario_idFfuncionario());
+
+        if (r.getIdRegistro_ponto() > 0) {
+            stmt.setInt(8, r.getIdRegistro_ponto());
+        }
+
+        stmt.execute();
+        this.desconectar();
+        return true;
+    }
+
+    public boolean excluir(int id) throws Exception {
+        this.conectar();
+        String sql = "DELETE FROM registro_ponto WHERE idRegistro_ponto=?";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, id);
+        stmt.execute();
+        this.desconectar();
+        return true;
+    }
+
+    public List<RegistroPonto> listarTodos() throws Exception {
+        List<RegistroPonto> lista = new ArrayList<>();
+        String sql = "SELECT * FROM registro_ponto ORDER BY data DESC, horaEntrada ASC";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery();
+
+        FuncionarioDAO fdao = new FuncionarioDAO();
+        fdao.conectar();
+
+        while (rs.next()) {
+            RegistroPonto rp = new RegistroPonto();
+            rp.setIdRegistro_ponto(rs.getInt("idRegistro_ponto"));
+            rp.setData(rs.getDate("data").toLocalDate());
+            rp.setHoraEntrada(rs.getTime("horaEntrada").toLocalTime());
+            rp.setHoraSaidaAlmoco(rs.getTime("horaSaidaAlmoco") != null ? rs.getTime("horaSaidaAlmoco").toLocalTime() : null);
+            rp.setHoraVoltaAlmoco(rs.getTime("horaVoltaAlmoco") != null ? rs.getTime("horaVoltaAlmoco").toLocalTime() : null);
+            rp.setHoraSaidaFinal(rs.getTime("horaSaidaFinal") != null ? rs.getTime("horaSaidaFinal").toLocalTime() : null);
+            rp.setHorasTrabalhadas(rs.getBigDecimal("horasTrabalhadas") != null ? rs.getBigDecimal("horasTrabalhadas").doubleValue() : 0);
+            int idFunc = rs.getInt("funcionario_idFfuncionario");
+            rp.setFuncionario_idFfuncionario(idFunc);
+            rp.setFuncionario(fdao.getCarregaPorID(idFunc));
+            lista.add(rp);
+        }
+
+        return lista;
+    }
+
+    public List<RegistroPonto> listarPorFuncionario(int idFuncionario) throws Exception {
+        List<RegistroPonto> lista = new ArrayList<>();
+        String sql = "SELECT * FROM registro_ponto WHERE funcionario_idFfuncionario = ? ORDER BY data DESC, horaEntrada ASC";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, idFuncionario);
+        ResultSet rs = stmt.executeQuery();
+
+        FuncionarioDAO fdao = new FuncionarioDAO();
+        fdao.conectar();
+
+        while (rs.next()) {
+            RegistroPonto rp = new RegistroPonto();
+            rp.setIdRegistro_ponto(rs.getInt("idRegistro_ponto"));
+            rp.setData(rs.getDate("data").toLocalDate());
+            rp.setHoraEntrada(rs.getTime("horaEntrada").toLocalTime());
+            rp.setHoraSaidaAlmoco(rs.getTime("horaSaidaAlmoco") != null ? rs.getTime("horaSaidaAlmoco").toLocalTime() : null);
+            rp.setHoraVoltaAlmoco(rs.getTime("horaVoltaAlmoco") != null ? rs.getTime("horaVoltaAlmoco").toLocalTime() : null);
+            rp.setHoraSaidaFinal(rs.getTime("horaSaidaFinal") != null ? rs.getTime("horaSaidaFinal").toLocalTime() : null);
+            rp.setHorasTrabalhadas(rs.getBigDecimal("horasTrabalhadas") != null ? rs.getBigDecimal("horasTrabalhadas").doubleValue() : 0);
+            rp.setFuncionario_idFfuncionario(idFuncionario);
+            rp.setFuncionario(fdao.getCarregaPorID(idFuncionario));
+            lista.add(rp);
+        }
+
+        return lista;
+    }
+
+    public int getIdFuncionarioPorUsuario(int idUsuario) throws Exception {
+        String sql = "SELECT idFfuncionario FROM funcionario WHERE usuario_idUsuario = ?";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, idUsuario);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("idFfuncionario");
+        } else {
+            throw new Exception("Funcionário não encontrado para o usuário de ID: " + idUsuario);
         }
     }
 
-    public RegistroPonto getRegistroSemSaida(int idFuncionario, java.time.LocalDate data) {
-        RegistroPonto r = null;
-        try {
-            this.conectar();
-            String sql = "SELECT * FROM registro_ponto WHERE funcionario_idFfuncionario=? AND data=? AND horaSaida IS NULL";
-            PreparedStatement pstm = this.conn.prepareStatement(sql);
-            pstm.setInt(1, idFuncionario);
-            pstm.setDate(2, java.sql.Date.valueOf(data));
-            ResultSet rs = pstm.executeQuery();
-            if (rs.next()) {
-                r = new RegistroPonto();
-                r.setIdRegistro_ponto(rs.getInt("idRegistro_ponto"));
-                r.setData(rs.getDate("data"));
-                r.setHoraEntrada(rs.getTime("horaEntrada"));
-                r.setHoraSaida(rs.getTime("horaSaida"));
-                r.setFuncionario_idFfuncionario(rs.getInt("funcionario_idFfuncionario"));
-            }
-            this.desconectar();
-        } catch (Exception e) {
-            System.out.println("Erro ao buscar registro sem saída: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return r;
-    }
+    public String registrarPonto(int idFuncionario) throws Exception {
+        LocalDate hoje = LocalDate.now();
+        LocalTime agora = LocalTime.now();
 
-    public boolean atualizarSaida(RegistroPonto r) {
-        try {
-            this.conectar();
-            String sql = "UPDATE registro_ponto SET horaSaida=? WHERE idRegistro_ponto=?";
-            PreparedStatement pstm = this.conn.prepareStatement(sql);
-            pstm.setTime(1, r.getHoraSaida());
-            pstm.setInt(2, r.getIdRegistro_ponto());
-            pstm.execute();
-            this.desconectar();
-            return true;
-        } catch (Exception e) {
-            System.out.println("Erro ao atualizar saída: " + e.getMessage());
-            e.printStackTrace();
-            return false;
-        }
-    }
+        List<RegistroPonto> registros = listarPorFuncionario(idFuncionario);
+        Optional<RegistroPonto> registroHojeOpt = registros.stream()
+            .filter(r -> r.getData().equals(hoje))
+            .findFirst();
 
-    public boolean temRegistroCompletoHoje(int idFuncionario, java.time.LocalDate data) {
-        boolean tem = false;
-        try {
-            this.conectar();
-            String sql = "SELECT COUNT(*) AS total FROM registro_ponto " +
-                         "WHERE funcionario_idFfuncionario = ? AND data = ? AND horaEntrada IS NOT NULL AND horaSaida IS NOT NULL";
-            PreparedStatement pstm = this.conn.prepareStatement(sql);
-            pstm.setInt(1, idFuncionario);
-            pstm.setDate(2, java.sql.Date.valueOf(data));
-            ResultSet rs = pstm.executeQuery();
-            if (rs.next()) {
-                tem = rs.getInt("total") > 0;
-            }
-            this.desconectar();
-        } catch (Exception e) {
-            System.out.println("Erro ao verificar se já tem registro completo hoje: " + e.getMessage());
-            e.printStackTrace();
+        RegistroPonto registro;
+        if (registroHojeOpt.isPresent()) {
+            registro = registroHojeOpt.get();
+        } else {
+            registro = new RegistroPonto();
+            registro.setData(hoje);
+            registro.setFuncionario_idFfuncionario(idFuncionario);
         }
-        return tem;
+
+        if (registro.getHoraEntrada() == null) {
+            registro.setHoraEntrada(agora);
+            gravar(registro);
+            return "Entrada registrada com sucesso!";
+        } else if (registro.getHoraSaidaAlmoco() == null) {
+            registro.setHoraSaidaAlmoco(agora);
+            gravar(registro);
+            return "Saída para almoço registrada com sucesso!";
+        } else if (registro.getHoraVoltaAlmoco() == null) {
+            registro.setHoraVoltaAlmoco(agora);
+            gravar(registro);
+            return "Volta do almoço registrada com sucesso!";
+        } else if (registro.getHoraSaidaFinal() == null) {
+            registro.setHoraSaidaFinal(agora);
+
+            long minutosManha = ChronoUnit.MINUTES.between(registro.getHoraEntrada(), registro.getHoraSaidaAlmoco());
+            long minutosTarde = ChronoUnit.MINUTES.between(registro.getHoraVoltaAlmoco(), registro.getHoraSaidaFinal());
+            double totalHoras = (minutosManha + minutosTarde) / 60.0;
+            registro.setHorasTrabalhadas(totalHoras);
+
+            gravar(registro);
+            return "Saída registrada com sucesso! Total de horas: " + totalHoras + "h";
+        } else {
+            return "As 4 marcações de ponto já foram registradas hoje.";
+        }
     }
 }

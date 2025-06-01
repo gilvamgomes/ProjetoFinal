@@ -31,21 +31,26 @@
     <h2>Cadastro / Edição de Registro de Ponto</h2>
 
     <form action="GerenciarRegistroPonto" method="POST">
-        <!-- AÇÃO definida aqui -->
         <input type="hidden" name="acao" value="${registroPonto.idRegistro_ponto == 0 ? 'gravar' : 'alterar'}" />
-        <input type="hidden" id="idRegistro_ponto" name="idRegistro_ponto" value="${registroPonto.idRegistro_ponto}" />
+        <input type="hidden" name="idRegistro_ponto" value="${registroPonto.idRegistro_ponto}" />
 
-        <label for="data" class="control-label">Data</label>
+        <label for="data">Data</label>
         <input type="date" id="data" name="data" class="form-control" required value="${registroPonto.data}" />
 
-        <label for="horaEntrada" class="control-label">Hora Entrada</label>
+        <label for="horaEntrada">Hora de Entrada</label>
         <input type="time" id="horaEntrada" name="horaEntrada" class="form-control" required value="${registroPonto.horaEntrada}" />
 
-        <label for="horaSaida" class="control-label">Hora Saída</label>
+        <label for="horaAlmocoSaida">Saída para Almoço</label>
+        <input type="time" id="horaAlmocoSaida" name="horaAlmocoSaida" class="form-control" value="${registroPonto.horaAlmocoSaida}" />
+
+        <label for="horaAlmocoVolta">Volta do Almoço</label>
+        <input type="time" id="horaAlmocoVolta" name="horaAlmocoVolta" class="form-control" value="${registroPonto.horaAlmocoVolta}" />
+
+        <label for="horaSaida">Saída Final</label>
         <input type="time" id="horaSaida" name="horaSaida" class="form-control" value="${registroPonto.horaSaida}" />
 
-        <label for="funcionario" class="control-label">Funcionário</label>
-        <select id="funcionario" name="funcionario_idFfuncionario" class="form-control" required onchange="filtrarRegistros()">
+        <label for="funcionario_idFfuncionario">Funcionário</label>
+        <select id="funcionario_idFfuncionario" name="funcionario_idFfuncionario" class="form-control" required>
             <option value="">-- Selecione --</option>
             <c:forEach var="func" items="${listaFuncionarios}">
                 <option value="${func.idFuncionario}" 
@@ -55,20 +60,22 @@
             </c:forEach>
         </select>
 
-        <br />
+        <br/>
         <button type="submit" class="btn btn-success">Gravar</button>
         <a href="GerenciarRegistroPonto?acao=listar" class="btn btn-warning">Voltar</a>
     </form>
 
     <c:if test="${not empty listaRegistrosFuncionario}">
-        <hr />
-        <h3>Histórico de Registro do Funcionário</h3>
+        <hr/>
+        <h3>Histórico do Funcionário</h3>
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>Data</th>
                     <th>Hora Entrada</th>
-                    <th>Hora Saída</th>
+                    <th>Saída Almoço</th>
+                    <th>Volta Almoço</th>
+                    <th>Saída Final</th>
                 </tr>
             </thead>
             <tbody>
@@ -76,6 +83,8 @@
                     <tr>
                         <td>${r.data}</td>
                         <td>${r.horaEntrada}</td>
+                        <td>${r.horaAlmocoSaida}</td>
+                        <td>${r.horaAlmocoVolta}</td>
                         <td>${r.horaSaida}</td>
                     </tr>
                 </c:forEach>
@@ -83,13 +92,6 @@
         </table>
     </c:if>
 </div>
-
-<script>
-    function toggleMenu() {
-        var menu = document.getElementById("nav-links");
-        menu.classList.toggle("show");
-    }
-</script>
 
 </body>
 </html>

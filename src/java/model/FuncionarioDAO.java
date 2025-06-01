@@ -1,9 +1,6 @@
 package model;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Date;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +8,7 @@ public class FuncionarioDAO extends DataBaseDAO {
 
     public FuncionarioDAO() throws Exception {}
 
+    // Listar todos os funcionários
     public List<Funcionario> listar() throws Exception {
         return getLista();
     }
@@ -44,6 +42,7 @@ public class FuncionarioDAO extends DataBaseDAO {
         return lista;
     }
 
+    // Gravar ou atualizar funcionário
     public boolean gravar(Funcionario f) {
         try {
             this.conectar();
@@ -78,6 +77,7 @@ public class FuncionarioDAO extends DataBaseDAO {
         }
     }
 
+    // Carrega funcionário pelo ID
     public Funcionario getCarregaPorID(int idFuncionario) throws Exception {
         Funcionario f = new Funcionario();
         String sql = "SELECT * FROM funcionario WHERE idFfuncionario=?";
@@ -104,6 +104,7 @@ public class FuncionarioDAO extends DataBaseDAO {
         return f;
     }
 
+    // Exclusão lógica (status = 2)
     public boolean excluir(Funcionario f) {
         try {
             this.conectar();
@@ -121,7 +122,7 @@ public class FuncionarioDAO extends DataBaseDAO {
         }
     }
 
-    // ✅ Novo método para buscar funcionário pelo idUsuario
+    // ✅ Buscar funcionário pelo idUsuario
     public Funcionario getFuncionarioPorUsuario(int idUsuario) throws Exception {
         Funcionario f = null;
         String sql = "SELECT * FROM funcionario WHERE usuario_idUsuario = ?";
@@ -134,11 +135,19 @@ public class FuncionarioDAO extends DataBaseDAO {
                     f = new Funcionario();
                     f.setIdFuncionario(rs.getInt("idFfuncionario"));
                     f.setNome(rs.getString("nome"));
+                    f.setDataNasc(rs.getDate("dataNasc"));
+                    f.setCpf(rs.getString("cpf"));
+                    f.setCargo(rs.getString("cargo"));
+                    f.setStatus(rs.getInt("status"));
+
+                    UsuarioDAO uDAO = new UsuarioDAO();
+                    f.setUsuario(uDAO.getCarregaPorID(rs.getInt("usuario_idUsuario")));
                 }
             }
         } finally {
             this.desconectar();
         }
+
         return f;
     }
 }

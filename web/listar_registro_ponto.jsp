@@ -34,21 +34,22 @@
     <div class="content">
         <h2>Registro de Ponto</h2>
 
-        <form action="GerenciarRegistroPonto" method="post" style="display:inline-block; margin-right:10px;">
-            <input type="hidden" name="acao" value="registrarEntrada" />
-            <button type="submit" class="btn btn-success">Registrar Entrada</button>
-        </form>
-
         <form action="GerenciarRegistroPonto" method="post" style="display:inline-block;">
-            <input type="hidden" name="acao" value="registrarSaida" />
-            <button type="submit" class="btn btn-warning">Registrar Saída</button>
+            <input type="hidden" name="acao" value="registrarPonto" />
+            <button type="submit" class="btn btn-primary">Bater Ponto</button>
         </form>
 
         <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
-            <a href="GerenciarRegistroPonto?acao=novo" class="btn btn-primary" style="margin-left: 20px;">Novo Registro</a>
+            <a href="GerenciarRegistroPonto?acao=novo" class="btn btn-success" style="margin-left: 20px;">Novo Registro</a>
         </c:if>
 
         <br/><br/>
+
+        <c:if test="${not empty mensagem}">
+            <div class="alert alert-info">
+                ${mensagem}
+            </div>
+        </c:if>
 
         <c:choose>
             <c:when test="${empty lista}">
@@ -61,7 +62,9 @@
                             <th>ID</th>
                             <th>Data</th>
                             <th>Hora Entrada</th>
-                            <th>Hora Saída</th>
+                            <th>Saída Almoço</th>
+                            <th>Volta Almoço</th>
+                            <th>Saída Final</th>
                             <th>Funcionário</th>
                             <th>Opções</th>
                         </tr>
@@ -71,7 +74,9 @@
                             <th>ID</th>
                             <th>Data</th>
                             <th>Hora Entrada</th>
-                            <th>Hora Saída</th>
+                            <th>Saída Almoço</th>
+                            <th>Volta Almoço</th>
+                            <th>Saída Final</th>
                             <th>Funcionário</th>
                             <th>Opções</th>
                         </tr>
@@ -83,7 +88,9 @@
                                 <td>${r.idRegistro_ponto}</td>
                                 <td>${r.data}</td>
                                 <td>${r.horaEntrada}</td>
-                                <td>${r.horaSaida}</td>
+                                <td>${r.horaSaidaAlmoco}</td>
+                                <td>${r.horaVoltaAlmoco}</td>
+                                <td>${r.horaSaidaFinal}</td>
                                 <td>${r.funcionario.nome}</td>
                                 <td>
                                     <c:choose>

@@ -1,19 +1,19 @@
 package model;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class RegistroPonto {
     private int idRegistro_ponto;
-    private Date data;
-    private Time horaEntrada;
-    private Time horaSaida;
+    private LocalDate data;
+    private LocalTime horaEntrada;
+    private LocalTime horaSaidaAlmoco;
+    private LocalTime horaVoltaAlmoco;
+    private LocalTime horaSaidaFinal;
+    private double horasTrabalhadas;
     private int funcionario_idFfuncionario;
 
-    // Novo atributo para relacionamento com Funcionario
     private Funcionario funcionario;
-
-    // Getters e Setters
 
     public int getIdRegistro_ponto() {
         return idRegistro_ponto;
@@ -23,28 +23,52 @@ public class RegistroPonto {
         this.idRegistro_ponto = idRegistro_ponto;
     }
 
-    public Date getData() {
+    public LocalDate getData() {
         return data;
     }
 
-    public void setData(Date data) {
+    public void setData(LocalDate data) {
         this.data = data;
     }
 
-    public Time getHoraEntrada() {
+    public LocalTime getHoraEntrada() {
         return horaEntrada;
     }
 
-    public void setHoraEntrada(Time horaEntrada) {
+    public void setHoraEntrada(LocalTime horaEntrada) {
         this.horaEntrada = horaEntrada;
     }
 
-    public Time getHoraSaida() {
-        return horaSaida;
+    public LocalTime getHoraSaidaAlmoco() {
+        return horaSaidaAlmoco;
     }
 
-    public void setHoraSaida(Time horaSaida) {
-        this.horaSaida = horaSaida;
+    public void setHoraSaidaAlmoco(LocalTime horaSaidaAlmoco) {
+        this.horaSaidaAlmoco = horaSaidaAlmoco;
+    }
+
+    public LocalTime getHoraVoltaAlmoco() {
+        return horaVoltaAlmoco;
+    }
+
+    public void setHoraVoltaAlmoco(LocalTime horaVoltaAlmoco) {
+        this.horaVoltaAlmoco = horaVoltaAlmoco;
+    }
+
+    public LocalTime getHoraSaidaFinal() {
+        return horaSaidaFinal;
+    }
+
+    public void setHoraSaidaFinal(LocalTime horaSaidaFinal) {
+        this.horaSaidaFinal = horaSaidaFinal;
+    }
+
+    public double getHorasTrabalhadas() {
+        return horasTrabalhadas;
+    }
+
+    public void setHorasTrabalhadas(double horasTrabalhadas) {
+        this.horasTrabalhadas = horasTrabalhadas;
     }
 
     public int getFuncionario_idFfuncionario() {
@@ -54,8 +78,6 @@ public class RegistroPonto {
     public void setFuncionario_idFfuncionario(int funcionario_idFfuncionario) {
         this.funcionario_idFfuncionario = funcionario_idFfuncionario;
     }
-
-    // Getters e setters do objeto Funcionario
 
     public Funcionario getFuncionario() {
         return funcionario;
