@@ -9,9 +9,9 @@ public class BeneficioDAO extends DataBaseDAO {
     public BeneficioDAO() throws Exception {
     }
 
-    public List<Beneficio> getLista() throws SQLException {
+    public List<Beneficio> listar() throws SQLException {
         List<Beneficio> lista = new ArrayList<>();
-        String SQL = "SELECT * FROM beneficio";
+        String SQL = "SELECT * FROM beneficio WHERE status = 1";
         try {
             this.conectar();
             PreparedStatement pstm = conn.prepareStatement(SQL);
@@ -30,6 +30,36 @@ public class BeneficioDAO extends DataBaseDAO {
         } finally {
             this.desconectar();
         }
+        return lista;
+    }
+
+    // ✅ Para JSTL: ${bDAO.lista} → traz só ativos
+    public List<Beneficio> getLista() throws Exception {
+        return listar();
+    }
+
+    // ✅ NOVO: Traz todos os benefícios (sem filtro de status)
+    public List<Beneficio> getTodos() throws Exception {
+        List<Beneficio> lista = new ArrayList<>();
+        String SQL = "SELECT * FROM beneficio";
+
+        this.conectar();
+        try (PreparedStatement pstm = conn.prepareStatement(SQL);
+             ResultSet rs = pstm.executeQuery()) {
+
+            while (rs.next()) {
+                Beneficio b = new Beneficio();
+                b.setIdBeneficio(rs.getInt("idBeneficio"));
+                b.setNome(rs.getString("nome"));
+                b.setDescricao(rs.getString("descricao"));
+                b.setStatus(rs.getInt("status"));
+                lista.add(b);
+            }
+
+        } finally {
+            this.desconectar();
+        }
+
         return lista;
     }
 

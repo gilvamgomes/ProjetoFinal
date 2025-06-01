@@ -7,6 +7,10 @@ public class Beneficio {
     private String descricao;
     private int status;
 
+    // Campos auxiliares para uso em tela (não vêm do banco diretamente)
+    private double valorTemporario; // valor específico para o funcionário
+    private boolean ativoParaFuncionario; // para marcar checkbox
+
     public Beneficio() {
     }
 
@@ -47,5 +51,23 @@ public class Beneficio {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    // Getters e setters novos:
+
+    public double getValorTemporario() {
+        return valorTemporario;
+    }
+
+    public void setValorTemporario(double valorTemporario) {
+        this.valorTemporario = valorTemporario;
+    }
+
+    public boolean isAtivoParaFuncionario() {
+        return ativoParaFuncionario;
+    }
+
+    public void setAtivoParaFuncionario(boolean ativoParaFuncionario) {
+        this.ativoParaFuncionario = ativoParaFuncionario;
     }
 }

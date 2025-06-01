@@ -48,3 +48,4 @@ logs/
 *.war
 *.ear
 nbproject/private/private.properties
+/nbproject/private

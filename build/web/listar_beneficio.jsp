@@ -56,7 +56,7 @@
 
             <jsp:useBean class="model.BeneficioDAO" id="bDAO"/>
             <tbody>
-                <c:forEach var="b" items="${bDAO.lista}">
+                <c:forEach var="b" items="${bDAO.todos}">
                     <tr>
                         <td>${b.idBeneficio}</td>
                         <td>${b.nome}</td>
