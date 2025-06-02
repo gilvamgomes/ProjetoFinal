@@ -86,4 +86,16 @@ public class RegistroPonto {
     public void setFuncionario(Funcionario funcionario) {
         this.funcionario = funcionario;
     }
+
+    // ✅ Para usar no JSP com fmt:formatDate
+    public java.util.Date getDataFormatada() {
+        return java.sql.Date.valueOf(this.data);
+    }
+
+    // ✅ Para exibir horas no formato "Xh Ymin"
+    public String getHorasTrabalhadasFormatada() {
+        int horas = (int) this.horasTrabalhadas;
+        int minutos = (int) Math.round((this.horasTrabalhadas - horas) * 60);
+        return horas + "h " + minutos + "min";
+    }
 }

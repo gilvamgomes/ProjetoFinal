@@ -1,4 +1,8 @@
 <%@page import="model.Usuario" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <%
     Usuario ulogado = (Usuario) session.getAttribute("ulogado");
     if (ulogado == null) {
@@ -6,8 +10,6 @@
         return;
     }
 %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -72,12 +74,13 @@
                     <tbody>
                         <c:forEach var="r" items="${lista}">
                             <tr>
-                                <td>${r.data}</td>
+                                <td><fmt:formatDate value="${r.dataFormatada}" pattern="dd/MM/yyyy" /></td>
                                 <td><c:out value="${r.horaEntrada != null ? r.horaEntrada : '-'}" /></td>
                                 <td><c:out value="${r.horaAlmocoSaida != null ? r.horaAlmocoSaida : '-'}" /></td>
                                 <td><c:out value="${r.horaAlmocoVolta != null ? r.horaAlmocoVolta : '-'}" /></td>
                                 <td><c:out value="${r.horaSaida != null ? r.horaSaida : '-'}" /></td>
-                                <td><c:out value="${r.horasTrabalhadas} h" /></td>
+                                <td><c:out value="${r.horasTrabalhadasFormatada}" /></td>
+
 
                                 <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
                                     <td><c:out value="${r.funcionario.nome}" /></td>
