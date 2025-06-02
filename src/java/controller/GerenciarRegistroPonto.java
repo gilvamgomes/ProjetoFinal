@@ -45,10 +45,10 @@ public class GerenciarRegistroPonto extends HttpServlet {
             switch (acao) {
                 case "listar":
                     List<RegistroPonto> registros;
-                    if (perfilNome.equalsIgnoreCase("Funcionario")) {
-                        registros = funcionarioLogado != null ? rdao.listarPorFuncionario(funcionarioLogado.getIdFuncionario()) : java.util.Collections.emptyList();
-                    } else {
+                    if (perfilNome.equalsIgnoreCase("Gerente") || perfilNome.equalsIgnoreCase("Administrador")) {
                         registros = rdao.listarTodos();
+                    } else {
+                        registros = funcionarioLogado != null ? rdao.listarPorFuncionario(funcionarioLogado.getIdFuncionario()) : java.util.Collections.emptyList();
                     }
 
                     double totalHorasMes = 0.0;
@@ -131,7 +131,6 @@ public class GerenciarRegistroPonto extends HttpServlet {
         }
 
         model.Usuario ulogado = (model.Usuario) ulogadoObj;
-        String perfilNome = ulogado.getPerfil().getNome();
 
         try {
             String acao = request.getParameter("acao");
@@ -139,7 +138,7 @@ public class GerenciarRegistroPonto extends HttpServlet {
             FuncionarioDAO fdao = new FuncionarioDAO();
 
             if ("gravar".equals(acao) || "alterar".equals(acao)) {
-                if (!perfilNome.equalsIgnoreCase("Funcionario")) {
+                if (!ulogado.getPerfil().getNome().equalsIgnoreCase("Funcionario")) {
                     RegistroPonto r = new RegistroPonto();
 
                     String idStr = request.getParameter("idRegistro_ponto");
@@ -195,16 +194,23 @@ public class GerenciarRegistroPonto extends HttpServlet {
             }
 
             if ("registrarPonto".equals(acao)) {
-                if (perfilNome.equalsIgnoreCase("Funcionario")) {
-                    Funcionario funcionarioLogado = fdao.getFuncionarioPorUsuario(ulogado.getIdUsuario());
-                    if (funcionarioLogado != null) {
-                        String msg = rdao.registrarPonto(funcionarioLogado.getIdFuncionario());
-                        request.setAttribute("mensagem", msg);
-                        request.setAttribute("ulogado", ulogado);
+                Funcionario funcionarioLogado = fdao.getFuncionarioPorUsuario(ulogado.getIdUsuario());
+                if (funcionarioLogado != null) {
+                    String msg = rdao.registrarPonto(funcionarioLogado.getIdFuncionario());
+                    request.setAttribute("mensagem", msg);
+                    request.setAttribute("ulogado", ulogado);
+
+                    String perfil = ulogado.getPerfil().getNome();
+                    if (perfil.equalsIgnoreCase("Gerente") || perfil.equalsIgnoreCase("Administrador")) {
+                        request.setAttribute("lista", rdao.listarTodos());
+                    } else {
                         request.setAttribute("lista", rdao.listarPorFuncionario(funcionarioLogado.getIdFuncionario()));
-                        request.getRequestDispatcher("listar_registro_ponto.jsp").forward(request, response);
-                        return;
                     }
+
+                    request.getRequestDispatcher("listar_registro_ponto.jsp").forward(request, response);
+                    return;
+                } else {
+                    request.setAttribute("mensagem", "Usuário não vinculado a um funcionário.");
                 }
             }
 
