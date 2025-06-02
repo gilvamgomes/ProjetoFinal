@@ -21,13 +21,13 @@ public class GerenciarRegistroPonto extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session == null) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("form_login.jsp");
             return;
         }
 
         Object ulogadoObj = session.getAttribute("ulogado");
         if (ulogadoObj == null || !(ulogadoObj instanceof model.Usuario)) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("form_login.jsp");
             return;
         }
 
@@ -120,13 +120,13 @@ public class GerenciarRegistroPonto extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session == null) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("form_login.jsp");
             return;
         }
 
         Object ulogadoObj = session.getAttribute("ulogado");
         if (ulogadoObj == null || !(ulogadoObj instanceof model.Usuario)) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("form_login.jsp");
             return;
         }
 
