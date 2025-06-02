@@ -31,6 +31,12 @@
 
 <div class="content">
     <h2>Lista de Funcionários</h2>
+    <c:if test="${param.status == 'beneficio_sucesso'}">
+        <div class="alert alert-success text-center">
+            Benefícios atualizados com sucesso!
+        </div>
+    </c:if>
+
     <a href="form_funcionario.jsp" class="btn btn-primary">Novo Cadastro</a>
 
     <table class="table table-hover table-striped table-bordered display" id="listarFuncionario">
@@ -77,6 +83,11 @@
                         <a class="btn btn-primary" href="GerenciarFuncionario?acao=alterar&idFuncionario=${f.idFuncionario}">
                             <i class="glyphicon glyphicon-pencil"></i>
                         </a>
+
+                        <a class="btn btn-info" href="CarregarFuncionarioBeneficio?id=${f.idFuncionario}">
+                            <i class="glyphicon glyphicon-gift"></i> 
+                        </a>
+
                         <button class="btn btn-danger" onclick="confirmarExclusao(${f.idFuncionario}, '${f.nome}')">
                             <i class="glyphicon glyphicon-trash"></i>
                         </button>

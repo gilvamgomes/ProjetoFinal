@@ -6,6 +6,7 @@ build/
 
 # Pasta de configuração privada do NetBeans (arquivos com caminhos locais e sensíveis)
 nbproject/private/
+nbproject/private/private.xml
 
 # Arquivos de classe compilados Java (não versionar)
 *.class
@@ -47,8 +48,3 @@ logs/
 *.jar
 *.war
 *.ear
-nbproject/private/private.properties
-nbproject/private/private.xml
-/nbproject/private
-/nbproject/private
-/nbproject/private
