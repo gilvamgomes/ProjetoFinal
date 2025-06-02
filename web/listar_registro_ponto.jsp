@@ -62,8 +62,11 @@
                             <th>Volta Almoço</th>
                             <th>Saída Final</th>
                             <th>Horas Trabalhadas</th>
-                            <th>Funcionário</th>
-                            <th>Opções</th>
+
+                            <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
+                                <th>Funcionário</th>
+                                <th>Opções</th>
+                            </c:if>
                         </tr>
                     </thead>
                     <tbody>
@@ -75,24 +78,18 @@
                                 <td><c:out value="${r.horaAlmocoVolta != null ? r.horaAlmocoVolta : '-'}" /></td>
                                 <td><c:out value="${r.horaSaida != null ? r.horaSaida : '-'}" /></td>
                                 <td><c:out value="${r.horasTrabalhadas} h" /></td>
-                                <td>
-                                    <c:choose>
-                                        <c:when test="${ulogado.perfil.nome == 'Administrador'}">
-                                            <c:out value="${r.funcionario.nome}" />
-                                        </c:when>
-                                        <c:otherwise>-</c:otherwise>
-                                    </c:choose>
-                                </td>
-                                <td>
-                                    <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
+
+                                <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
+                                    <td><c:out value="${r.funcionario.nome}" /></td>
+                                    <td>
                                         <a class="btn btn-primary" href="GerenciarRegistroPonto?acao=editar&idRegistro=${r.idRegistro_ponto}">
                                             <i class="glyphicon glyphicon-pencil"></i> Editar
                                         </a>
                                         <button class="btn btn-danger" onclick="confirmarExclusao(${r.idRegistro_ponto}, '${r.data}')">
                                             <i class="glyphicon glyphicon-trash"></i> Excluir
                                         </button>
-                                    </c:if>
-                                </td>
+                                    </td>
+                                </c:if>
                             </tr>
                         </c:forEach>
                     </tbody>
