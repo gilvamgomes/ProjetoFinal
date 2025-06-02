@@ -52,6 +52,14 @@
         <servlet-name>BaterPonto</servlet-name>
         <servlet-class>controller.BaterPonto</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RelatorioPonto</servlet-name>
+        <servlet-class>controller.RelatorioPonto</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RelatorioRegistroPonto</servlet-name>
+        <servlet-class>controller.RelatorioRegistroPonto</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GerenciarLogin</servlet-name>
         <url-pattern>/GerenciarLogin</url-pattern>
@@ -103,6 +111,14 @@
     <servlet-mapping>
         <servlet-name>BaterPonto</servlet-name>
         <url-pattern>/BaterPonto</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RelatorioPonto</servlet-name>
+        <url-pattern>/RelatorioPonto</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RelatorioRegistroPonto</servlet-name>
+        <url-pattern>/RelatorioRegistroPonto</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

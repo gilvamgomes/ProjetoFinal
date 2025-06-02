@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -43,16 +44,32 @@ public class GerenciarRegistroPonto extends HttpServlet {
 
             switch (acao) {
                 case "listar":
+                    List<RegistroPonto> registros;
                     if (perfilNome.equalsIgnoreCase("Funcionario")) {
-                        if (funcionarioLogado != null) {
-                            request.setAttribute("lista", rdao.listarPorFuncionario(funcionarioLogado.getIdFuncionario()));
-                        } else {
-                            request.setAttribute("lista", java.util.Collections.emptyList());
-                        }
+                        registros = funcionarioLogado != null ? rdao.listarPorFuncionario(funcionarioLogado.getIdFuncionario()) : java.util.Collections.emptyList();
                     } else {
-                        request.setAttribute("lista", rdao.listarTodos());
+                        registros = rdao.listarTodos();
                     }
+
+                    double totalHorasMes = 0.0;
+                    int totalDias = 0;
+
+                    for (RegistroPonto r : registros) {
+                        totalHorasMes += r.getHorasTrabalhadas();
+                        if (r.getHorasTrabalhadas() > 0) {
+                            totalDias++;
+                        }
+                    }
+
+                    double cargaHorariaEsperada = totalDias * 8.0;
+                    double saldoHoras = totalHorasMes - cargaHorariaEsperada;
+
+                    request.setAttribute("lista", registros);
                     request.setAttribute("ulogado", ulogado);
+                    request.setAttribute("totalHorasMes", totalHorasMes);
+                    request.setAttribute("cargaHorariaEsperada", cargaHorariaEsperada);
+                    request.setAttribute("saldoHoras", saldoHoras);
+                    request.setAttribute("totalDiasTrabalhados", totalDias);
                     request.getRequestDispatcher("listar_registro_ponto.jsp").forward(request, response);
                     break;
 
@@ -159,7 +176,6 @@ public class GerenciarRegistroPonto extends HttpServlet {
 
                     r.setFuncionario_idFfuncionario(Integer.parseInt(funcIdStr));
 
-                    // ✅ Cálculo automático das horas trabalhadas
                     if (r.getHoraEntrada() != null &&
                         r.getHoraAlmocoSaida() != null &&
                         r.getHoraAlmocoVolta() != null &&

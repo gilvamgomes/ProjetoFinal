@@ -1,5 +1,4 @@
 <%@page import="model.Usuario" %>
-
 <%
     Usuario ulogado = (Usuario) session.getAttribute("ulogado");
     if (ulogado == null) {
@@ -7,7 +6,6 @@
         return;
     }
 %>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -33,7 +31,7 @@
     <div class="content">
         <h2>Registro de Ponto</h2>
 
-        <c:if test="${ulogado.perfil.nome == 'Funcionario'}">
+        <c:if test="${ulogado.perfil.nome == 'Funcionario' || ulogado.perfil.nome == 'Gerente' || ulogado.perfil.nome == 'Administrador'}">
             <form action="GerenciarRegistroPonto" method="post" style="display:inline-block;">
                 <input type="hidden" name="acao" value="registrarPonto" />
                 <button type="submit" class="btn btn-primary">Bater Ponto</button>
@@ -58,7 +56,6 @@
                 <table class="table table-hover table-striped table-bordered display" id="listarRegistroPonto">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Data</th>
                             <th>Entrada</th>
                             <th>Saída Almoço</th>
@@ -69,23 +66,9 @@
                             <th>Opções</th>
                         </tr>
                     </thead>
-                    <tfoot>
-                        <tr>
-                            <th>ID</th>
-                            <th>Data</th>
-                            <th>Entrada</th>
-                            <th>Saída Almoço</th>
-                            <th>Volta Almoço</th>
-                            <th>Saída Final</th>
-                            <th>Horas Trabalhadas</th>
-                            <th>Funcionário</th>
-                            <th>Opções</th>
-                        </tr>
-                    </tfoot>
                     <tbody>
                         <c:forEach var="r" items="${lista}">
                             <tr>
-                                <td>${r.idRegistro_ponto}</td>
                                 <td>${r.data}</td>
                                 <td><c:out value="${r.horaEntrada != null ? r.horaEntrada : '-'}" /></td>
                                 <td><c:out value="${r.horaAlmocoSaida != null ? r.horaAlmocoSaida : '-'}" /></td>
@@ -94,19 +77,17 @@
                                 <td><c:out value="${r.horasTrabalhadas} h" /></td>
                                 <td><c:out value="${r.funcionario.nome}" /></td>
                                 <td>
-                                    <c:choose>
-                                        <c:when test="${ulogado.perfil.nome == 'Funcionario'}">
-                                            -
-                                        </c:when>
-                                        <c:otherwise>
-                                            <a class="btn btn-primary" href="GerenciarRegistroPonto?acao=editar&idRegistro=${r.idRegistro_ponto}">
-                                                <i class="glyphicon glyphicon-pencil"></i> Editar
-                                            </a>
-                                            <button class="btn btn-danger" onclick="confirmarExclusao(${r.idRegistro_ponto}, '${r.data}')">
-                                                <i class="glyphicon glyphicon-trash"></i> Excluir
-                                            </button>
-                                        </c:otherwise>
-                                    </c:choose>
+                                    <a class="btn btn-info" href="RelatorioRegistroPonto?idFuncionario=${r.funcionario.idFuncionario}&data=${r.data}">
+                                        <i class="glyphicon glyphicon-list-alt"></i> Detalhes
+                                    </a>
+                                    <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
+                                        <a class="btn btn-primary" href="GerenciarRegistroPonto?acao=editar&idRegistro=${r.idRegistro_ponto}">
+                                            <i class="glyphicon glyphicon-pencil"></i> Editar
+                                        </a>
+                                        <button class="btn btn-danger" onclick="confirmarExclusao(${r.idRegistro_ponto}, '${r.data}')">
+                                            <i class="glyphicon glyphicon-trash"></i> Excluir
+                                        </button>
+                                    </c:if>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -138,6 +119,5 @@
             menu.classList.toggle("show");
         }
     </script>
-
 </body>
 </html>

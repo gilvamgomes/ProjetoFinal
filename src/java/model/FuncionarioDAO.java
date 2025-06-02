@@ -122,7 +122,7 @@ public class FuncionarioDAO extends DataBaseDAO {
         }
     }
 
-    // ✅ Buscar funcionário pelo idUsuario
+    // Buscar funcionário pelo idUsuario
     public Funcionario getFuncionarioPorUsuario(int idUsuario) throws Exception {
         Funcionario f = null;
         String sql = "SELECT * FROM funcionario WHERE usuario_idUsuario = ?";
@@ -150,4 +150,32 @@ public class FuncionarioDAO extends DataBaseDAO {
 
         return f;
     }
+
+    // Verifica se o funcionário pertence ao usuário logado (segurança do relatório)
+    public boolean usuarioPertenceFuncionario(int idFuncionario, int idUsuario) {
+        boolean resultado = false;
+        String sql = "SELECT * FROM funcionario WHERE idFfuncionario = ? AND usuario_idUsuario = ?";
+
+        try {
+            this.conectar();
+            try (PreparedStatement pstm = this.conn.prepareStatement(sql)) {
+                pstm.setInt(1, idFuncionario);
+                pstm.setInt(2, idUsuario);
+                try (ResultSet rs = pstm.executeQuery()) {
+                    resultado = rs.next(); // achou? então pertence
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao verificar vínculo funcionário-usuário: " + e.getMessage());
+        } finally {
+            try {
+                this.desconectar();
+            } catch (Exception e) {
+                System.out.println("Erro ao desconectar: " + e.getMessage());
+            }
+        }
+
+        return resultado;
+    }
+
 }

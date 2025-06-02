@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 public class RegistroPontoDAO extends DataBaseDAO {
 
     public RegistroPontoDAO() throws Exception {
@@ -202,5 +201,41 @@ public class RegistroPontoDAO extends DataBaseDAO {
         } else {
             return "As 4 marcações de ponto já foram registradas hoje.";
         }
+    }
+
+    // NOVOS MÉTODOS DE RESUMO MENSAL:
+
+    public double getTotalHorasTrabalhadasMes(int idFuncionario, int mes, int ano) throws Exception {
+        this.conectar();
+        String sql = "SELECT SUM(horasTrabalhadas) AS total FROM registro_ponto " +
+                     "WHERE funcionario_idFfuncionario = ? AND MONTH(data) = ? AND YEAR(data) = ?";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, idFuncionario);
+        stmt.setInt(2, mes);
+        stmt.setInt(3, ano);
+        ResultSet rs = stmt.executeQuery();
+        double total = 0.0;
+        if (rs.next()) {
+            total = rs.getDouble("total");
+        }
+        this.desconectar();
+        return total;
+    }
+
+    public int getDiasComRegistro(int idFuncionario, int mes, int ano) throws Exception {
+        this.conectar();
+        String sql = "SELECT COUNT(DISTINCT data) AS dias FROM registro_ponto " +
+                     "WHERE funcionario_idFfuncionario = ? AND MONTH(data) = ? AND YEAR(data) = ?";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, idFuncionario);
+        stmt.setInt(2, mes);
+        stmt.setInt(3, ano);
+        ResultSet rs = stmt.executeQuery();
+        int dias = 0;
+        if (rs.next()) {
+            dias = rs.getInt("dias");
+        }
+        this.desconectar();
+        return dias;
     }
 }
