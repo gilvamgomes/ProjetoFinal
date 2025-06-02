@@ -18,7 +18,6 @@
     <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="datatables/jquery.dataTables.min.css">
     <title>Formulário de Imposto</title>
 </head>
 <body>
@@ -33,33 +32,30 @@
         <h2>Cadastrar Imposto</h2>
         <form action="GerenciarImposto" method="POST">
             <legend>Formulário de Imposto</legend>
-            
+
             <input type="hidden" id="idImposto" name="idImposto" value="${imposto.idImposto}"/>
-            
-            <label for="nome" class="control-label">Nome do Imposto</label>
-            <input type="text" class="form-control" id="nome" name="nome" required value="${imposto.nome}">
-            
-            <label for="percentual" class="control-label">Percentual (%)</label>
-            <input type="number" step="0.01" class="form-control" id="percentual" name="percentual" required value="${imposto.percentual}">
-            
-            <label for="status" class="control-label">Status</label>
-            <select name="status" class="form-control">
-                <c:choose>
-                    <c:when test="${imposto.status == 1}">
-                        <option value="1" selected>Ativo</option>
-                        <option value="2">Inativo</option>
-                    </c:when>
-                    <c:when test="${imposto.status == 2}">
-                        <option value="1">Ativo</option>
-                        <option value="2" selected>Inativo</option>
-                    </c:when>
-                    <c:otherwise>
-                        <option value="0" selected>Escolha uma opção</option>
-                        <option value="1">Ativo</option>
-                        <option value="2">Inativo</option>
-                    </c:otherwise>
-                </c:choose>
+
+            <label for="descricao" class="control-label">Descrição</label>
+            <input type="text" class="form-control" id="descricao" name="descricao" required value="${imposto.descricao}">
+
+            <label for="tipo" class="control-label">Tipo</label>
+            <select class="form-control" id="tipo" name="tipo" required>
+                <option value="">Selecione o tipo</option>
+                <option value="INSS" ${imposto.tipo == 'INSS' ? 'selected' : ''}>INSS</option>
+                <option value="IRRF" ${imposto.tipo == 'IRRF' ? 'selected' : ''}>IRRF</option>
             </select>
+
+            <label for="faixaInicio" class="control-label">Faixa Início (R$)</label>
+            <input type="number" step="0.01" class="form-control" id="faixaInicio" name="faixaInicio" required value="${imposto.faixaInicio}">
+
+            <label for="faixaFim" class="control-label">Faixa Fim (R$)</label>
+            <input type="number" step="0.01" class="form-control" id="faixaFim" name="faixaFim" value="${imposto.faixaFim}">
+
+            <label for="aliquota" class="control-label">Alíquota (%)</label>
+            <input type="number" step="0.01" class="form-control" id="aliquota" name="aliquota" required value="${imposto.aliquota}">
+
+            <label for="parcelaDeduzir" class="control-label">Parcela a Deduzir (R$)</label>
+            <input type="number" step="0.01" class="form-control" id="parcelaDeduzir" name="parcelaDeduzir" required value="${imposto.parcelaDeduzir}">
 
             <br>
             <button class="btn btn-success">Gravar</button>
