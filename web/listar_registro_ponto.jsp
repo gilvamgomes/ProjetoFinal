@@ -75,11 +75,15 @@
                                 <td><c:out value="${r.horaAlmocoVolta != null ? r.horaAlmocoVolta : '-'}" /></td>
                                 <td><c:out value="${r.horaSaida != null ? r.horaSaida : '-'}" /></td>
                                 <td><c:out value="${r.horasTrabalhadas} h" /></td>
-                                <td><c:out value="${r.funcionario.nome}" /></td>
                                 <td>
-                                    <a class="btn btn-info" href="RelatorioRegistroPonto?idFuncionario=${r.funcionario.idFuncionario}&data=${r.data}">
-                                        <i class="glyphicon glyphicon-list-alt"></i> Detalhes
-                                    </a>
+                                    <c:choose>
+                                        <c:when test="${ulogado.perfil.nome == 'Administrador'}">
+                                            <c:out value="${r.funcionario.nome}" />
+                                        </c:when>
+                                        <c:otherwise>-</c:otherwise>
+                                    </c:choose>
+                                </td>
+                                <td>
                                     <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
                                         <a class="btn btn-primary" href="GerenciarRegistroPonto?acao=editar&idRegistro=${r.idRegistro_ponto}">
                                             <i class="glyphicon glyphicon-pencil"></i> Editar
