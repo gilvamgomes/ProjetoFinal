@@ -2,7 +2,7 @@
 <%
     Usuario ulogado = (Usuario) session.getAttribute("ulogado");
     if (ulogado == null) {
-        response.sendRedirect("login.jsp");
+        response.sendRedirect("form_login.jsp");
         return;
     }
 %>
