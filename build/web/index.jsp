@@ -21,9 +21,8 @@
 </head>
 <body>
 
-    <div class="banner">
-        <%@include file="banner.jsp" %>
-    </div>
+    
+    <%@include file="banner.jsp" %>
 
     <%@include file="menu.jsp" %>
 
@@ -34,7 +33,7 @@
 
         <p>Escolha uma das opções no menu acima para continuar.</p>
 
-        <a href="GerenciarLogin" class="btn btn-danger">Logout</a>
+       
     </div>
 
     <script>

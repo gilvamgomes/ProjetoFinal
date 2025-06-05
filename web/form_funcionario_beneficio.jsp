@@ -22,10 +22,7 @@ form_funcionario_beneficio.jsp
 </head>
 <body>
 
-<div class="banner">
-    <%@include file="banner.jsp" %>
-</div>
-
+   <%@include file="banner.jsp" %>
 <%@include file="menu.jsp" %>
 
 <div class="container">

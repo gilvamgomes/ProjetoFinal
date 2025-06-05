@@ -129,3 +129,253 @@ buttom form{
 buttom:hover{
     background-color: #45a049;
 }
+
+
+/* === BACKGROUND COM FOTO === */
+.login-body {
+  margin: 0;
+  padding: 0;
+  background-image: url('../imagens/foto_login.jpg'); /* nome do arquivo da imagem */
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* === OVERLAY CENTRAL === */
+.login-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100vh;
+  padding-right: 5%;
+}
+
+/* === CARTÃO DE LOGIN === */
+.login-card {
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 40px 30px;
+  width: 320px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* === LOGO === */
+.logo-login {
+  width: 100px;
+  margin-bottom: 10px;
+}
+
+/* === TÍTULO === */
+.login-card h4 {
+  color: #916647;
+  margin-bottom: 30px;
+}
+
+.marca {
+  color: #978c8c;
+}
+
+/* === INPUTS === */
+.login-input {
+  border-radius: 8px;
+  border: 1px solid #cdc5bf;
+  margin-bottom: 15px;
+  padding: 10px;
+  font-size: 14px;
+}
+
+/* === BOTÃO LOGIN === */
+.botao-login {
+  background-color: transparent;
+  border: 2px solid #916647;
+  color: #916647;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 20px;
+  width: 100%;
+  transition: 0.3s;
+}
+
+.botao-login:hover {
+  background-color: #916647;
+  color: white;
+}
+
+/* === LOGO DENTRO DO CARD VIA CSS === */
+.login-card::before {
+  content: "";
+  
+  display: block;
+  width: 200px;
+  height: 100px;
+  margin: 0 auto 20px auto;
+  background-image: url('../imagens/logo_otica_transparente.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 12px;
+  
+}
+
+
+
+/* === BANNER TOPO - ÓTICA MILANO === */
+.banner-topo {
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  flex-wrap: wrap;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.banner-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-banner {
+  width: 40px;
+  height: auto;
+}
+
+.marca-banner {
+  font-size: 20px;
+  font-weight: bold;
+  color: #916647;
+  text-transform: uppercase;
+}
+
+.banner-usuario {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #978c8c;
+  font-weight: bold;
+}
+
+.foto-perfil {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* === MENU COM HAMBÚRGUER RESPONSIVO === */
+.barra-menu {
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  font-family: 'Segoe UI', sans-serif;
+  flex-wrap: wrap;
+}
+
+.menu-topo {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.menu-toggle {
+  font-size: 28px;
+  cursor: pointer;
+  color: #916647;
+  display: none;
+}
+
+/* Menus padrão (desktop) */
+.menu-links {
+  list-style: none;
+  display: flex;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+}
+
+.menu-links li a {
+  color: #916647;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+
+.menu-links li a:hover {
+  background-color: #cdc5bf;
+  color: white;
+}
+
+/* Botão sair */
+.menu-lado-direito {
+  display: flex;
+  align-items: center;
+}
+
+.botao-sair {
+  color: #916647;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  background-color: transparent;
+  border: 2px solid #916647;
+  transition: 0.3s;
+}
+
+.botao-sair:hover {
+  background-color: #916647;
+  color: white;
+}
+
+/* === MOBILE RESPONSIVO === */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .menu-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 10px;
+    gap: 10px;
+  }
+
+  .menu-links.mostrar {
+    display: flex;
+  }
+
+  .menu-lado-direito {
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+
+  .botao-sair {
+    width: auto;
+  }
+
+  .banner-topo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .banner-usuario {
+    align-self: flex-end;
+  }
+}
