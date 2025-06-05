@@ -29,56 +29,51 @@
     <%@include file="menu.jsp" %>
 
     <div class="content">
-        <h2>Cadastrar Usuário</h2>
-        <form action="GerenciarUsuario" method="POST">
-            <legend>Formulário de Usuário</legend>
-            <input type="hidden" id="idUsuario" name="idUsuario" value="${u.idUsuario}"/>
+       <h2 class="titulo-usuario">Cadastrar Usuário</h2>
+<form action="GerenciarUsuario" method="POST" class="painel-usuario">
+    <legend>Formulário de Usuário</legend>
+    <input type="hidden" id="idUsuario" name="idUsuario" value="${u.idUsuario}"/>
 
-            <label for="nome" class="control-label">Nome do Usuário</label>
-            <input type="text" class="form-control" id="nome" name="nome" value="${u.nome}">
+    <label for="nome" class="control-label">Nome do Usuário</label>
+    <input type="text" class="form-control" id="nome" name="nome" value="${u.nome}">
 
-            <label for="login" class="control-label">Login do Usuário</label>
-            <input type="text" class="form-control" id="login" name="login" value="${u.login}">
+    <label for="login" class="control-label">Login do Usuário</label>
+    <input type="text" class="form-control" id="login" name="login" value="${u.login}">
 
-            <label for="senha" class="control-label">Senha do Usuário</label>
-            <input type="password" class="form-control" id="senha" name="senha" value="${u.senha}">
+    <label for="senha" class="control-label">Senha do Usuário</label>
+    <input type="password" class="form-control" id="senha" name="senha" value="${u.senha}">
 
-            
+    <label for="idPerfil" class="control-label">Perfil</label>
+    <select name="idPerfil" id="idPerfil" required class="form-control">
+        <option value="">Selecione o Perfil</option>
+        <jsp:useBean class="model.PerfilDAO" id="perfil"/>
+        <c:forEach var="p" items="${perfil.lista}">
+            <option value="${p.idPerfil}" <c:if test="${p.idPerfil == u.perfil.idPerfil}">selected</c:if>>${p.nome}</option>    
+        </c:forEach>
+    </select>    
 
-            <label for="idPerfil" class="control-label">Perfil</label>
-            <select name="idPerfil" id="idPerfil" required class="form-control">
-                <option value="">Selecione o Perfil</option>
-                <jsp:useBean class="model.PerfilDAO" id="perfil"/>
-                <c:forEach var="p" items="${perfil.lista}">
-                    <option value="${p.idPerfil}"
-                        <c:if test="${p.idPerfil == u.perfil.idPerfil}">
-                            selected
-                        </c:if>
-                    >${p.nome}</option>    
-                </c:forEach>
-            </select>    
+    <label for="status" class="control-label">Status</label>
+    <select name="status" class="form-control">
+        <c:if test="${u.status == null}">
+            <option value="0">Escolha uma opção</option>
+            <option value="1">Ativo</option>
+            <option value="2">Inativo</option>
+        </c:if>
+        <c:if test="${u.status == 1}">
+            <option value="1" selected>Ativo</option>
+            <option value="2">Inativo</option>
+        </c:if>  
+        <c:if test="${u.status == 2}">
+            <option value="1">Ativo</option>
+            <option value="2" selected>Inativo</option>
+        </c:if>   
+    </select> 
 
-            <label for="status" class="control-label">Status</label>
-            <select name="status" class="form-control">
-                <c:if test="${u.status == null}">
-                    <option value="0">Escolha uma opção</option>
-                    <option value="1">Ativo</option>
-                    <option value="2">Inativo</option>
-                </c:if>
-                <c:if test="${u.status == 1}">
-                    <option value="1" selected>Ativo</option>
-                    <option value="2">Inativo</option>
-                </c:if>  
-                <c:if test="${u.status == 2}">
-                    <option value="1">Ativo</option>
-                    <option value="2" selected>Inativo</option>
-                </c:if>   
-            </select> 
-
-            <br>
-            <button class="btn btn-success">Gravar</button>
-            <a href="listar_usuario.jsp" class="btn btn-warning">Voltar</a>
-        </form>    
+    <br>
+    <button class="btn btn-usuario">Gravar</button>
+    <a href="listar_usuario.jsp" class="btn btn-usuario">Voltar</a>
+</form>
+  
     </div>
 
     <script>

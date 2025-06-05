@@ -1,6 +1,5 @@
 <%@page import="model.Usuario" %>
 <%@page import="controller.GerenciarLogin" %>
-
 <%
     Usuario ulogado = GerenciarLogin.verificarAcesso(request, response);
     request.setAttribute("ulogado", ulogado);
@@ -8,6 +7,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -30,10 +30,10 @@
     <%@include file="menu.jsp" %>
 
     <div class="content">
-        <h2>Lista de Impostos</h2>
-        <a href="form_imposto.jsp" class="btn btn-primary">Novo Cadastro</a>
+        <h2 class="titulo-usuario">Lista de Impostos</h2>
+        <a href="form_imposto.jsp" class="btn btn-usuario">Novo Cadastro</a>
 
-        <table class="table table-hover table-striped table-bordered display" id="listarImposto">
+        <table class="table table-hover table-striped table-bordered display painel-usuario" id="listarImposto">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -68,10 +68,10 @@
                             </c:choose>
                         </td>
                         <td>
-                            <a class="btn btn-primary" href="GerenciarImposto?acao=editar&idImposto=${i.idImposto}">
+                            <a class="btn btn-usuario" href="GerenciarImposto?acao=editar&idImposto=${i.idImposto}">
                                 <i class="glyphicon glyphicon-pencil"></i>
                             </a>
-                            <button class="btn btn-danger" onclick="confirmarExclusao(${i.idImposto}, '${i.nome}')">
+                            <button class="btn btn-usuario" onclick="confirmarExclusao(${i.idImposto}, '${i.nome}')">
                                 <i class="glyphicon glyphicon-trash"></i>
                             </button>
                         </td>

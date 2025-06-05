@@ -31,10 +31,10 @@
     <%@include file="menu.jsp" %>
 
     <div class="content">
-        <h2>Lista de Contra-Cheques</h2>
-        <a href="form_contra_cheque.jsp" class="btn btn-primary">Novo Cadastro</a>
+        <h2 class="titulo-usuario">Lista de Contra-Cheques</h2>
+        <a href="form_contra_cheque.jsp" class="btn btn-usuario">Novo Cadastro</a>
 
-        <table class="table table-hover table-striped table-bordered display" id="listarContraCheque">
+        <table class="table table-hover table-striped table-bordered display painel-usuario" id="listarContraCheque">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -61,15 +61,15 @@
                 <c:forEach var="c" items="${cDAO.lista}">
                     <tr>
                         <td>${c.idContraCheque}</td>
-                        <td>${c.valorBruto}</td>
-                        <td>${c.descontos}</td>
-                        <td>${c.valorLiquido}</td>
+                        <td><fmt:formatNumber value="${c.valorBruto}" type="currency"/></td>
+                        <td><fmt:formatNumber value="${c.descontos}" type="currency"/></td>
+                        <td><fmt:formatNumber value="${c.valorLiquido}" type="currency"/></td>
                         <td>${c.funcionarioId}</td>
                         <td>
-                            <a class="btn btn-primary" href="GerenciarContraCheque?acao=alterar&idContraCheque=${c.idContraCheque}">
+                            <a class="btn btn-usuario" href="GerenciarContraCheque?acao=alterar&idContraCheque=${c.idContraCheque}">
                                 <i class="glyphicon glyphicon-pencil"></i>
                             </a>
-                            <button class="btn btn-danger" onclick="confirmarExclusao(${c.idContraCheque})">
+                            <button class="btn btn-usuario" onclick="confirmarExclusao(${c.idContraCheque})">
                                 <i class="glyphicon glyphicon-trash"></i>
                             </button>
                         </td>
@@ -95,9 +95,7 @@
                 location.href = 'GerenciarContraCheque?acao=excluir&idContraCheque=' + idContraCheque;
             }
         }
-    </script>
 
-    <script>
         function toggleMenu(){
             var menu = document.getElementById("nav-links");
             menu.classList.toggle("show");

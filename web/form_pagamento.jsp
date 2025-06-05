@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="datatables/jquery.dataTables.min.css">
-    <title>Pagamento</title>
+    <h2 class="titulo-pagamento">Cadastrar Pagamento</h2>
 </head>
 <body>
 
@@ -31,7 +31,7 @@
 
     <div class="content">
         <h2>Cadastrar Pagamento</h2>
-        <form action="GerenciarPagamento" method="POST">
+        <form action="GerenciarPagamento" method="POST" class="painel-pagamento">
             <legend>Formulário de Pagamento</legend>
             
             <input type="hidden" id="idPagamento" name="idPagamento" value="${pagamento.idPagamento}"/>
@@ -50,8 +50,8 @@
             <input type="number" class="form-control" id="funcionario_idFfuncionario" name="funcionario_idFfuncionario" required value="${pagamento.funcionario_idFfuncionario}">
             
             <br>
-            <button class="btn btn-success">Gravar</button>
-            <a href="listar_pagamento.jsp" class="btn btn-warning">Voltar</a>
+           <button class="btn btn-pagamento">Gravar</button>
+<a href="listar_pagamento.jsp" class="btn btn-pagamento">Voltar</a>
         </form>
     </div>
 

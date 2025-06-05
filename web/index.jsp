@@ -4,11 +4,7 @@
     Usuario ulogado = GerenciarLogin.verificarAcesso(request, response);
     request.setAttribute("ulogado", ulogado);
 %>
-
-
 <!DOCTYPE html>
-
-
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -21,20 +17,18 @@
 </head>
 <body>
 
-    <div class="banner">
-        <%@include file="banner.jsp" %>
-    </div>
+
 
     <%@include file="menu.jsp" %>
 
-    <div class="content">
-        <h1>Bem-vindo ao Sistema da Ótica!</h1>
+    <div class="content painel-usuario text-center">
+        <h1 class="titulo-usuario">Bem-vindo(a) ao Sistema da Ótica!</h1>
         
-        <p>Olá, <strong><c:out value="${ulogado.nome}"/></strong>! Seja bem-vindo(a).</p>
+        <p>Olá, <strong><c:out value="${ulogado.nome}"/></strong>! Que bom ter você por aqui.</p>
 
-        <p>Escolha uma das opções no menu acima para continuar.</p>
+        <p>Use o menu acima para navegar pelo sistema.</p>
 
-        <a href="GerenciarLogin" class="btn btn-danger">Logout</a>
+        <a href="GerenciarLogin?acao=logout" class="btn btn-danger btn-lg">Sair</a>
     </div>
 
     <script>

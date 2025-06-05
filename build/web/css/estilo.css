@@ -1,41 +1,38 @@
-/*
-To change this license header, choose License Headers in Project Properties.
+verifica aí o css /*
+To change this license header, choose License in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
-*/
+*/ 
 /* 
     Created on : 17/02/2025, 20:37:59
     Author     : adm_pfelacio
 */
 
-body{
+body {
     font-family: Arial, sans-serif;
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
 }
 
-.banner{
+.banner {
     width: 100%;
     height: 180px;
     overflow: hidden;
 }
 
-.banner img{
+.banner img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     background-color: #000;
-
 }
 
-/*menu de navegacao*/
-nav{
+/* menu de navegacao */
+nav {
     background-color: #333;
 }
 
-
-
-nav ul{
+nav ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
@@ -43,54 +40,57 @@ nav ul{
     justify-content: space-around;
 }
 
-nav ul li{
-    position:relative;
+nav ul li {
+    position: relative;
 }
 
-nav ul li a{
+nav ul li a {
     display: block;
     padding: 14px 20px;
-    color:white;
+    color: white;
     text-decoration: none;
     text-align: center;
 }
 
-nav ul li a:hover{
+nav ul li a:hover {
     background-color: #575757;
 }
 
-.menu-icon{
-    display:none;
+.menu-icon {
+    display: none;
     cursor: pointer;
-    font-size:30px;
-    color:white;
+    font-size: 30px;
+    color: white;
     padding: 14px;
 }
 
-@media(max-width:768px){
-    .menu-icon{
-        display:block;
+@media(max-width:768px) {
+    .menu-icon {
+        display: block;
     }
 
+    nav ul {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+    }
 
-nav ul{
-    display: none;
-    flex-direction: column;
-    width: 100%;
+    nav ul li a {
+        padding: 10px;
+        text-align: left;
+    }
+
+    nav ul.show {
+        display: flex;
+    }
 }
-nav ul li a{
-    padding: 10px;
-    text-align: left;
-}
-nav ul.show{
-    display: flex;
- }
-}
-.content{
+
+.content {
     padding: 20px;
 }
-/*Formularios*/
-form{
+
+/* Formularios */
+form {
     max-width: 500px;
     margin: 0 auto;
     padding: 20px;
@@ -98,34 +98,199 @@ form{
     border-radius: 8px;
 }
 
-label{
+label {
     display: block;
-    margin-top:20px;
+    margin-top: 20px;
     font-weight: bold;
 }
+
 input[type="text"],
 input[type="email"],
-textarea{
+textarea {
     width: 100%;
-    padding:8px;
-    margin-top:5px;
+    padding: 8px;
+    margin-top: 5px;
     box-sizing: border-box;
-    border:2px solid #ccc;
+    border: 2px solid #ccc;
     border-radius: 4px;
     height: 100%;
 }
-buttom form{
-    display:block;
+
+buttom form {
+    display: block;
     width: 100%;
-    padding:10px;
+    padding: 10px;
     margin-top: 20px;
     background-color: #4CAF50;
     color: white;
     border: none;
-    border-radius:4px;
+    border-radius: 4px;
     cursor: pointer;
 }
 
-buttom:hover{
+buttom:hover {
     background-color: #45a049;
 }
+
+/* =============================
+   Estilização - CRUD Pagamento
+   ============================= */
+.painel-pagamento {
+    background-color: #ffffff;
+    border: 1px solid #d8ba89;
+    border-radius: 6px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin-top: 20px;
+}
+
+.titulo-pagamento {
+    font-family: 'Poppins', sans-serif;
+    color: #8C6E5A;
+    border-bottom: 2px solid #d8ba89;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.btn-pagamento {
+    background-color: #d8ba89;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+}
+
+.btn-pagamento:hover {
+    background-color: #c2a673;
+}/* ============================================
+   Melhorias Visuais - CRUD Pagamento Refinado
+   ============================================ */
+
+/* Cor branca nos Ã­cones de aÃ§Ã£o */
+.btn-pagamento i {
+    color: #fff;
+}
+
+/* Efeito de hover mais destacado */
+.btn-pagamento:hover {
+    background-color: #c2a673;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Bordas mais suaves na tabela */
+.painel-pagamento table,
+.painel-pagamento td,
+.painel-pagamento th {
+    border-color: #ddd !important;
+}
+
+/* EspaÃ§amento entre botÃµes */
+td:last-child a,
+td:last-child button {
+    margin: 0 4px;
+}
+
+/* Estilo para o campo de pesquisa do DataTable */
+.dataTables_filter input {
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    padding: 4px 8px;
+}#Bloco de CSS com melhorias refinadas para tabela do CRUD Pagamento
+
+css_tabela_melhorias = 
+/* ============================================
+   Melhorias Visuais - Tabela CRUD Pagamento
+   ============================================ */
+
+/* Cabeçalho fixo com cor suave */
+.painel-pagamento thead th {
+    background-color: #f7f3ec;
+    color: #5c4432;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+/* Linhas alternadas (zebrado leve) */
+.painel-pagamento tbody tr:nth-child(odd) {
+    background-color: #fefaf5;
+}
+
+/* Hover com leve destaque */
+.painel-pagamento tbody tr:hover {
+    background-color: #f5e8d9;
+}
+
+/* Alinhar botões ao centro */
+.painel-pagamento td:last-child {
+    text-align: center;
+}
+
+/* Padding das células */
+.painel-pagamento td,
+.painel-pagamento th {
+    padding: 10px 12px !important;
+}
+
+/* Botões compactos */
+.btn-pagamento.btn-sm {
+    padding: 4px 8px;
+    font-size: 14px;
+}
+
+
+# Salvar o CSS em um arquivo para download
+file_path = "/mnt/data/melhorias_tabela_crud_pagamento.css"
+with open(file_path, "w", encoding="utf-8") as f:
+    f.write(css_tabela_melhorias)
+
+file_path
+/* =============================
+   Estilização - CRUD Usuário
+   ============================= */
+.painel-usuario {
+    background-color: red;
+    border: 1px solid #d8ba89;
+    border-radius: 6px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-top: 20px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+
+.titulo-usuario {
+    font-family: 'Poppins', sans-serif;
+    color: #8C6E5A;
+    border-bottom: 2px solid #d8ba89;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.btn-usuario {
+    background-color: #d8ba89;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-usuario:hover {
+    background-color: #b59662;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
+}
+
+.btn-usuario i {
+    color: #fff;
+    transition: color 0.2s;
+}
+
+.btn-usuario:hover i {
+    color: #ffffff;
+}
+
+

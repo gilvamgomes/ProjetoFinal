@@ -28,36 +28,38 @@
     <%@include file="menu.jsp" %>
 
     <div class="content">
-        <h2>Cadastrar Perfil</h2>
-        <form action="GerenciarPerfil" method="POST">
-            <legend>Formulário de Perfil</legend>
-            
-            <input type="hidden" id="idPerfil" name="idPerfil" value="${p.idPerfil}"/>
-            
-            <label for="nome" class="control-label">Nome do Perfil</label>
-            <input type="text" class="form-control" id="nome" name="nome" required value="${p.nome}">
-            
-            <label for="status" class="control-label">Status</label>
-            <select name="status" class="form-control">
-                <c:if test="${p.status == null}">
-                    <option value="0">Escolha uma opção</option>
-                    <option value="1">Ativo</option>
-                    <option value="2">Inativo</option>
-                </c:if>
-                <c:if test="${p.status == 1}">
-                    <option value="1" selected>Ativo</option>
-                    <option value="2">Inativo</option>
-                </c:if>
-                <c:if test="${p.status == 2}">
-                    <option value="1">Ativo</option>
-                    <option value="2" selected>Inativo</option>
-                </c:if>
-            </select>
-            
-            <br>
-            <button class="btn btn-success">Gravar</button>
-            <a href="listar_perfil.jsp" class="btn btn-warning">Voltar</a>
-        </form>
+          <h2 class="titulo-usuario">Cadastrar Perfil</h2>
+
+<form action="GerenciarPerfil" method="POST" class="painel-usuario">
+    <legend>Formulário de Perfil</legend>
+
+    <input type="hidden" id="idPerfil" name="idPerfil" value="${p.idPerfil}"/>
+
+    <label for="nome" class="control-label">Nome do Perfil</label>
+    <input type="text" class="form-control" id="nome" name="nome" required value="${p.nome}">
+
+    <label for="status" class="control-label">Status</label>
+    <select name="status" class="form-control">
+        <c:if test="${p.status == null}">
+            <option value="0">Escolha uma opção</option>
+            <option value="1">Ativo</option>
+            <option value="2">Inativo</option>
+        </c:if>
+        <c:if test="${p.status == 1}">
+            <option value="1" selected>Ativo</option>
+            <option value="2">Inativo</option>
+        </c:if>
+        <c:if test="${p.status == 2}">
+            <option value="1">Ativo</option>
+            <option value="2" selected>Inativo</option>
+        </c:if>
+    </select>
+
+    <br>
+    <button class="btn btn-usuario">Gravar</button>
+    <a href="listar_perfil.jsp" class="btn btn-usuario">Voltar</a>
+</form>
+
     </div>
 
     <script>

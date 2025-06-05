@@ -29,8 +29,8 @@
     <%@include file="menu.jsp" %>
 
     <div class="content">
-        <h2>Cadastrar Benefício</h2>
-        <form action="GerenciarBeneficio" method="POST">
+        <h2 class="titulo-usuario">Cadastrar Benefício</h2>
+        <form action="GerenciarBeneficio" method="POST" class="painel-usuario">
             <legend>Formulário de Benefício</legend>
             
             <input type="hidden" id="idBeneficio" name="idBeneficio" value="${b.idBeneficio}"/>
@@ -59,8 +59,8 @@
             </select>
 
             <br>
-            <button class="btn btn-success">Gravar</button>
-            <a href="listar_beneficio.jsp" class="btn btn-warning">Voltar</a>
+            <button class="btn btn-usuario">Gravar</button>
+            <a href="listar_beneficio.jsp" class="btn btn-usuario">Voltar</a>
         </form>
     </div>
 

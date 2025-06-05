@@ -30,40 +30,42 @@
 <%@include file="menu.jsp" %>
 
 <div class="content">
-    <h2>Cadastrar Férias</h2>
-    <form action="GerenciarFerias" method="POST">
-        <legend>Formulário de Férias</legend>
+    <h2 class="titulo-usuario">Cadastrar Férias</h2>
 
-        <input type="hidden" id="idFerias" name="idFerias" value="${ferias.idFerias}"/>
+<form action="GerenciarFerias" method="POST" class="painel-usuario">
+    <legend>Formulário de Férias</legend>
 
-        <label for="dataInicio" class="control-label">Data Início</label>
-        <input type="date" class="form-control" id="dataInicio" name="dataInicio" required
-               value="<fmt:formatDate value='${ferias.dataInicio}' pattern='yyyy-MM-dd'/>"/>
+    <input type="hidden" id="idFerias" name="idFerias" value="${ferias.idFerias}"/>
 
-        <label for="dataFim" class="control-label">Data Fim</label>
-        <input type="date" class="form-control" id="dataFim" name="dataFim" required
-               value="<fmt:formatDate value='${ferias.dataFim}' pattern='yyyy-MM-dd'/>"/>
+    <label for="dataInicio" class="control-label">Data Início</label>
+    <input type="date" class="form-control" id="dataInicio" name="dataInicio" required
+           value="<fmt:formatDate value='${ferias.dataInicio}' pattern='yyyy-MM-dd'/>"/>
 
-        <c:choose>
-            <c:when test="${ulogado.perfil.nome != 'Funcionario'}">
-                <label for="status" class="control-label">Status</label>
-                <select id="status" name="status" class="form-control" required>
-                    <option value="Em analise" <c:if test="${ferias.status == 'Em analise'}">selected</c:if>>Em análise</option>
-                    <option value="Aprovado" <c:if test="${ferias.status == 'Aprovado'}">selected</c:if>>Aprovado</option>
-                    <option value="Recusado" <c:if test="${ferias.status == 'Recusado'}">selected</c:if>>Recusado</option>
-                </select>
-            </c:when>
-            <c:otherwise>
-                <input type="hidden" id="status" name="status" value="${empty ferias.status ? 'Em analise' : ferias.status}"/>
-            </c:otherwise>
-        </c:choose>
+    <label for="dataFim" class="control-label">Data Fim</label>
+    <input type="date" class="form-control" id="dataFim" name="dataFim" required
+           value="<fmt:formatDate value='${ferias.dataFim}' pattern='yyyy-MM-dd'/>"/>
 
-        <input type="hidden" name="funcionario_idFfuncionario" value="${ulogado.funcionario.idFuncionario}">
+    <c:choose>
+        <c:when test="${ulogado.perfil.nome != 'Funcionario'}">
+            <label for="status" class="control-label">Status</label>
+            <select id="status" name="status" class="form-control" required>
+                <option value="Em analise" <c:if test="${ferias.status == 'Em analise'}">selected</c:if>>Em análise</option>
+                <option value="Aprovado" <c:if test="${ferias.status == 'Aprovado'}">selected</c:if>>Aprovado</option>
+                <option value="Recusado" <c:if test="${ferias.status == 'Recusado'}">selected</c:if>>Recusado</option>
+            </select>
+        </c:when>
+        <c:otherwise>
+            <input type="hidden" id="status" name="status" value="${empty ferias.status ? 'Em analise' : ferias.status}"/>
+        </c:otherwise>
+    </c:choose>
 
-        <br>
-        <button class="btn btn-success">Gravar</button>
-        <a href="listar_ferias.jsp" class="btn btn-warning">Voltar</a>
-    </form>
+    <input type="hidden" name="funcionario_idFfuncionario" value="${ulogado.funcionario.idFuncionario}">
+
+    <br>
+    <button class="btn btn-usuario">Gravar</button>
+    <a href="listar_ferias.jsp" class="btn btn-usuario">Voltar</a>
+</form>
+
 </div>
 
 </body>

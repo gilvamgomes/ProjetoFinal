@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="datatables/jquery.dataTables.min.css">
     <title>Gerenciar Acessos</title>
 </head>
-<body>
+
 
     <div class="banner">
         <%@include file="banner.jsp" %>
@@ -22,29 +22,32 @@
 
     <%@include file="menu.jsp" %>
 
-    <div class="content">
-        <h2>Gerenciar Acessos</h2>
+    
+        <h2 class="titulo-usuario">Gerenciar Acessos</h2>
 
-        <form action="GerenciarMenuPerfil" method="POST">
-            <legend>Menus Não Vinculados ao Perfil</legend>
-            <label>Perfil: ${perfilv.nome}</label>
-            <input type="hidden" id="idPerfil" name="idPerfil" value="${perfilv.idPerfil}">
-            <br>
-            <label for="idMenu">Menu</label>
-            <select name="idMenu" id="idMenu" required>
-                <option value="">Selecione o Menu</option>
-                <c:forEach var="m" items="${perfilv.naoMenus}">
-                    <option value="${m.idMenu}">${m.nome}</option>
-                </c:forEach>
-            </select>
-            <br><br>
-            <button class="btn btn-success">Vincular</button>
-            <a href="listar_perfil.jsp" class="btn btn-warning">Voltar</a>
-        </form>
+<form action="GerenciarMenuPerfil" method="POST" class="painel-usuario">
+    <legend>Menus Não Vinculados ao Perfil</legend>
+    <label>Perfil: ${perfilv.nome}</label>
+    <input type="hidden" id="idPerfil" name="idPerfil" value="${perfilv.idPerfil}">
 
-        <h4>Menus Vinculados ao Perfil: ${perfilv.nome}</h4>
+    <label for="idMenu" class="control-label">Menu</label>
+    <select name="idMenu" id="idMenu" required class="form-control">
+        <option value="">Selecione o Menu</option>
+        <c:forEach var="m" items="${perfilv.naoMenus}">
+            <option value="${m.idMenu}">${m.nome}</option>
+        </c:forEach>
+    </select>
 
-        <table class="table table-hover table-striped table-bordered display" id="listarMenu">
+    <br>
+    <button class="btn btn-usuario">Vincular</button>
+    <a href="listar_perfil.jsp" class="btn btn-usuario">Voltar</a>
+</form>
+
+
+        <h4 class="titulo-usuario">Menus Vinculados ao Perfil: ${perfilv.nome}</h4>
+
+
+
             <thead>
                 <tr>
                     <th>ID</th>
@@ -75,8 +78,8 @@
                     </tr>
                 </c:forEach>
             </tbody>
-        </table>
-    </div>
+        
+    
 
     <script type="text/javascript" src="datatables/jquery.js"></script>
     <script type="text/javascript" src="datatables/jquery.dataTables.min.js"></script>
@@ -103,5 +106,5 @@
         }
     </script>
 
-</body>
+
 </html>

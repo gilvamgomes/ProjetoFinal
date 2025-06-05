@@ -31,56 +31,56 @@
     <%@include file="menu.jsp" %>
 
     <div class="content">
-        <h2>Lista de Menus</h2>
-        <a href="form_menu.jsp" class="btn btn-primary">Novo Cadastro</a>
+    <h2 class="titulo-usuario">Lista de Menus</h2>
+    <a href="form_menu.jsp" class="btn btn-usuario">Novo Cadastro</a>
 
-        <table class="table table-hover table-striped table-bordered display" id="listarMenu">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Link</th>
-                    <th>Ícone</th>
-                    <th>Exibir</th>
-                    <th>Opções</th>
-                </tr>
-            </thead>
-            <tfoot>
-                <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Link</th>
-                    <th>Ícone</th>
-                    <th>Exibir</th>
-                    <th>Opções</th>
-                </tr>
-            </tfoot>
+    <table class="table table-hover table-striped table-bordered display painel-usuario" id="listarMenu">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Link</th>
+                <th>Ícone</th>
+                <th>Exibir</th>
+                <th>Opções</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Link</th>
+                <th>Ícone</th>
+                <th>Exibir</th>
+                <th>Opções</th>
+            </tr>
+        </tfoot>
 
-            <jsp:useBean class="model.MenuDAO" id="mDAO"/>
-            <tbody>
-                <c:forEach var="m" items="${mDAO.lista}">
-                    <tr>
-                        <td>${m.idMenu}</td>
-                        <td>${m.nome}</td>
-                        <td>${m.link}</td>
-                        <td>${m.icone}</td>
-                        <td>
-                            <c:if test="${m.exibir == 1}">Sim</c:if>
-                            <c:if test="${m.exibir == 2}">Não</c:if>
-                        </td>
-                        <td>
-                            <a class="btn btn-primary" href="GerenciarMenu?acao=alterar&idMenu=${m.idMenu}">
-                                <i class="glyphicon glyphicon-pencil"></i>
-                            </a>
-                            <button class="btn btn-danger" onclick="confirmarExclusao(${m.idMenu}, '${m.nome}')">
-                                <i class="glyphicon glyphicon-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                </c:forEach>
-            </tbody>
-        </table>
-    </div>
+        <jsp:useBean class="model.MenuDAO" id="mDAO"/>
+        <tbody>
+            <c:forEach var="m" items="${mDAO.lista}">
+                <tr>
+                    <td>${m.idMenu}</td>
+                    <td>${m.nome}</td>
+                    <td>${m.link}</td>
+                    <td>${m.icone}</td>
+                    <td>
+                        <c:if test="${m.exibir == 1}">Sim</c:if>
+                        <c:if test="${m.exibir == 2}">Não</c:if>
+                    </td>
+                    <td>
+                        <a class="btn btn-usuario" href="GerenciarMenu?acao=alterar&idMenu=${m.idMenu}">
+                            <i class="glyphicon glyphicon-pencil"></i>
+                        </a>
+                        <button class="btn btn-usuario" onclick="confirmarExclusao(${m.idMenu}, '${m.nome}')">
+                            <i class="glyphicon glyphicon-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            </c:forEach>
+        </tbody>
+    </table>
+</div>
 
     <script type="text/javascript" src="datatables/jquery.js"></script>
     <script type="text/javascript" src="datatables/jquery.dataTables.min.js"></script>

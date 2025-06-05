@@ -15,7 +15,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
@@ -31,10 +30,10 @@
     <%@include file="menu.jsp" %>
 
     <div class="content">
-        <h2>Lista de Benefícios</h2>
-        <a href="form_beneficio.jsp" class="btn btn-primary">Novo Cadastro</a>
+        <h2 class="titulo-usuario">Lista de Benefícios</h2>
+        <a href="form_beneficio.jsp" class="btn btn-usuario">Novo Cadastro</a>
 
-        <table class="table table-hover table-striped table-bordered display" id="listarBeneficio">
+        <table class="table table-hover table-striped table-bordered display painel-usuario" id="listarBeneficio">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -69,10 +68,10 @@
                             </c:choose>
                         </td>
                         <td>
-                            <a class="btn btn-primary" href="GerenciarBeneficio?acao=alterar&idBeneficio=${b.idBeneficio}">
+                            <a class="btn btn-usuario" href="GerenciarBeneficio?acao=alterar&idBeneficio=${b.idBeneficio}">
                                 <i class="glyphicon glyphicon-pencil"></i>
                             </a>
-                            <button class="btn btn-danger" onclick="confirmarExclusao(${b.idBeneficio}, '${b.nome}')">
+                            <button class="btn btn-usuario" onclick="confirmarExclusao(${b.idBeneficio}, '${b.nome}')">
                                 <i class="glyphicon glyphicon-trash"></i>
                             </button>
                         </td>
@@ -98,9 +97,7 @@
                 location.href = 'GerenciarBeneficio?acao=excluir&idBeneficio=' + idBeneficio;
             }
         }
-    </script>
 
-    <script>
         function toggleMenu(){
             var menu = document.getElementById("nav-links");
             menu.classList.toggle("show");

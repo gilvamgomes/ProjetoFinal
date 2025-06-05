@@ -27,57 +27,58 @@
 
     <%@include file="menu.jsp" %>
 
-    <div class="content">
-        <h2>Lista de Férias</h2>
-        <a href="form_ferias.jsp" class="btn btn-primary">Novo Cadastro</a>
+   <div class="content">
+    <h2 class="titulo-usuario">Lista de Férias</h2>
+    <a href="form_ferias.jsp" class="btn btn-usuario">Novo Cadastro</a>
 
-        <table class="table table-hover table-striped table-bordered display" id="listarFerias">
-            <thead>
-                <tr>
-                    <th>Data Início</th>
-                    <th>Data Fim</th>
-                    <th>Status</th>
-                    <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
-                        <th>Funcionário</th>
-                    </c:if>
-                    <th>Opções</th>
-                </tr>
-            </thead>
+    <table class="table table-hover table-striped table-bordered display painel-usuario" id="listarFerias">
+        <thead>
+            <tr>
+                <th>Data Início</th>
+                <th>Data Fim</th>
+                <th>Status</th>
+                <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
+                    <th>Funcionário</th>
+                </c:if>
+                <th>Opções</th>
+            </tr>
+        </thead>
 
-            <jsp:useBean class="model.FeriasDAO" id="fDAO"/>
-            <tbody>
-                <c:forEach var="f" items="${fDAO.lista}">
-                    <c:if test="${ulogado.perfil.nome == 'Administrador' || ulogado.perfil.nome == 'Gerente' || f.funcionario.idFuncionario == ulogado.funcionario.idFuncionario}">
-                        <tr>
-                            <td><fmt:formatDate value="${f.dataInicio}" pattern="dd/MM/yyyy"/></td>
-                            <td><fmt:formatDate value="${f.dataFim}" pattern="dd/MM/yyyy"/></td>
-                            <td>${f.status}</td>
-                            <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
-                                <td>${f.funcionario.nome}</td>
-                            </c:if>
-                            <td>
-                                <c:choose>
-                                    <c:when test="${ulogado.perfil.nome == 'Funcionario' && f.status == 'Em analise'}">
-                                        <a href="GerenciarFerias?acao=alterar&idFerias=${f.idFerias}" class="btn btn-primary">
-                                            <i class="glyphicon glyphicon-pencil"></i>
-                                        </a>
-                                    </c:when>
-                                    <c:when test="${ulogado.perfil.nome != 'Funcionario'}">
-                                        <a href="GerenciarFerias?acao=alterar&idFerias=${f.idFerias}" class="btn btn-primary">
-                                            <i class="glyphicon glyphicon-pencil"></i>
-                                        </a>
-                                        <a href="GerenciarFerias?acao=excluir&idFerias=${f.idFerias}" class="btn btn-danger" onclick="return confirm('Deseja excluir?');">
-                                            <i class="glyphicon glyphicon-trash"></i>
-                                        </a>
-                                    </c:when>
-                                </c:choose>
-                            </td>
-                        </tr>
-                    </c:if>
-                </c:forEach>
-            </tbody>
-        </table>
-    </div>
+        <jsp:useBean class="model.FeriasDAO" id="fDAO"/>
+        <tbody>
+            <c:forEach var="f" items="${fDAO.lista}">
+                <c:if test="${ulogado.perfil.nome == 'Administrador' || ulogado.perfil.nome == 'Gerente' || f.funcionario.idFuncionario == ulogado.funcionario.idFuncionario}">
+                    <tr>
+                        <td><fmt:formatDate value="${f.dataInicio}" pattern="dd/MM/yyyy"/></td>
+                        <td><fmt:formatDate value="${f.dataFim}" pattern="dd/MM/yyyy"/></td>
+                        <td>${f.status}</td>
+                        <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
+                            <td>${f.funcionario.nome}</td>
+                        </c:if>
+                        <td>
+                            <c:choose>
+                                <c:when test="${ulogado.perfil.nome == 'Funcionario' && f.status == 'Em analise'}">
+                                    <a href="GerenciarFerias?acao=alterar&idFerias=${f.idFerias}" class="btn btn-usuario">
+                                        <i class="glyphicon glyphicon-pencil"></i>
+                                    </a>
+                                </c:when>
+                                <c:when test="${ulogado.perfil.nome != 'Funcionario'}">
+                                    <a href="GerenciarFerias?acao=alterar&idFerias=${f.idFerias}" class="btn btn-usuario">
+                                        <i class="glyphicon glyphicon-pencil"></i>
+                                    </a>
+                                    <a href="GerenciarFerias?acao=excluir&idFerias=${f.idFerias}" class="btn btn-usuario" onclick="return confirm('Deseja excluir?');">
+                                        <i class="glyphicon glyphicon-trash"></i>
+                                    </a>
+                                </c:when>
+                            </c:choose>
+                        </td>
+                    </tr>
+                </c:if>
+            </c:forEach>
+        </tbody>
+    </table>
+</div>
+
 
     <script src="datatables/jquery.js"></script>
     <script src="datatables/jquery.dataTables.min.js"></script>

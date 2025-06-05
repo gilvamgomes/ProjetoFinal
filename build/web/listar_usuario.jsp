@@ -29,16 +29,15 @@
     <%@include file="menu.jsp" %>
 
     <div class="content">
-        <h2>Lista de Usuários</h2>
-        <a href="form_usuario.jsp" class="btn btn-primary">Novo Cadastro</a>
+        <h2 class="titulo-usuario">Lista de Usuários</h2>
+        <a href="form_usuario.jsp" class="btn btn-usuario">Novo Cadastro</a>
         
-        <table class="table table-hover table-striped table-bordered display" id="listarUsuario">
+        <table class="table table-hover table-striped table-bordered display painel-usuario" id="listarUsuario">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Nome</th>
                     <th>Login</th>
-                    
                     <th>Status</th>
                     <th>Perfil</th>
                     <th>Opções</th>
@@ -49,7 +48,6 @@
                     <th>ID</th>
                     <th>Nome</th>
                     <th>Login</th>
-         
                     <th>Status</th>
                     <th>Perfil</th>
                     <th>Opções</th>
@@ -63,17 +61,16 @@
                         <td>${u.idUsuario}</td>
                         <td>${u.nome}</td>
                         <td>${u.login}</td>
-                        
                         <td>
                             <c:if test="${u.status == 1}">Ativo</c:if>
                             <c:if test="${u.status == 2}">Inativo</c:if>
                         </td>
                         <td>${u.perfil.nome}</td>
                         <td>
-                            <a class="btn btn-primary" href="GerenciarUsuario?acao=alterar&idUsuario=${u.idUsuario}">
+                            <a class="btn btn-usuario" href="GerenciarUsuario?acao=alterar&idUsuario=${u.idUsuario}">
                                 <i class="glyphicon glyphicon-pencil"></i>
                             </a>
-                            <button class="btn btn-danger" onclick="confirmarExclusao(${u.idUsuario}, '${u.nome}')">
+                            <button class="btn btn-usuario" onclick="confirmarExclusao(${u.idUsuario}, '${u.nome}')">
                                 <i class="glyphicon glyphicon-trash"></i>
                             </button>    
                         </td>
@@ -99,9 +96,7 @@
                 location.href = 'GerenciarUsuario?acao=excluir&idUsuario=' + idUsuario;
             }
         }
-    </script>
 
-    <script>
         function toggleMenu(){
             var menu = document.getElementById("nav-links");
             menu.classList.toggle("show");

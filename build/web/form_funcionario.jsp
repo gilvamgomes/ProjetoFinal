@@ -28,8 +28,8 @@
 <%@include file="menu.jsp" %>
 
 <div class="content">
-    <h2>Cadastrar Funcionário</h2>
-    <form action="GerenciarFuncionario" method="POST">
+    <h2 class="titulo-usuario">Cadastrar Funcionário</h2>
+    <form action="GerenciarFuncionario" method="POST" class="painel-usuario">
         <legend>Formulário de Funcionário</legend>
 
         <input type="hidden" id="idFuncionario" name="idFuncionario" value="${f.idFuncionario}"/>
@@ -77,8 +77,8 @@
         </select>
 
         <br>
-        <button class="btn btn-success">Gravar</button>
-        <a href="listar_funcionario.jsp" class="btn btn-warning">Voltar</a>
+        <button class="btn btn-usuario">Gravar</button>
+        <a href="listar_funcionario.jsp" class="btn btn-usuario">Voltar</a>
     </form>
 </div>
 

@@ -30,16 +30,17 @@
 <%@include file="menu.jsp" %>
 
 <div class="content">
-    <h2>Lista de Funcionários</h2>
+    <h2 class="titulo-usuario">Lista de Funcionários</h2>
+
     <c:if test="${param.status == 'beneficio_sucesso'}">
         <div class="alert alert-success text-center">
             Benefícios atualizados com sucesso!
         </div>
     </c:if>
 
-    <a href="form_funcionario.jsp" class="btn btn-primary">Novo Cadastro</a>
+    <a href="form_funcionario.jsp" class="btn btn-usuario">Novo Cadastro</a>
 
-    <table class="table table-hover table-striped table-bordered display" id="listarFuncionario">
+    <table class="table table-hover table-striped table-bordered display painel-usuario" id="listarFuncionario">
         <thead>
             <tr>
                 <th>ID</th>
@@ -80,15 +81,15 @@
                     </td>
                     <td>${f.usuario.nome}</td>
                     <td>
-                        <a class="btn btn-primary" href="GerenciarFuncionario?acao=alterar&idFuncionario=${f.idFuncionario}">
+                        <a class="btn btn-usuario" href="GerenciarFuncionario?acao=alterar&idFuncionario=${f.idFuncionario}">
                             <i class="glyphicon glyphicon-pencil"></i>
                         </a>
 
-                        <a class="btn btn-info" href="CarregarFuncionarioBeneficio?id=${f.idFuncionario}">
+                        <a class="btn btn-usuario" href="CarregarFuncionarioBeneficio?id=${f.idFuncionario}">
                             <i class="glyphicon glyphicon-gift"></i> 
                         </a>
 
-                        <button class="btn btn-danger" onclick="confirmarExclusao(${f.idFuncionario}, '${f.nome}')">
+                        <button class="btn btn-usuario" onclick="confirmarExclusao(${f.idFuncionario}, '${f.nome}')">
                             <i class="glyphicon glyphicon-trash"></i>
                         </button>
                     </td>
@@ -98,9 +99,9 @@
     </table>
 </div>
 
-<script type="text/javascript" src="datatables/jquery.js"></script>
-<script type="text/javascript" src="datatables/jquery.dataTables.min.js"></script>
-<script type="text/javascript">
+<script src="datatables/jquery.js"></script>
+<script src="datatables/jquery.dataTables.min.js"></script>
+<script>
     $(document).ready(function(){
         $("#listarFuncionario").DataTable({
             "language": {
@@ -114,9 +115,7 @@
             location.href = 'GerenciarFuncionario?acao=excluir&idFuncionario=' + idFuncionario;
         }
     }
-</script>
 
-<script>
     function toggleMenu(){
         var menu = document.getElementById("nav-links");
         menu.classList.toggle("show");

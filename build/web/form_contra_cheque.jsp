@@ -29,8 +29,8 @@
     <%@include file="menu.jsp" %>
 
     <div class="content">
-        <h2>Cadastrar Contra-Cheque</h2>
-        <form action="GerenciarContraCheque" method="POST">
+        <h2 class="titulo-usuario">Cadastrar Contra-Cheque</h2>
+        <form action="GerenciarContraCheque" method="POST" class="painel-usuario">
             <legend>Formulário de Contra-Cheque</legend>
             
             <input type="hidden" id="idContraCheque" name="idContraCheque" value="${c.idContraCheque}"/>
@@ -48,8 +48,8 @@
             <input type="number" class="form-control" id="funcionarioId" name="funcionarioId" required value="${c.funcionarioId}">
 
             <br>
-            <button class="btn btn-success">Gravar</button>
-            <a href="listar_contra_cheque.jsp" class="btn btn-warning">Voltar</a>
+            <button class="btn btn-usuario">Gravar</button>
+            <a href="listar_contra_cheque.jsp" class="btn btn-usuario">Voltar</a>
         </form>
     </div>
 

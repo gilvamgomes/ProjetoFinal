@@ -31,10 +31,10 @@
     <%@include file="menu.jsp" %>
 
     <div class="content">
-        <h2>Lista de Pagamentos</h2>
-        <a href="form_pagamento.jsp" class="btn btn-primary">Novo Cadastro</a>
+       <h2 class="titulo-pagamento">Lista de Pagamentos</h2>
+<a href="form_pagamento.jsp" class="btn btn-pagamento">Novo Cadastro</a>
 
-        <table class="table table-hover table-striped table-bordered display" id="listarPagamento">
+       <table class="table table-hover table-striped table-bordered display painel-pagamento" id="listarPagamento">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -69,14 +69,14 @@
                             <fmt:formatDate value="${p.dataPagamento}" pattern="yyyy-MM-dd"/>
                         </td>
                         <td>${p.funcionario_idFfuncionario}</td>
-                        <td>
-                            <a class="btn btn-primary" href="GerenciarPagamento?acao=editar&idPagamento=${p.idPagamento}">
-                                <i class="glyphicon glyphicon-pencil"></i>
-                            </a>
-                            <button class="btn btn-danger" onclick="confirmarExclusao(${p.idPagamento}, '${p.tipoPagamento}')">
-                                <i class="glyphicon glyphicon-trash"></i>
-                            </button>
-                        </td>
+                       <td>
+    <a class="btn btn-pagamento" href="GerenciarPagamento?acao=editar&idPagamento=${p.idPagamento}">
+        <i class="glyphicon glyphicon-pencil"></i>
+    </a>
+    <button class="btn btn-pagamento" onclick="confirmarExclusao(${p.idPagamento}, '${p.tipoPagamento}')">
+        <i class="glyphicon glyphicon-trash"></i>
+    </button>
+</td>
                     </tr>
                 </c:forEach>
             </tbody>

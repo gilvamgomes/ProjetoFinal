@@ -27,11 +27,12 @@
 
     <%@include file="menu.jsp" %>
 
-    <div class="content">
-        <h2>Lista de Perfis</h2>
-        <a href="form_perfil.jsp" class="btn btn-primary">Novo Cadastro</a>
+    <h2 class="titulo-usuario">Lista de Perfis</h2>
+<a href="form_perfil.jsp" class="btn btn-usuario">Novo Cadastro</a>
 
-        <table class="table table-hover table-striped table-bordered display" id="listarPerfil">
+
+        <table class="table table-hover table-striped table-bordered display painel-usuario" id="listarPerfil">
+
             <thead>
                 <tr>
                     <th>ID</th>
@@ -60,16 +61,17 @@
                             <c:if test="${p.status == 2}">Inativo</c:if>
                         </td>
                         <td>
-                            <a class="btn btn-primary" href="GerenciarPerfil?acao=alterar&idPerfil=${p.idPerfil}">
-                                <i class="glyphicon glyphicon-pencil"></i>
-                            </a>    
-                            <button class="btn btn-danger" onclick="confirmarExclusao(${p.idPerfil}, '${p.nome}')">
-                                <i class="glyphicon glyphicon-trash"></i>
-                            </button>
-                            <a class="btn btn-default" href="GerenciarMenuPerfil?acao=gerenciar&idPerfil=${p.idPerfil}">
-                                <i class="glyphicon">Acessos</i>
-                            </a>         
-                        </td>
+    <a class="btn btn-usuario" href="GerenciarPerfil?acao=alterar&idPerfil=${p.idPerfil}">
+        <i class="glyphicon glyphicon-pencil"></i>
+    </a>    
+    <button class="btn btn-usuario" onclick="confirmarExclusao(${p.idPerfil}, '${p.nome}')">
+        <i class="glyphicon glyphicon-trash"></i>
+    </button>
+    <a class="btn btn-usuario" href="GerenciarMenuPerfil?acao=gerenciar&idPerfil=${p.idPerfil}">
+        <i class="glyphicon glyphicon-lock"></i> Acessos
+    </a>         
+</td>
+
                     </tr>
                 </c:forEach>
             </tbody>    
