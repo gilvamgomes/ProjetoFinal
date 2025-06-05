@@ -2,7 +2,7 @@
 
 <div class="banner-topo">
     <div class="banner-esquerda">
-        <span class="marca-banner">ÓTICA MILANO</span>
+        <a href="index.jsp" class="marca-banner">ÓTICA MILANO</a>
     </div>
     <div class="banner-direita">
         <img src="imagens/avatar_padrao.png" class="foto-perfil" alt="Perfil">

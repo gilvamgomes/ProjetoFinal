@@ -26,6 +26,8 @@
 
     <%@include file="menu.jsp" %>
 
+    <%@ include file="menu_mobile.jsp" %>   <!-- Menu mobile -->
+    
     <div class="content">
         <h1>Bem-vindo ao Sistema da Ótica!</h1>
         

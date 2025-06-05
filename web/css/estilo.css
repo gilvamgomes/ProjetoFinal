@@ -130,19 +130,20 @@ buttom:hover{
     background-color: #45a049;
 }
 
-
-/* === BACKGROUND COM FOTO === */
+/* === INICIO FRONT-END LOGIN === */
+/* === INICIO FRONT-END LOGIN === */
+/* === FUNDO COM IMAGEM === */
 .login-body {
   margin: 0;
   padding: 0;
-  background-image: url('../imagens/foto_login.jpg'); /* nome do arquivo da imagem */
+  background-image: url('../imagens/foto_login.jpg');
   background-size: cover;
   background-position: center;
   height: 100vh;
   font-family: 'Segoe UI', sans-serif;
 }
 
-/* === OVERLAY CENTRAL === */
+/* === CONTAINER CENTRAL === */
 .login-overlay {
   display: flex;
   align-items: center;
@@ -151,7 +152,7 @@ buttom:hover{
   padding-right: 5%;
 }
 
-/* === CARTÃO DE LOGIN === */
+/* === FORMULÁRIO DE LOGIN (DESKTOP) === */
 .login-card {
   background-color: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
@@ -159,32 +160,52 @@ buttom:hover{
   padding: 40px 30px;
   width: 320px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
-/* === LOGO === */
-.logo-login {
-  width: 100px;
-  margin-bottom: 10px;
+/* === LOGO VIA CSS === */
+.login-card::before {
+  content: "";
+  display: block;
+  width: 200px;
+  height: 100px;
+  margin: 0 auto 20px auto;
+  background-image: url('../imagens/logo_otica_transparente.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 12px;
 }
 
 /* === TÍTULO === */
 .login-card h4 {
   color: #916647;
   margin-bottom: 30px;
+  text-align: center;
 }
 
 .marca {
   color: #978c8c;
 }
 
-/* === INPUTS === */
+/* === CAMPOS DE ENTRADA PADRONIZADOS === */
 .login-input {
-  border-radius: 8px;
-  border: 1px solid #cdc5bf;
-  margin-bottom: 15px;
+  width: 100%;
+  max-width: 100%;
   padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #cdc5bf;
+  border-radius: 8px;
   font-size: 14px;
+  box-sizing: border-box;
+  display: block;
 }
+
+.campo-form {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
 
 /* === BOTÃO LOGIN === */
 .botao-login {
@@ -203,25 +224,116 @@ buttom:hover{
   color: white;
 }
 
-/* === LOGO DENTRO DO CARD VIA CSS === */
-.login-card::before {
-  content: "";
-  
-  display: block;
-  width: 200px;
-  height: 100px;
-  margin: 0 auto 20px auto;
-  background-image: url('../imagens/logo_otica_transparente.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  border-radius: 12px;
-  
+/* === RESPONSIVIDADE FULLSCREEN NO MOBILE === */
+@media (max-width: 768px) {
+  .login-body {
+    height: 100vh;
+  }
+
+  .login-overlay {
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    height: 100vh;
+  }
+
+  .login-card {
+    width: 100vw;
+    height: 100vh;
+    min-height: 100vh;
+    margin: 0;
+    padding: 30px 20px;
+    border-radius: 0;
+    box-shadow: none;
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.85);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .login-card::before {
+    width: 120px;
+    height: 60px;
+    margin-bottom: 10px;
+  }
+
+  .botao-login {
+    font-size: 16px;
+  }
 }
 
 
+/* === FINAL FRONT-END LOGIN === */
+/* === FINAL FRONT-END LOGIN === */
 
-/* === BANNER TOPO - ÓTICA MILANO === */
+
+
+/* === INCIO MENU DESKTOP LIMPO === */
+/* === INCIO MENU DESKTOP LIMPO === */
+.barra-menu {
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  font-family: 'Segoe UI', sans-serif;
+  flex-wrap: wrap;
+}
+
+.menu-links {
+  list-style: none;
+  display: flex;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+}
+
+.menu-links li a {
+  color: #916647;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+
+.menu-links li a:hover {
+  background-color: #cdc5bf;
+  color: white;
+}
+
+.menu-lado-direito {
+  display: flex;
+  align-items: center;
+}
+
+.botao-sair {
+  color: #916647;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  background-color: transparent;
+  border: 2px solid #916647;
+  transition: 0.3s;
+}
+
+.botao-sair:hover {
+  background-color: #916647;
+  color: white;
+}
+/* === FIM MENU DESKTOP LIMPO === */
+/* === FIM MENU DESKTOP LIMPO === */
+
+
+/* === INICIO BANNER FRONT-END - ÓTICA MILANO (MANTIDO) === */
+/* === INICIO BANNER FRONT-END - ÓTICA MILANO (MANTIDO) === */
 .banner-topo {
   background-color: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(10px);
@@ -268,114 +380,92 @@ buttom:hover{
   border-radius: 50%;
   object-fit: cover;
 }
+/* === FIM BANNER FRONT-END - ÓTICA MILANO (MANTIDO) === */
+/* === FIM BANNER FRONT-END - ÓTICA MILANO (MANTIDO) === */
 
-/* === MENU COM HAMBÚRGUER RESPONSIVO === */
-.barra-menu {
-  background-color: rgba(255, 255, 255, 0.85);
+
+
+/* === INICIO MENU MOBILE INFERIOR (rodapé fixo) === */
+/* === INICIO MENU MOBILE INFERIOR (rodapé fixo) === */
+.menu-mobile {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  padding: 10px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  font-family: 'Segoe UI', sans-serif;
-  flex-wrap: wrap;
-}
-
-.menu-topo {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.menu-toggle {
-  font-size: 28px;
-  cursor: pointer;
-  color: #916647;
   display: none;
+  justify-content: space-around;
+  align-items: center;
+  padding: 6px 0;
+  border-top: 1px solid #cdc5bf;
+  z-index: 1000;
 }
 
-/* Menus padrão (desktop) */
-.menu-links {
-  list-style: none;
+.menu-item {
+  text-align: center;
+  font-size: 12px;
+  color: #916647;
   display: flex;
-  gap: 16px;
-  margin: 0;
-  padding: 0;
+  flex-direction: column;
+  align-items: center;
+  font-weight: bold;
 }
 
-.menu-links li a {
+.menu-item i {
+  font-size: 20px;
+  margin-bottom: 2px;
+}
+
+/* === MODAL DO BOTÃO MAIS === */
+.menu-modal {
+  position: fixed;
+  top: 60px; /* altura do banner, ajusta se precisar */
+  bottom: 60px; /* altura do menu-mobile fixo */
+  left: 0;
+  width: 100%;
+  background-color: #ffffff;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+  padding: 20px;
+  display: none;
+  flex-direction: column;
+  overflow-y: auto;
+  z-index: 1001;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.menu-modal.ativo {
+  display: flex;
+}
+
+
+.menu-modal a {
   color: #916647;
   font-weight: bold;
   text-decoration: none;
   padding: 8px 12px;
   border-radius: 6px;
-  transition: background 0.3s;
+  transition: background 0.2s;
 }
 
-.menu-links li a:hover {
-  background-color: #cdc5bf;
-  color: white;
+.menu-modal a:hover {
+  background-color: #f1e9e4;
 }
 
-/* Botão sair */
-.menu-lado-direito {
-  display: flex;
-  align-items: center;
-}
-
-.botao-sair {
-  color: #916647;
-  font-weight: bold;
-  text-decoration: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  background-color: transparent;
-  border: 2px solid #916647;
-  transition: 0.3s;
-}
-
-.botao-sair:hover {
-  background-color: #916647;
-  color: white;
-}
-
-/* === MOBILE RESPONSIVO === */
+/* === MOSTRAR APENAS NO MOBILE === */
 @media (max-width: 768px) {
-  .menu-toggle {
-    display: block;
-  }
-
-  .menu-links {
-    display: none;
-    flex-direction: column;
-    width: 100%;
-    margin-top: 10px;
-    gap: 10px;
-  }
-
-  .menu-links.mostrar {
+  .menu-mobile {
     display: flex;
   }
 
-  .menu-lado-direito {
-    width: 100%;
-    justify-content: flex-end;
-    margin-top: 10px;
-  }
-
-  .botao-sair {
-    width: auto;
-  }
-
-  .banner-topo {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .banner-usuario {
-    align-self: flex-end;
+  .barra-menu,
+  .menu-links {
+    display: none !important;
   }
 }
+/* === FIM MENU MOBILE INFERIOR (rodapé fixo) === */
+/* === FIM MENU MOBILE IFERIOR (rodapé fixo) === */

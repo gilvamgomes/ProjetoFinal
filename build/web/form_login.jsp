@@ -11,17 +11,25 @@
 <body class="login-body">
 
     <div class="login-overlay">
-        <div class="login-card text-center">
-          
-          
+        <div class="login-card">
 
-            <h4>Sistema de RH - <span class="marca">Ótica Milano</span></h4>
+            <!-- Logo vem do CSS via ::before -->
 
-            <form action="GerenciarLogin" method="POST">
-                <input type="text" name="login" placeholder="Login" class="form-control login-input" required>
-                <input type="password" name="senha" placeholder="Senha" class="form-control login-input" required>
-                <button type="submit" class="btn botao-login">Acessar</button>
-            </form>
+            
+
+                <form action="GerenciarLogin" method="POST" style="width: 100%;">
+    <div class="campo-form">
+        <input type="text" name="login" placeholder="Login" class="login-input" required>
+    </div>
+
+    <div class="campo-form">
+        <input type="password" name="senha" placeholder="Senha" class="login-input" required>
+    </div>
+
+    <button type="submit" class="botao-login">Acessar</button>
+</form>
+
+
         </div>
     </div>
 

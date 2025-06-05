@@ -19,6 +19,7 @@
    
    <%@include file="banner.jsp" %>
     <%@include file="menu.jsp" %>
+     <%@ include file="menu_mobile.jsp" %>   <!-- Menu mobile -->
 
     <div class="content">
         <h2>Gerenciar Acessos</h2>
