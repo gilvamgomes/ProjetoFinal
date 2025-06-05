@@ -403,6 +403,7 @@ buttom:hover{
   z-index: 1000;
 }
 
+/* === MENU COM ÍCONE EM CIMA DO TEXTO === */
 .menu-item {
   text-align: center;
   font-size: 12px;
@@ -411,11 +412,13 @@ buttom:hover{
   flex-direction: column;
   align-items: center;
   font-weight: bold;
+  padding: 4px 6px;
 }
 
 .menu-item i {
   font-size: 20px;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
+  color: #916647;
 }
 
 /* === MODAL DO BOTÃO MAIS === */
@@ -442,7 +445,6 @@ buttom:hover{
   display: flex;
 }
 
-
 .menu-modal a {
   color: #916647;
   font-weight: bold;
@@ -450,6 +452,9 @@ buttom:hover{
   padding: 8px 12px;
   border-radius: 6px;
   transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .menu-modal a:hover {
@@ -467,5 +472,6 @@ buttom:hover{
     display: none !important;
   }
 }
+
 /* === FIM MENU MOBILE INFERIOR (rodapé fixo) === */
 /* === FIM MENU MOBILE IFERIOR (rodapé fixo) === */

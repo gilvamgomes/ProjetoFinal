@@ -1,66 +1,82 @@
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<!-- MENU MOBILE FIXO NO RODAPÉ -->
-<div class="menu-mobile">
-    <c:if test="${ulogado != null && ulogado.perfil != null}">
-        <c:forEach var="menu" items="${ulogado.perfil.menus}">
-            <c:if test="${menu.exibir == 1}">
-                <c:choose>
-                    <c:when test="${menu.nome eq 'Dashbord'}">
-                        <a href="${menu.link}" class="menu-item">
-                            <i class="fa fa-home"></i>
-                            <span>Início</span>
-                        </a>
-                    </c:when>
-                    <c:when test="${menu.nome eq 'Registro de Ponto'}">
-                        <a href="${menu.link}" class="menu-item">
-                            <i class="fa fa-clock"></i>
-                            <span>Ponto</span>
-                        </a>
-                    </c:when>
-                    <c:when test="${menu.nome eq 'Férias'}">
-                        <a href="${menu.link}" class="menu-item">
-                            <i class="fa fa-suitcase"></i>
-                            <span>Férias</span>
-                        </a>
-                    </c:when>
-                    <c:when test="${menu.nome eq 'Contra-cheques'}">
-                        <a href="${menu.link}" class="menu-item">
-                            <i class="fa fa-money"></i>
-                            <span>Contra</span>
-                        </a>
-                    </c:when>
-                    <c:otherwise>
-                        <!-- Os outros menus vão pro modal do botão Mais -->
-                    </c:otherwise>
-                </c:choose>
+<c:if test="${ulogado != null && ulogado.perfil != null}">
+    <c:set var="menuPrincipalCount" value="0" />
+    <div class="menu-mobile">
+        <c:forEach var="menu" items="${ulogado.perfil.menus}" varStatus="loop">
+            <c:if test="${menu.exibir == 1 && menuPrincipalCount lt 4}">
+                <c:set var="menuPrincipalCount" value="${menuPrincipalCount + 1}" />
+                <a href="${menu.link}" class="menu-item">
+                    <i class="fas
+                        <c:choose>
+                            <c:when test="${menu.nome eq 'Dashbord'}"> fa-house</c:when>
+                            <c:when test="${menu.nome eq 'Registro de Ponto'}"> fa-stopwatch</c:when>
+                            <c:when test="${menu.nome eq 'Férias'}"> fa-plane-departure</c:when>
+                            <c:when test="${menu.nome eq 'Contra-cheques'}"> fa-file-invoice</c:when>
+                            <c:when test="${menu.nome eq 'Funcionários'}"> fa-users</c:when>
+                            <c:when test="${menu.nome eq 'Benefícios'}"> fa-briefcase</c:when>
+                            <c:when test="${menu.nome eq 'Usuário'}"> fa-user</c:when>
+                            <c:when test="${menu.nome eq 'Perfil'}"> fa-id-badge</c:when>
+                            <c:when test="${menu.nome eq 'Impostos'}"> fa-file-invoice-dollar</c:when>
+                            <c:when test="${menu.nome eq 'Pagamento'}"> fa-money-check-alt</c:when>
+                            <c:when test="${menu.nome eq 'Menu'}"> fa-list</c:when>
+                            <c:otherwise> fa-circle</c:otherwise>
+                        </c:choose>"></i>
+                    <span>
+                        <c:choose>
+                            <c:when test="${menu.nome eq 'Dashbord'}">Início</c:when>
+                            <c:when test="${menu.nome eq 'Registro de Ponto'}">Ponto</c:when>
+                            <c:otherwise>${menu.nome}</c:otherwise>
+                        </c:choose>
+                    </span>
+                </a>
             </c:if>
         </c:forEach>
 
-        <!-- Botão MAIS -->
-        <div class="menu-item" onclick="abrirMenuMais()">
-            <i class="fa fa-bars"></i>
-            <span>Mais</span>
-        </div>
-    </c:if>
-</div>
+        <!-- Se tiver menus extras, mostra botão Mais -->
+        <c:set var="extras" value="false" />
+        <c:forEach var="menu" items="${ulogado.perfil.menus}" varStatus="st">
+            <c:if test="${menu.exibir == 1 && st.index >= 4}">
+                <c:set var="extras" value="true" />
+            </c:if>
+        </c:forEach>
 
-<!-- MODAL EXPANDIDO DO MAIS -->
-<div class="menu-modal" id="menuMais">
-    <c:forEach var="menu" items="${ulogado.perfil.menus}">
-        <c:if test="${menu.exibir == 1 
-                    && menu.nome != 'Dashbord' 
-                    && menu.nome != 'Registro de Ponto' 
-                    && menu.nome != 'Férias' 
-                    && menu.nome != 'Contra-cheques'}">
-            <a href="${menu.link}">${menu.nome}</a>
+        <c:if test="${extras}">
+            <div class="menu-item" onclick="abrirMenuMais()">
+                <i class="fas fa-bars"></i>
+                <span>Mais</span>
+            </div>
         </c:if>
-    </c:forEach>
+    </div>
 
-    <!-- BOTÃO SAIR -->
-    <a href="GerenciarLogin" class="botao-sair-mobile">Sair</a>
-</div>
-
+    <!-- Modal do botão Mais -->
+    <div class="menu-modal" id="menuMais">
+        <c:forEach var="menu" items="${ulogado.perfil.menus}" varStatus="loop">
+            <c:if test="${menu.exibir == 1 && loop.index >= 4}">
+                <a href="${menu.link}">
+                    <i class="fas
+                        <c:choose>
+                            <c:when test="${menu.nome eq 'Dashbord'}"> fa-house</c:when>
+                            <c:when test="${menu.nome eq 'Registro de Ponto'}"> fa-stopwatch</c:when>
+                            <c:when test="${menu.nome eq 'Férias'}"> fa-plane-departure</c:when>
+                            <c:when test="${menu.nome eq 'Contra-cheques'}"> fa-file-invoice</c:when>
+                            <c:when test="${menu.nome eq 'Funcionários'}"> fa-users</c:when>
+                            <c:when test="${menu.nome eq 'Benefícios'}"> fa-briefcase</c:when>
+                            <c:when test="${menu.nome eq 'Usuário'}"> fa-user</c:when>
+                            <c:when test="${menu.nome eq 'Perfil'}"> fa-id-badge</c:when>
+                            <c:when test="${menu.nome eq 'Impostos'}"> fa-file-invoice-dollar</c:when>
+                            <c:when test="${menu.nome eq 'Pagamento'}"> fa-money-check-alt</c:when>
+                            <c:when test="${menu.nome eq 'Menu'}"> fa-list</c:when>
+                            <c:otherwise> fa-circle</c:otherwise>
+                        </c:choose>"></i>
+                    ${menu.nome}
+                </a>
+            </c:if>
+        </c:forEach>
+        <a href="GerenciarLogin" class="botao-sair-mobile">Sair</a>
+    </div>
+</c:if>
 
 <script>
 function abrirMenuMais() {
