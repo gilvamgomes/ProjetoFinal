@@ -3,11 +3,13 @@
 
 <c:if test="${ulogado != null && ulogado.perfil != null}">
     <c:set var="menuPrincipalCount" value="0" />
+    <c:set var="paginaAtual" value="${pageContext.request.requestURI}" />
+
     <div class="menu-mobile">
         <c:forEach var="menu" items="${ulogado.perfil.menus}" varStatus="loop">
             <c:if test="${menu.exibir == 1 && menuPrincipalCount lt 4}">
                 <c:set var="menuPrincipalCount" value="${menuPrincipalCount + 1}" />
-                <a href="${menu.link}" class="menu-item">
+                <a href="${menu.link}" class="menu-item <c:if test='${fn:contains(paginaAtual, menu.link)}'>ativo</c:if>">
                     <i class="fas
                         <c:choose>
                             <c:when test="${menu.nome eq 'Dashbord'}"> fa-house</c:when>
@@ -34,7 +36,6 @@
             </c:if>
         </c:forEach>
 
-        <!-- Se tiver menus extras, mostra botão Mais -->
         <c:set var="extras" value="false" />
         <c:forEach var="menu" items="${ulogado.perfil.menus}" varStatus="st">
             <c:if test="${menu.exibir == 1 && st.index >= 4}">
@@ -50,11 +51,10 @@
         </c:if>
     </div>
 
-    <!-- Modal do botão Mais -->
     <div class="menu-modal" id="menuMais">
         <c:forEach var="menu" items="${ulogado.perfil.menus}" varStatus="loop">
             <c:if test="${menu.exibir == 1 && loop.index >= 4}">
-                <a href="${menu.link}">
+                <a href="${menu.link}" class="<c:if test='${fn:contains(paginaAtual, menu.link)}'>ativo</c:if>">
                     <i class="fas
                         <c:choose>
                             <c:when test="${menu.nome eq 'Dashbord'}"> fa-house</c:when>

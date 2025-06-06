@@ -5,7 +5,8 @@
         <a href="index.jsp" class="marca-banner">ÓTICA MILANO</a>
     </div>
     <div class="banner-direita">
-        <img src="imagens/avatar_padrao.png" class="foto-perfil" alt="Perfil">
+        <img src="imagens/avatar_padrao.jpg" class="foto-perfil" alt="Perfil">
         <span class="nome-usuario"><c:out value="${ulogado.nome}" /></span>
+
     </div>
 </div>

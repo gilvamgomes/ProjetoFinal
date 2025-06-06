@@ -3,7 +3,6 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page import="model.Usuario" %>
 <%@page import="controller.GerenciarLogin" %>
-
 <%
     Usuario ulogado = GerenciarLogin.verificarAcesso(request, response);
     request.setAttribute("ulogado", ulogado);
@@ -14,93 +13,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width ,initial-scale=1.0">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="datatables/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <title>Funcionários</title>
 </head>
 <body>
 
-
-   <%@include file="banner.jsp" %>
+<%@include file="banner.jsp" %>
 <%@include file="menu.jsp" %>
- <%@ include file="menu_mobile.jsp" %>   <!-- Menu mobile -->
+<%@include file="menu_mobile.jsp" %>
 
-<div class="content">
-    <h2>Lista de Funcionários</h2>
+<div class="container mt-5 lista-funcionario">
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+        <h2><i class="fas fa-users"></i> Funcionários</h2>
+        <a href="form_funcionario.jsp" class="btn btn-success">
+            <i class="fas fa-user-plus"></i> Novo Cadastro
+        </a>
+    </div>
+
     <c:if test="${param.status == 'beneficio_sucesso'}">
         <div class="alert alert-success text-center">
             Benefícios atualizados com sucesso!
         </div>
     </c:if>
 
-    <a href="form_funcionario.jsp" class="btn btn-primary">Novo Cadastro</a>
-
-    <table class="table table-hover table-striped table-bordered display" id="listarFuncionario">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Data de Nascimento</th>
-                <th>CPF</th>
-                <th>Cargo</th>
-                <th>Status</th>
-                <th>Usuário</th>
-                <th>Opções</th>
-            </tr>
-        </thead>
-        <tfoot>
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Data de Nascimento</th>
-                <th>CPF</th>
-                <th>Cargo</th>
-                <th>Status</th>
-                <th>Usuário</th>
-                <th>Opções</th>
-            </tr>
-        </tfoot>
-
-        <jsp:useBean class="model.FuncionarioDAO" id="fDAO"/>
-        <tbody>
-            <c:forEach var="f" items="${fDAO.lista}">
+    <div class="table-responsive">
+        <table class="table table-hover table-striped table-bordered display" id="listarFuncionario">
+            <thead class="thead-dark">
                 <tr>
-                    <td>${f.idFuncionario}</td>
-                    <td>${f.nome}</td>
-                    <td><fmt:formatDate pattern="dd/MM/yyyy" value="${f.dataNasc}"/></td>
-                    <td>${f.cpf}</td>
-                    <td>${f.cargo}</td>
-                    <td>
-                        <c:if test="${f.status == 1}">Ativo</c:if>
-                        <c:if test="${f.status != 1}">Inativo</c:if>
-                    </td>
-                    <td>${f.usuario.nome}</td>
-                    <td>
-                        <a class="btn btn-primary" href="GerenciarFuncionario?acao=alterar&idFuncionario=${f.idFuncionario}">
-                            <i class="glyphicon glyphicon-pencil"></i>
-                        </a>
-
-                        <a class="btn btn-info" href="CarregarFuncionarioBeneficio?id=${f.idFuncionario}">
-                            <i class="glyphicon glyphicon-gift"></i> 
-                        </a>
-
-                        <button class="btn btn-danger" onclick="confirmarExclusao(${f.idFuncionario}, '${f.nome}')">
-                            <i class="glyphicon glyphicon-trash"></i>
-                        </button>
-                    </td>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Data de Nascimento</th>
+                    <th>CPF</th>
+                    <th>Cargo</th>
+                    <th>Status</th>
+                    <th>Usuário</th>
+                    <th class="text-center">Opções</th>
                 </tr>
-            </c:forEach>
-        </tbody>
-    </table>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Data de Nascimento</th>
+                    <th>CPF</th>
+                    <th>Cargo</th>
+                    <th>Status</th>
+                    <th>Usuário</th>
+                    <th class="text-center">Opções</th>
+                </tr>
+            </tfoot>
+
+            <jsp:useBean class="model.FuncionarioDAO" id="fDAO"/>
+            <tbody>
+                <c:forEach var="f" items="${fDAO.lista}">
+                    <tr>
+                        <td>${f.idFuncionario}</td>
+                        <td>${f.nome}</td>
+                        <td><fmt:formatDate pattern="dd/MM/yyyy" value="${f.dataNasc}"/></td>
+                        <td>${f.cpf}</td>
+                        <td>${f.cargo}</td>
+                        <td>
+                            <span class="badge ${f.status == 1 ? 'bg-success' : 'bg-secondary'}">
+                                <c:out value="${f.status == 1 ? 'Ativo' : 'Inativo'}"/>
+                            </span>
+                        </td>
+                        <td>${f.usuario.nome}</td>
+                        <td class="text-center">
+                            <a class="btn btn-sm btn-primary" href="GerenciarFuncionario?acao=alterar&idFuncionario=${f.idFuncionario}" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a class="btn btn-sm btn-warning text-dark" href="CarregarFuncionarioBeneficio?id=${f.idFuncionario}" title="Benefícios">
+                                <i class="fas fa-gift"></i>
+                            </a>
+                            <button class="btn btn-sm btn-danger" onclick="confirmarExclusao(${f.idFuncionario}, '${f.nome}')" title="Excluir">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
+    </div>
 </div>
 
-<script type="text/javascript" src="datatables/jquery.js"></script>
-<script type="text/javascript" src="datatables/jquery.dataTables.min.js"></script>
-<script type="text/javascript">
+<script src="datatables/jquery.js"></script>
+<script src="datatables/jquery.dataTables.min.js"></script>
+<script>
     $(document).ready(function(){
         $("#listarFuncionario").DataTable({
             "language": {
@@ -113,13 +114,6 @@
         if (confirm('Deseja realmente desativar o funcionário ' + nome + ' ?')) {
             location.href = 'GerenciarFuncionario?acao=excluir&idFuncionario=' + idFuncionario;
         }
-    }
-</script>
-
-<script>
-    function toggleMenu(){
-        var menu = document.getElementById("nav-links");
-        menu.classList.toggle("show");
     }
 </script>
 

@@ -14,25 +14,30 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="css/estilo.css">
+    <title>Férias - Ótica Milano</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="datatables/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <title>Lista de Férias</title>
 </head>
 <body>
 
-  
-   <%@include file="banner.jsp" %>
+    <%@include file="banner.jsp" %>
     <%@include file="menu.jsp" %>
-     <%@ include file="menu_mobile.jsp" %>   <!-- Menu mobile -->
+    <%@include file="menu_mobile.jsp" %>
 
-    <div class="content">
-        <h2>Lista de Férias</h2>
-        <a href="form_ferias.jsp" class="btn btn-primary">Novo Cadastro</a>
+    <div class="container mt-4 mb-4 content">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="text-dark">Lista de Férias</h2>
+            <a href="form_ferias.jsp" class="btn btn-outline-primary">
+                <i class="fas fa-plus"></i> Novo Cadastro
+            </a>
+        </div>
 
-        <table class="table table-hover table-striped table-bordered display" id="listarFerias">
-            <thead>
+        <table class="table table-hover table-bordered display" id="listarFerias">
+            <thead class="table-light">
                 <tr>
                     <th>Data Início</th>
                     <th>Data Fim</th>
@@ -56,21 +61,16 @@
                                 <td>${f.funcionario.nome}</td>
                             </c:if>
                             <td>
-                                <c:choose>
-                                    <c:when test="${ulogado.perfil.nome == 'Funcionario' && f.status == 'Em analise'}">
-                                        <a href="GerenciarFerias?acao=alterar&idFerias=${f.idFerias}" class="btn btn-primary">
-                                            <i class="glyphicon glyphicon-pencil"></i>
+                                <div class="btn-group" role="group">
+                                    <a href="GerenciarFerias?acao=alterar&idFerias=${f.idFerias}" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
+                                        <a href="GerenciarFerias?acao=excluir&idFerias=${f.idFerias}" class="btn btn-sm btn-danger" onclick="return confirm('Deseja excluir?');">
+                                            <i class="fas fa-trash-alt"></i>
                                         </a>
-                                    </c:when>
-                                    <c:when test="${ulogado.perfil.nome != 'Funcionario'}">
-                                        <a href="GerenciarFerias?acao=alterar&idFerias=${f.idFerias}" class="btn btn-primary">
-                                            <i class="glyphicon glyphicon-pencil"></i>
-                                        </a>
-                                        <a href="GerenciarFerias?acao=excluir&idFerias=${f.idFerias}" class="btn btn-danger" onclick="return confirm('Deseja excluir?');">
-                                            <i class="glyphicon glyphicon-trash"></i>
-                                        </a>
-                                    </c:when>
-                                </c:choose>
+                                    </c:if>
+                                </div>
                             </td>
                         </tr>
                     </c:if>

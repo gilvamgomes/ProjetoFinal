@@ -264,105 +264,33 @@ buttom:hover{
     font-size: 16px;
   }
 }
-
-
 /* === FINAL FRONT-END LOGIN === */
 /* === FINAL FRONT-END LOGIN === */
 
 
 
-/* === INCIO MENU DESKTOP LIMPO === */
-/* === INCIO MENU DESKTOP LIMPO === */
-.barra-menu {
-  background-color: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  padding: 10px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  font-family: 'Segoe UI', sans-serif;
-  flex-wrap: wrap;
-}
 
-.menu-links {
-  list-style: none;
-  display: flex;
-  gap: 16px;
-  margin: 0;
-  padding: 0;
-}
-
-.menu-links li a {
-  color: #916647;
-  font-weight: bold;
-  text-decoration: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  transition: background 0.3s;
-}
-
-.menu-links li a:hover {
-  background-color: #cdc5bf;
-  color: white;
-}
-
-.menu-lado-direito {
-  display: flex;
-  align-items: center;
-}
-
-.botao-sair {
-  color: #916647;
-  font-weight: bold;
-  text-decoration: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  background-color: transparent;
-  border: 2px solid #916647;
-  transition: 0.3s;
-}
-
-.botao-sair:hover {
-  background-color: #916647;
-  color: white;
-}
-/* === FIM MENU DESKTOP LIMPO === */
-/* === FIM MENU DESKTOP LIMPO === */
-
-
-/* === INICIO BANNER FRONT-END - ÓTICA MILANO (MANTIDO) === */
-/* === INICIO BANNER FRONT-END - ÓTICA MILANO (MANTIDO) === */
+/* === INICIO BANNER FRONT-END === */
+/* === INICIO BANNER FRONT-END === */
 .banner-topo {
-  background-color: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background-color: #916647;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 12px 20px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  box-shadow: none; /* REMOVIDO */
+  border-bottom: none; /* REMOVIDO */
+  margin-bottom: 0; /* REMOVIDO */
   flex-wrap: wrap;
   font-family: 'Segoe UI', sans-serif;
-}
-
-.banner-logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.logo-banner {
-  width: 40px;
-  height: auto;
 }
 
 .marca-banner {
   font-size: 20px;
   font-weight: bold;
-  color: #916647;
+  color: #ffffff;
   text-transform: uppercase;
+  text-decoration: none;
 }
 
 .banner-usuario {
@@ -370,7 +298,12 @@ buttom:hover{
   align-items: center;
   gap: 10px;
   font-size: 14px;
-  color: #978c8c;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.nome-usuario {
+  color: #ffffff;
   font-weight: bold;
 }
 
@@ -380,9 +313,94 @@ buttom:hover{
   border-radius: 50%;
   object-fit: cover;
 }
-/* === FIM BANNER FRONT-END - ÓTICA MILANO (MANTIDO) === */
-/* === FIM BANNER FRONT-END - ÓTICA MILANO (MANTIDO) === */
+/* === FIM BANNER FRONT-END === */
+/* === FIM BANNER FRONT-END === */
 
+
+
+/* === INICIO MENU DESKTOP === */
+/* === INICIO MENU DESKTOP === */
+/* === INICIO MENU DESKTOP RESPONSIVO COM SCROLL === */
+.barra-menu {
+  background-color: #916647;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'Segoe UI', sans-serif;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+/* Container que permite rolar o menu quando necessário */
+.menu-scroll {
+  overflow-x: auto;
+  flex: 1;
+  margin-right: 10px;
+  -ms-overflow-style: none;        /* IE */
+  scrollbar-width: none;           /* Firefox */
+}
+
+.menu-scroll::-webkit-scrollbar {
+  display: none;                   /* Chrome, Safari */
+}
+
+/* Lista de menus com scroll suave */
+.menu-links {
+  list-style: none;
+  display: flex;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.menu-links li a {
+  color: #ffffff;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 10px 14px;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+  display: inline-block;
+}
+
+.menu-links li a:hover {
+  background-color: #5c4433;
+  color: #ffffff;
+}
+
+/* Lado direito com botão sair */
+.menu-lado-direito {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.botao-sair {
+  color: #ffffff;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  background-color: transparent;
+  border: 2px solid #ffffff;
+  transition: 0.3s;
+}
+
+.botao-sair:hover {
+  background-color: #ffffff;
+  color: #3a2b20;
+}
+
+/* Esconde menu desktop no mobile */
+@media (max-width: 768px) {
+  .barra-menu {
+    display: none;
+  }
+}
+/* === FIM MENU DESKTOP === */
+/* === FIM MENU DESKTOP === */
 
 
 /* === INICIO MENU MOBILE INFERIOR (rodapé fixo) === */
@@ -392,76 +410,88 @@ buttom:hover{
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.75); /* mais translúcido */
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
   display: none;
   justify-content: space-around;
   align-items: center;
-  padding: 6px 0;
-  border-top: 1px solid #cdc5bf;
-  z-index: 1000;
+  padding: 10px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.15);
+  z-index: 9999;
 }
 
-/* === MENU COM ÍCONE EM CIMA DO TEXTO === */
+/* MENU ITEM */
 .menu-item {
   text-align: center;
   font-size: 12px;
-  color: #916647;
+  color: #000000;
   display: flex;
   flex-direction: column;
   align-items: center;
   font-weight: bold;
-  padding: 4px 6px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  transition: background-color 0.2s;
 }
 
+/* ÍCONES */
 .menu-item i {
   font-size: 20px;
   margin-bottom: 4px;
-  color: #916647;
+  color: #000000;
 }
 
-/* === MODAL DO BOTÃO MAIS === */
+/* MENU ATIVO */
+.menu-item.ativo,
+.menu-modal a.ativo {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* MODAL DO BOTÃO MAIS */
 .menu-modal {
   position: fixed;
-  top: 60px; /* altura do banner, ajusta se precisar */
-  bottom: 60px; /* altura do menu-mobile fixo */
+  top: 60px;
+  bottom: 60px;
   left: 0;
   width: 100%;
-  background-color: #ffffff;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
   padding: 20px;
   display: none;
   flex-direction: column;
   overflow-y: auto;
-  z-index: 1001;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
+  z-index: 10001;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
 }
 
+/* MODAL ATIVO */
 .menu-modal.ativo {
   display: flex;
 }
 
+/* LINKS DENTRO DO MODAL */
 .menu-modal a {
-  color: #916647;
+  color: #000000;
   font-weight: bold;
   text-decoration: none;
-  padding: 8px 12px;
-  border-radius: 6px;
+  padding: 10px 14px;
+  border-radius: 8px;
   transition: background 0.2s;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .menu-modal a:hover {
-  background-color: #f1e9e4;
+  background-color: rgba(0, 0, 0, 0.08);
 }
 
-/* === MOSTRAR APENAS NO MOBILE === */
+/* APENAS NO MOBILE */
 @media (max-width: 768px) {
   .menu-mobile {
     display: flex;
@@ -471,7 +501,203 @@ buttom:hover{
   .menu-links {
     display: none !important;
   }
+
+  body {
+    padding-bottom: 80px; /* pra garantir espaço visível pro menu */
+  }
 }
 
-/* === FIM MENU MOBILE INFERIOR (rodapé fixo) === */
 /* === FIM MENU MOBILE IFERIOR (rodapé fixo) === */
+
+
+
+/* === FUNCIONARIOS - FRONT END === */
+/* === FUNCIONARIOS - FRONT END === */
+/* === FUNCIONÁRIOS - FRONT END MODERNO E FUNCIONAL === */
+
+/* BASE GERAL */
+body {
+  background-color: #f3f2ef;
+  color: #333;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* CONTAINER EXTERNO EXCLUSIVO DO CRUD */
+.formulario-funcionario {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 16px;
+  margin-bottom: 40px;
+}
+
+/* ========== FORMULÁRIO DE FUNCIONÁRIO ========== */
+.form-funcionario {
+  background-color: #fcf8f4;
+  border-left: 6px solid #7c5c3b;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.form-funcionario h2 {
+  color: #7c5c3b;
+  font-weight: bold;
+  margin-bottom: 30px;
+  font-size: 26px;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+/* BLOCO INDIVIDUAL DE CADA CAMPO */
+.campo-form {
+  margin-bottom: 20px;
+}
+
+.form-funcionario label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.form-funcionario input,
+.form-funcionario select {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  padding: 14px 16px;
+  font-size: 17px;
+  line-height: 1.5;
+  transition: all 0.2s ease;
+  /* 🔥 Correção: removido appearance, background-color e color */
+}
+
+/* Mantém select com aparência limpa */
+.form-funcionario select option {
+  font-weight: normal;
+}
+
+.form-funcionario input:focus,
+.form-funcionario select:focus {
+  border-color: #7c5c3b;
+  box-shadow: 0 0 0 2px rgba(145, 102, 71, 0.2);
+  outline: none;
+}
+
+/* ========== BOTÕES DO FORMULÁRIO ========== */
+.botoes-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+  padding-bottom: 10px;
+}
+
+.botoes-form .btn {
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  border: none;
+  font-size: 16px;
+}
+
+.botoes-form .btn-success {
+  background-color: #2e7d32;
+  color: white;
+}
+
+.botoes-form .btn-success:hover {
+  background-color: #27662a;
+}
+
+.botoes-form .btn-warning {
+  background-color: #ffeb3b;
+  color: #333;
+}
+
+.botoes-form .btn-warning:hover {
+  background-color: #fbc02d;
+}
+
+/* ========== LISTAGEM DE FUNCIONÁRIOS ========== */
+.lista-funcionario {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.lista-funcionario h2 {
+  color: #7c5c3b;
+  font-weight: bold;
+  margin-bottom: 25px;
+  font-size: 24px;
+  text-align: center;
+}
+
+.lista-funcionario table {
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.lista-funcionario th {
+  background-color: #7c5c3b !important;
+  color: white;
+}
+
+.lista-funcionario td {
+  vertical-align: middle;
+}
+
+.lista-funcionario .btn-warning {
+  background-color: #ffeb3b;
+  color: black;
+}
+
+.lista-funcionario .btn-success {
+  background-color: #2e7d32;
+  color: white;
+}
+
+.lista-funcionario .btn-danger {
+  background-color: #e53935;
+  color: white;
+}
+
+/* ========== RESPONSIVIDADE MOBILE ========== */
+@media (max-width: 768px) {
+  .form-funcionario {
+    padding: 20px;
+  }
+
+  .form-funcionario h2,
+  .lista-funcionario h2 {
+    font-size: 22px;
+    text-align: center;
+  }
+
+  .botoes-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .botoes-form .btn {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  .lista-funcionario {
+    padding: 15px;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+  }
+}
+
