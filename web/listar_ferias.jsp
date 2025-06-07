@@ -19,77 +19,67 @@
     
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/estilo.css">
-    <link rel="stylesheet" href="datatables/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 
-    <%@include file="banner.jsp" %>
-    <%@include file="menu.jsp" %>
-    <%@include file="menu_mobile.jsp" %>
+<%@include file="banner.jsp" %>
+<%@include file="menu.jsp" %>
+<%@include file="menu_mobile.jsp" %>
 
-    <div class="container mt-4 mb-4 content">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="text-dark">Lista de Férias</h2>
-            <a href="form_ferias.jsp" class="btn btn-outline-primary">
-                <i class="fas fa-plus"></i> Novo Cadastro
-            </a>
-        </div>
-
-        <table class="table table-hover table-bordered display" id="listarFerias">
-            <thead class="table-light">
-                <tr>
-                    <th>Data Início</th>
-                    <th>Data Fim</th>
-                    <th>Status</th>
-                    <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
-                        <th>Funcionário</th>
-                    </c:if>
-                    <th>Opções</th>
-                </tr>
-            </thead>
+<div class="container lista-funcionario">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="clearfix" style="margin-bottom: 20px;">
+                <h2 class="pull-left"><i class="fa fa-calendar"></i> Férias</h2>
+                <a href="form_ferias.jsp" class="btn btn-primary pull-right" style="margin-top: 10px;">
+                    <i class="fa fa-plus"></i> Novo Cadastro
+                </a>
+            </div>
 
             <jsp:useBean class="model.FeriasDAO" id="fDAO"/>
-            <tbody>
+            <div class="row">
                 <c:forEach var="f" items="${fDAO.lista}">
                     <c:if test="${ulogado.perfil.nome == 'Administrador' || ulogado.perfil.nome == 'Gerente' || f.funcionario.idFuncionario == ulogado.funcionario.idFuncionario}">
-                        <tr>
-                            <td><fmt:formatDate value="${f.dataInicio}" pattern="dd/MM/yyyy"/></td>
-                            <td><fmt:formatDate value="${f.dataFim}" pattern="dd/MM/yyyy"/></td>
-                            <td>${f.status}</td>
-                            <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
-                                <td>${f.funcionario.nome}</td>
-                            </c:if>
-                            <td>
-                                <div class="btn-group" role="group">
-                                    <a href="GerenciarFerias?acao=alterar&idFerias=${f.idFerias}" class="btn btn-sm btn-primary">
-                                        <i class="fas fa-edit"></i>
+                        <div class="col-sm-6 col-xs-12">
+                            <div class="card-funcionario">
+                                <h4><i class="fa fa-plane"></i> Férias</h4>
+                                <p><strong>Data Início:</strong> <fmt:formatDate value="${f.dataInicio}" pattern="dd/MM/yyyy"/></p>
+                                <p><strong>Data Fim:</strong> <fmt:formatDate value="${f.dataFim}" pattern="dd/MM/yyyy"/></p>
+                                <p><strong>Status:</strong> ${f.status}</p>
+
+                                <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
+                                    <p><strong>Funcionário:</strong> ${f.funcionario.nome}</p>
+                                </c:if>
+
+                                <a href="GerenciarFerias?acao=alterar&idFerias=${f.idFerias}" class="btn btn-primary btn-sm">
+                                    <i class="fa fa-edit"></i> Editar
+                                </a>
+                                <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
+                                    <a href="GerenciarFerias?acao=excluir&idFerias=${f.idFerias}" class="btn btn-danger btn-sm" onclick="return confirm('Deseja excluir?');">
+                                        <i class="fa fa-trash"></i> Excluir
                                     </a>
-                                    <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
-                                        <a href="GerenciarFerias?acao=excluir&idFerias=${f.idFerias}" class="btn btn-sm btn-danger" onclick="return confirm('Deseja excluir?');">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </a>
-                                    </c:if>
-                                </div>
-                            </td>
-                        </tr>
+                                </c:if>
+                            </div>
+                        </div>
                     </c:if>
                 </c:forEach>
-            </tbody>
-        </table>
+            </div>
+        </div>
     </div>
+</div>
 
-    <script src="datatables/jquery.js"></script>
-    <script src="datatables/jquery.dataTables.min.js"></script>
-    <script>
-        $(document).ready(function(){
-            $("#listarFerias").DataTable({
-                "language": {
-                    "url": "datatables/portugues.json"
-                }
-            });
+<script src="datatables/jquery.js"></script>
+<script src="datatables/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $("#listarFerias").DataTable({
+            "language": {
+                "url": "datatables/portugues.json"
+            }
         });
-    </script>
+    });
+</script>
 
 </body>
 </html>
