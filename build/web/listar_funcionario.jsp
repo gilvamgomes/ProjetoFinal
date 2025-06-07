@@ -15,8 +15,9 @@
     <meta name="viewport" content="width=device-width ,initial-scale=1.0">
     <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="datatables/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Font Awesome 4.7 compatível com Bootstrap 3 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <title>Funcionários</title>
 </head>
 <body>
@@ -25,93 +26,60 @@
 <%@include file="menu.jsp" %>
 <%@include file="menu_mobile.jsp" %>
 
-<div class="container mt-5 lista-funcionario">
-    <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-        <h2><i class="fas fa-users"></i> Funcionários</h2>
-        <a href="form_funcionario.jsp" class="btn btn-success">
-            <i class="fas fa-user-plus"></i> Novo Cadastro
-        </a>
-    </div>
+<div class="container lista-funcionario">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="clearfix" style="margin-bottom: 20px;">
+                <h2 class="pull-left"><i class="fa fa-users"></i> Funcionários</h2>
+                <a href="form_funcionario.jsp" class="btn btn-primary pull-right" style="margin-top: 10px;">
+                    <i class="fa fa-user-plus"></i> Novo Cadastro
+                </a>
+            </div>
 
-    <c:if test="${param.status == 'beneficio_sucesso'}">
-        <div class="alert alert-success text-center">
-            Benefícios atualizados com sucesso!
-        </div>
-    </c:if>
-
-    <div class="table-responsive">
-        <table class="table table-hover table-striped table-bordered display" id="listarFuncionario">
-            <thead class="thead-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Data de Nascimento</th>
-                    <th>CPF</th>
-                    <th>Cargo</th>
-                    <th>Status</th>
-                    <th>Usuário</th>
-                    <th class="text-center">Opções</th>
-                </tr>
-            </thead>
-            <tfoot>
-                <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Data de Nascimento</th>
-                    <th>CPF</th>
-                    <th>Cargo</th>
-                    <th>Status</th>
-                    <th>Usuário</th>
-                    <th class="text-center">Opções</th>
-                </tr>
-            </tfoot>
+            <c:if test="${param.status == 'beneficio_sucesso'}">
+                <div class="alert alert-success text-center">
+                    Benefícios atualizados com sucesso!
+                </div>
+            </c:if>
 
             <jsp:useBean class="model.FuncionarioDAO" id="fDAO"/>
-            <tbody>
+
+            <div class="row">
                 <c:forEach var="f" items="${fDAO.lista}">
-                    <tr>
-                        <td>${f.idFuncionario}</td>
-                        <td>${f.nome}</td>
-                        <td><fmt:formatDate pattern="dd/MM/yyyy" value="${f.dataNasc}"/></td>
-                        <td>${f.cpf}</td>
-                        <td>${f.cargo}</td>
-                        <td>
-                            <span class="badge ${f.status == 1 ? 'bg-success' : 'bg-secondary'}">
-                                <c:out value="${f.status == 1 ? 'Ativo' : 'Inativo'}"/>
-                            </span>
-                        </td>
-                        <td>${f.usuario.nome}</td>
-                        <td class="text-center">
-                            <a class="btn btn-sm btn-primary" href="GerenciarFuncionario?acao=alterar&idFuncionario=${f.idFuncionario}" title="Editar">
-                                <i class="fas fa-edit"></i>
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="card-funcionario">
+                            <h4><i class="fa fa-id-card-o"></i> ${f.nome}</h4>
+                            <p><strong>ID:</strong> ${f.idFuncionario}</p>
+                            <p><strong>Data Nasc.:</strong> <fmt:formatDate pattern="dd/MM/yyyy" value="${f.dataNasc}"/></p>
+                            <p><strong>CPF:</strong> ${f.cpf}</p>
+                            <p><strong>Cargo:</strong> ${f.cargo}</p>
+                            <p><strong>Status:</strong>
+                                <span class="label ${f.status == 1 ? 'label-success' : 'label-default'}">
+                                    <c:out value="${f.status == 1 ? 'Ativo' : 'Inativo'}"/>
+                                </span>
+                            </p>
+                            <p><strong>Usuário:</strong> ${f.usuario.nome}</p>
+
+                            <a class="btn btn-primary btn-sm" href="GerenciarFuncionario?acao=alterar&idFuncionario=${f.idFuncionario}" title="Editar">
+                                <i class="fa fa-edit"></i> Editar
                             </a>
-                            <a class="btn btn-sm btn-warning text-dark" href="CarregarFuncionarioBeneficio?id=${f.idFuncionario}" title="Benefícios">
-                                <i class="fas fa-gift"></i>
+                            <a class="btn btn-info btn-sm" href="CarregarFuncionarioBeneficio?id=${f.idFuncionario}" title="Benefícios">
+                                <i class="fa fa-gift"></i> Benefícios
                             </a>
-                            <button class="btn btn-sm btn-danger" onclick="confirmarExclusao(${f.idFuncionario}, '${f.nome}')" title="Excluir">
-                                <i class="fas fa-trash-alt"></i>
+                            <button class="btn btn-danger btn-sm" onclick="confirmarExclusao(${f.idFuncionario}, '${f.nome}')" title="Excluir">
+                                <i class="fa fa-trash"></i> Excluir
                             </button>
-                        </td>
-                    </tr>
+                        </div>
+                    </div>
                 </c:forEach>
-            </tbody>
-        </table>
+            </div>
+        </div>
     </div>
 </div>
 
-<script src="datatables/jquery.js"></script>
-<script src="datatables/jquery.dataTables.min.js"></script>
 <script>
-    $(document).ready(function(){
-        $("#listarFuncionario").DataTable({
-            "language": {
-                "url": "datatables/portugues.json"
-            }
-        });
-    });
-
     function confirmarExclusao(idFuncionario, nome) {
-        if (confirm('Deseja realmente desativar o funcionário ' + nome + ' ?')) {
+        if (confirm('Deseja realmente desativar o funcionário ' + nome + '?')) {
             location.href = 'GerenciarFuncionario?acao=excluir&idFuncionario=' + idFuncionario;
         }
     }

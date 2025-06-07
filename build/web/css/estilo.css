@@ -1,135 +1,3 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
-/* 
-    Created on : 17/02/2025, 20:37:59
-    Author     : adm_pfelacio
-*/
-
-body{
-    font-family: Arial, sans-serif;
-    margin:0;
-    padding:0;
-}
-
-.banner{
-    width: 100%;
-    height: 180px;
-    overflow: hidden;
-}
-
-.banner img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    background-color: #000;
-
-}
-
-/*menu de navegacao*/
-nav{
-    background-color: #333;
-}
-
-
-
-nav ul{
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    justify-content: space-around;
-}
-
-nav ul li{
-    position:relative;
-}
-
-nav ul li a{
-    display: block;
-    padding: 14px 20px;
-    color:white;
-    text-decoration: none;
-    text-align: center;
-}
-
-nav ul li a:hover{
-    background-color: #575757;
-}
-
-.menu-icon{
-    display:none;
-    cursor: pointer;
-    font-size:30px;
-    color:white;
-    padding: 14px;
-}
-
-@media(max-width:768px){
-    .menu-icon{
-        display:block;
-    }
-
-
-nav ul{
-    display: none;
-    flex-direction: column;
-    width: 100%;
-}
-nav ul li a{
-    padding: 10px;
-    text-align: left;
-}
-nav ul.show{
-    display: flex;
- }
-}
-.content{
-    padding: 20px;
-}
-/*Formularios*/
-form{
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 20px;
-    background: #f3f3f3;
-    border-radius: 8px;
-}
-
-label{
-    display: block;
-    margin-top:20px;
-    font-weight: bold;
-}
-input[type="text"],
-input[type="email"],
-textarea{
-    width: 100%;
-    padding:8px;
-    margin-top:5px;
-    box-sizing: border-box;
-    border:2px solid #ccc;
-    border-radius: 4px;
-    height: 100%;
-}
-buttom form{
-    display:block;
-    width: 100%;
-    padding:10px;
-    margin-top: 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius:4px;
-    cursor: pointer;
-}
-
-buttom:hover{
-    background-color: #45a049;
-}
-
 /* === INICIO FRONT-END LOGIN === */
 /* === INICIO FRONT-END LOGIN === */
 /* === FUNDO COM IMAGEM === */
@@ -320,7 +188,6 @@ buttom:hover{
 
 /* === INICIO MENU DESKTOP === */
 /* === INICIO MENU DESKTOP === */
-/* === INICIO MENU DESKTOP RESPONSIVO COM SCROLL === */
 .barra-menu {
   background-color: #916647;
   padding: 10px 20px;
@@ -511,98 +378,103 @@ buttom:hover{
 
 
 
-/* === FUNCIONARIOS - FRONT END === */
-/* === FUNCIONARIOS - FRONT END === */
-/* === FUNCIONÁRIOS - FRONT END MODERNO E FUNCIONAL === */
-
-/* BASE GERAL */
+/* === FORM/LISTAR ESTILO GLOBAL === */
+/* === FORM/LISTAR ESTILO GLOBAL === */
 body {
   background-color: #f3f2ef;
   color: #333;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding-bottom: 80px; /* garante espaço pro menu mobile */
 }
 
-/* CONTAINER EXTERNO EXCLUSIVO DO CRUD */
+/* === FORMULÁRIO DE FUNCIONÁRIO === */
 .formulario-funcionario {
-  padding: 20px;
+  padding: 30px;
   background-color: #f9f9f9;
   border-radius: 16px;
   margin-bottom: 40px;
 }
 
-/* ========== FORMULÁRIO DE FUNCIONÁRIO ========== */
 .form-funcionario {
   background-color: #fcf8f4;
   border-left: 6px solid #7c5c3b;
   padding: 40px;
   border-radius: 16px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
   width: 100%;
+  transition: all 0.3s ease;
 }
 
 .form-funcionario h2 {
   color: #7c5c3b;
   font-weight: bold;
-  margin-bottom: 30px;
   font-size: 26px;
-  letter-spacing: 0.5px;
+  margin-bottom: 30px;
   text-align: center;
+  letter-spacing: 0.5px;
 }
 
-/* BLOCO INDIVIDUAL DE CADA CAMPO */
-.campo-form {
+.grupo-campos {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
   margin-bottom: 20px;
 }
 
-.form-funcionario label {
+.campo-form {
+  flex: 1 1 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.campo-form label {
   font-weight: 600;
   margin-bottom: 6px;
+}
+
+.campo-form input,
+.campo-form select {
   display: block;
-}
-
-.form-funcionario input,
-.form-funcionario select {
   width: 100%;
-  border-radius: 12px;
-  border: 1px solid #ccc;
-  padding: 14px 16px;
-  font-size: 17px;
+  padding: 10px 14px;
+  font-size: 15px;
   line-height: 1.5;
-  transition: all 0.2s ease;
-  /* 🔥 Correção: removido appearance, background-color e color */
+  height: 48px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  appearance: none;
 }
 
-/* Mantém select com aparência limpa */
-.form-funcionario select option {
+.campo-form select option {
   font-weight: normal;
+  color: #333;
 }
 
-.form-funcionario input:focus,
-.form-funcionario select:focus {
+.campo-form input:focus,
+.campo-form select:focus {
   border-color: #7c5c3b;
-  box-shadow: 0 0 0 2px rgba(145, 102, 71, 0.2);
+  box-shadow: 0 0 4px rgba(145, 102, 71, 0.2);
   outline: none;
 }
 
-/* ========== BOTÕES DO FORMULÁRIO ========== */
 .botoes-form {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 20px;
-  padding-bottom: 10px;
+  margin-top: 30px;
 }
 
 .botoes-form .btn {
-  padding: 14px 28px;
+  padding: 12px 28px;
   border-radius: 12px;
   font-weight: bold;
-  transition: all 0.3s ease;
-  border: none;
   font-size: 16px;
+  border: none;
+  transition: all 0.3s ease;
 }
 
 .botoes-form .btn-success {
@@ -623,63 +495,10 @@ body {
   background-color: #fbc02d;
 }
 
-/* ========== LISTAGEM DE FUNCIONÁRIOS ========== */
-.lista-funcionario {
-  background-color: #ffffff;
-  padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-.lista-funcionario h2 {
-  color: #7c5c3b;
-  font-weight: bold;
-  margin-bottom: 25px;
-  font-size: 24px;
-  text-align: center;
-}
-
-.lista-funcionario table {
-  border-radius: 12px;
-  overflow: hidden;
-  background-color: white;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-}
-
-.lista-funcionario th {
-  background-color: #7c5c3b !important;
-  color: white;
-}
-
-.lista-funcionario td {
-  vertical-align: middle;
-}
-
-.lista-funcionario .btn-warning {
-  background-color: #ffeb3b;
-  color: black;
-}
-
-.lista-funcionario .btn-success {
-  background-color: #2e7d32;
-  color: white;
-}
-
-.lista-funcionario .btn-danger {
-  background-color: #e53935;
-  color: white;
-}
-
-/* ========== RESPONSIVIDADE MOBILE ========== */
+/* === RESPONSIVO - FORMULÁRIO === */
 @media (max-width: 768px) {
-  .form-funcionario {
-    padding: 20px;
-  }
-
-  .form-funcionario h2,
-  .lista-funcionario h2 {
-    font-size: 22px;
-    text-align: center;
+  .grupo-campos {
+    flex-direction: column;
   }
 
   .botoes-form {
@@ -687,17 +506,81 @@ body {
     align-items: stretch;
   }
 
-  .botoes-form .btn {
-    width: 100%;
-    font-size: 16px;
-  }
-
-  .lista-funcionario {
-    padding: 15px;
-  }
-
-  .table-responsive {
-    overflow-x: auto;
+  .form-funcionario h2 {
+    font-size: 22px;
   }
 }
+
+/* === LISTAR FUNCIONÁRIO - ESTILO DE CARD === */
+.card-funcionario {
+  background-color: #fefaf5;
+  border: 1px solid #d3c4b3;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.card-funcionario:hover {
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+}
+
+.card-funcionario h4 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #7c5c3b;
+  margin-bottom: 12px;
+}
+
+.card-funcionario p {
+  font-size: 14px;
+  margin: 4px 0;
+}
+
+.card-funcionario .btn {
+  margin-top: 10px;
+  margin-right: 5px;
+  padding: 6px 12px;
+  font-size: 13px;
+  border-radius: 6px;
+}
+
+/* Badges compatíveis com Bootstrap 3 */
+.card-funcionario .label {
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 10px;
+  display: inline-block;
+}
+
+.label-success {
+  background-color: #2e7d32;
+  color: #fff;
+}
+
+.label-default {
+  background-color: #aaa;
+  color: #fff;
+}
+
+/* === RESPONSIVO - CARDS === */
+@media (max-width: 768px) {
+  .card-funcionario {
+    margin-bottom: 30px;
+  }
+
+  .card-funcionario .btn {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .card-funcionario .btn:last-child {
+    margin-bottom: 0;
+  }
+}
+
+
+/* === FIM FORM/LISTAR ESTILO GLOBAL === */
+/* === FIM FORM/LISTAR ESTILO GLOBAL === */
 

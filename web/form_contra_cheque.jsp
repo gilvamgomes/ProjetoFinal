@@ -23,33 +23,46 @@
 </head>
 <body>
 
-   
-   <%@include file="banner.jsp" %>
+    <%@include file="banner.jsp" %>
     <%@include file="menu.jsp" %>
-     <%@ include file="menu_mobile.jsp" %>   <!-- Menu mobile -->
+    <%@ include file="menu_mobile.jsp" %>
 
-    <div class="content">
-        <h2>Cadastrar Contra-Cheque</h2>
-        <form action="GerenciarContraCheque" method="POST">
-            <legend>Formulário de Contra-Cheque</legend>
-            
+    <div class="formulario-funcionario">
+        <form action="GerenciarContraCheque" method="POST" class="form-funcionario">
+            <h2>Cadastro de Contra-Cheque</h2>
+
             <input type="hidden" id="idContraCheque" name="idContraCheque" value="${c.idContraCheque}"/>
-            
-            <label for="valorBruto" class="control-label">Valor Bruto</label>
-            <input type="number" step="0.01" class="form-control" id="valorBruto" name="valorBruto" required value="${c.valorBruto}">
-            
-            <label for="descontos" class="control-label">Descontos</label>
-            <input type="number" step="0.01" class="form-control" id="descontos" name="descontos" required value="${c.descontos}">
-            
-            <label for="valorLiquido" class="control-label">Valor Líquido</label>
-            <input type="number" step="0.01" class="form-control" id="valorLiquido" name="valorLiquido" required value="${c.valorLiquido}">
-            
-            <label for="funcionarioId" class="control-label">ID do Funcionário</label>
-            <input type="number" class="form-control" id="funcionarioId" name="funcionarioId" required value="${c.funcionarioId}">
 
-            <br>
-            <button class="btn btn-success">Gravar</button>
-            <a href="listar_contra_cheque.jsp" class="btn btn-warning">Voltar</a>
+            <div class="grupo-campos">
+                <div class="campo-form">
+                    <label for="valorBruto">Valor Bruto</label>
+                    <input type="number" step="0.01" id="valorBruto" name="valorBruto" value="${c.valorBruto}" required />
+                </div>
+
+                <div class="campo-form">
+                    <label for="descontos">Descontos</label>
+                    <input type="number" step="0.01" id="descontos" name="descontos" value="${c.descontos}" required />
+                </div>
+
+                <div class="campo-form">
+                    <label for="valorLiquido">Valor Líquido</label>
+                    <input type="number" step="0.01" id="valorLiquido" name="valorLiquido" value="${c.valorLiquido}" required />
+                </div>
+
+                <div class="campo-form">
+                    <label for="funcionarioId">ID do Funcionário</label>
+                    <input type="number" id="funcionarioId" name="funcionarioId" value="${c.funcionarioId}" required />
+                </div>
+            </div>
+
+            <div class="botoes-form">
+                <button type="submit" class="btn btn-success">
+                    <i class="fa fa-save"></i> Gravar
+                </button>
+                <a href="listar_contra_cheque.jsp" class="btn btn-warning">
+                    <i class="fa fa-arrow-left"></i> Voltar
+                </a>
+            </div>
         </form>
     </div>
 
