@@ -140,6 +140,9 @@
 
 /* === INICIO BANNER FRONT-END === */
 /* === INICIO BANNER FRONT-END === */
+
+/* === INICIO BANNER FRONT-END === */
+/* === INICIO BANNER FRONT-END === */
 .banner-topo {
   background-color: #916647;
   display: flex;
@@ -181,6 +184,32 @@
   border-radius: 50%;
   object-fit: cover;
 }
+/* === FIXAR BANNER NO TOPO === */
+.banner-topo {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+}
+
+/* === GARANTIR ESPAÇO DO BANNER NO TOPO === */
+body {
+  padding-top: 60px; /* ou ajuste conforme a altura real do seu banner */
+}
+
+/* === REMOVER EFEITOS VISUAIS DO LINK DA MARCA SEM PERDER CLICABILIDADE === */
+.marca-banner {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.marca-banner:hover,
+.marca-banner:focus,
+.marca-banner:active {
+  text-decoration: none;
+  color: #ffffff; /* mantém branco mesmo no hover */
+}
+
 /* === FIM BANNER FRONT-END === */
 /* === FIM BANNER FRONT-END === */
 
@@ -266,6 +295,7 @@
     display: none;
   }
 }
+/* === FIM MENU DESKTOP === */
 /* === FIM MENU DESKTOP === */
 /* === FIM MENU DESKTOP === */
 
