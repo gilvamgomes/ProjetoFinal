@@ -92,4 +92,38 @@ public class MenuDAO extends DataBaseDAO {
             return false;
         }
     }
+    
+    //Barra de busca
+    public List<Menu> buscarPorTermo(String termo) throws Exception {
+    List<Menu> lista = new ArrayList<>();
+    String sql = "SELECT * FROM menu WHERE " +
+                 "CAST(idMenu AS CHAR) LIKE ? OR " +
+                 "nome LIKE ? OR " +
+                 "link LIKE ? OR " +
+                 "icone LIKE ? OR " +
+                 "CAST(exibir AS CHAR) LIKE ?";
+
+    this.conectar();
+    try (PreparedStatement pstm = conn.prepareStatement(sql)) {
+        String filtro = "%" + termo + "%";
+        for (int i = 1; i <= 5; i++) {
+            pstm.setString(i, filtro);
+        }
+
+        ResultSet rs = pstm.executeQuery();
+        while (rs.next()) {
+            Menu m = new Menu();
+            m.setIdMenu(rs.getInt("idMenu"));
+            m.setNome(rs.getString("nome"));
+            m.setLink(rs.getString("link"));
+            m.setIcone(rs.getString("icone"));
+            m.setExibir(rs.getInt("exibir"));
+            lista.add(m);
+        }
+    } finally {
+        this.desconectar();
+    }
+    return lista;
+}
+
 }

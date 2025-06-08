@@ -147,4 +147,46 @@ public class FeriasDAO extends DataBaseDAO {
             return false;
         }
     }
+    
+    //Barra de busca
+    public List<Ferias> buscarPorTermo(String termo) throws Exception {
+    List<Ferias> lista = new ArrayList<>();
+
+    String sql = "SELECT f.*, u.nome as nomeFuncionario FROM ferias f " +
+                 "JOIN funcionario u ON f.funcionario_idFfuncionario = u.idFfuncionario " +
+                 "WHERE CAST(f.idFerias AS CHAR) LIKE ? " +
+                 "OR DATE_FORMAT(f.dataInicio, '%d/%m/%Y') LIKE ? " +
+                 "OR DATE_FORMAT(f.dataFim, '%d/%m/%Y') LIKE ? " +
+                 "OR CAST(f.status AS CHAR) LIKE ? " +
+                 "OR u.nome LIKE ?";
+
+    this.conectar();
+    try (PreparedStatement pstm = conn.prepareStatement(sql)) {
+        String filtro = "%" + termo + "%";
+        for (int i = 1; i <= 5; i++) {
+            pstm.setString(i, filtro);
+        }
+
+        ResultSet rs = pstm.executeQuery();
+        while (rs.next()) {
+            Ferias f = new Ferias();
+            f.setIdFerias(rs.getInt("idFerias"));
+            f.setDataInicio(rs.getDate("dataInicio"));
+            f.setDataFim(rs.getDate("dataFim"));
+            f.setStatus(rs.getString("status"));
+
+            Funcionario func = new Funcionario();
+            func.setIdFuncionario(rs.getInt("funcionario_idFfuncionario"));
+            func.setNome(rs.getString("nomeFuncionario"));
+            f.setFuncionario(func);
+
+            lista.add(f);
+        }
+    } finally {
+        this.desconectar();
+    }
+
+    return lista;
+}
+
 }

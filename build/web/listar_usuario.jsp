@@ -28,17 +28,42 @@
 <div class="container lista-funcionario">
     <div class="row">
         <div class="col-xs-12">
-            <div class="clearfix" style="margin-bottom: 20px;">
-                <h2 class="pull-left"><i class="fa fa-user"></i> Usuários</h2>
-                <a href="form_usuario.jsp" class="btn btn-primary pull-right" style="margin-top: 10px;">
-                    <i class="fa fa-plus"></i> Novo Cadastro
-                </a>
-            </div>
+            <br>
+            <!-- TOPO: busca à esquerda, botão à direita -->
+            <div class="clearfix" style="margin-bottom: 10px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                    
+                    <!-- Barra de busca -->
+                    <form method="get" id="formBusca" style="margin: 0;">
+                        <input 
+                            type="text" 
+                            name="busca" 
+                            id="campoBusca"
+                            value="${param.busca}" 
+                            class="form-control" 
+                            placeholder="Buscar usuário..." 
+                            style="min-width: 220px; border-radius: 20px; padding: 6px 14px; height: 38px;"
+                            autofocus
+                        >
+                    </form>
 
-            <jsp:useBean class="model.UsuarioDAO" id="uDAO" />
+                    <!-- Botão Novo Cadastro -->
+                    <a href="form_usuario.jsp" class="btn btn-primary" style="height: 38px;">
+                        <i class="fa fa-plus"></i> Novo Cadastro
+                    </a>
+                </div>
+
+                <!-- Título centralizado -->
+                <div style="text-align: center; margin-top: 20px;">
+                    <h2 style="margin: 0;"><i class="fa fa-user"></i> Usuários</h2>
+                </div>
+            </div>
+                     <br>
+            <jsp:useBean class="model.UsuarioDAO" id="uDAO"/>
+            <c:set var="lista" value="${empty param.busca ? uDAO.lista : uDAO.buscarPorTermo(param.busca)}"/>
 
             <div class="row">
-                <c:forEach var="u" items="${uDAO.lista}">
+                <c:forEach var="u" items="${lista}">
                     <div class="col-sm-6 col-xs-12">
                         <div class="card-funcionario">
                             <h4><i class="fa fa-user-circle"></i> ${u.nome}</h4>
@@ -70,6 +95,25 @@
             location.href = 'GerenciarUsuario?acao=excluir&idUsuario=' + idUsuario;
         }
     }
+
+    // Delay de busca automática com persistência do cursor
+    let timeout = null;
+    const campo = document.getElementById("campoBusca");
+
+    if (localStorage.getItem("posCursor") !== null) {
+        const pos = parseInt(localStorage.getItem("posCursor"));
+        campo.focus();
+        campo.setSelectionRange(pos, pos);
+        localStorage.removeItem("posCursor");
+    }
+
+    campo.addEventListener("input", function () {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            localStorage.setItem("posCursor", campo.selectionStart);
+            document.getElementById("formBusca").submit();
+        }, 500);
+    });
 </script>
 
 </body>

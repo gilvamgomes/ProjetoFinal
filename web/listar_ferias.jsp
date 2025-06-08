@@ -1,6 +1,5 @@
 <%@page import="model.Usuario" %>
 <%@page import="controller.GerenciarLogin" %>
-
 <%
     Usuario ulogado = GerenciarLogin.verificarAcesso(request, response);
     request.setAttribute("ulogado", ulogado);
@@ -30,16 +29,42 @@
 <div class="container lista-funcionario">
     <div class="row">
         <div class="col-xs-12">
-            <div class="clearfix" style="margin-bottom: 20px;">
-                <h2 class="pull-left"><i class="fa fa-calendar"></i> Férias</h2>
-                <a href="form_ferias.jsp" class="btn btn-primary pull-right" style="margin-top: 10px;">
-                    <i class="fa fa-plus"></i> Novo Cadastro
-                </a>
-            </div>
+            <br>
+            <!-- TOPO: busca à esquerda, botão à direita -->
+            <div class="clearfix" style="margin-bottom: 10px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                    
+                    <!-- Barra de busca funcional -->
+                    <form method="get" id="formBusca" style="margin: 0;">
+                        <input 
+                            type="text" 
+                            name="busca" 
+                            id="campoBusca"
+                            value="${param.busca}" 
+                            class="form-control" 
+                            placeholder="Buscar férias..." 
+                            style="min-width: 220px; border-radius: 20px; padding: 6px 14px; height: 38px;"
+                            autofocus
+                        >
+                    </form>
 
+                    <!-- Botão Novo Cadastro -->
+                    <a href="form_ferias.jsp" class="btn btn-primary" style="height: 38px;">
+                        <i class="fa fa-plus"></i> Novo Cadastro
+                    </a>
+                </div>
+
+                <!-- Título centralizado -->
+                <div style="text-align: center; margin-top: 20px;">
+                    <h2 style="margin: 0;"><i class="fa fa-calendar"></i> Férias</h2>
+                </div>
+            </div>
+                  <br>
             <jsp:useBean class="model.FeriasDAO" id="fDAO"/>
+            <c:set var="lista" value="${empty param.busca ? fDAO.lista : fDAO.buscarPorTermo(param.busca)}"/>
+
             <div class="row">
-                <c:forEach var="f" items="${fDAO.lista}">
+                <c:forEach var="f" items="${lista}">
                     <c:if test="${ulogado.perfil.nome == 'Administrador' || ulogado.perfil.nome == 'Gerente' || f.funcionario.idFuncionario == ulogado.funcionario.idFuncionario}">
                         <div class="col-sm-6 col-xs-12">
                             <div class="card-funcionario">
@@ -69,15 +94,23 @@
     </div>
 </div>
 
-<script src="datatables/jquery.js"></script>
-<script src="datatables/jquery.dataTables.min.js"></script>
 <script>
-    $(document).ready(function(){
-        $("#listarFerias").DataTable({
-            "language": {
-                "url": "datatables/portugues.json"
-            }
-        });
+    let timeout = null;
+    const campo = document.getElementById("campoBusca");
+
+    if (localStorage.getItem("posCursor") !== null) {
+        const pos = parseInt(localStorage.getItem("posCursor"));
+        campo.focus();
+        campo.setSelectionRange(pos, pos);
+        localStorage.removeItem("posCursor");
+    }
+
+    campo.addEventListener("input", function () {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            localStorage.setItem("posCursor", campo.selectionStart);
+            document.getElementById("formBusca").submit();
+        }, 500);
     });
 </script>
 
