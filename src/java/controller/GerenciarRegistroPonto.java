@@ -199,13 +199,11 @@ public class GerenciarRegistroPonto extends HttpServlet {
                     Funcionario funcionarioLogado = fdao.getFuncionarioPorUsuario(ulogado.getIdUsuario());
                     if (funcionarioLogado != null) {
                         String msg = rdao.registrarPonto(funcionarioLogado.getIdFuncionario());
-                        request.setAttribute("mensagem", msg);
-                        request.setAttribute("ulogado", ulogado);
-                        request.setAttribute("lista", rdao.listarPorFuncionario(funcionarioLogado.getIdFuncionario()));
-                        request.getRequestDispatcher("listar_registro_ponto.jsp").forward(request, response);
-                        return;
+                        session.setAttribute("mensagem", msg); // <-- agora vai!
                     }
                 }
+                response.sendRedirect("GerenciarRegistroPonto?acao=listar");
+                return;
             }
 
             response.sendRedirect("GerenciarRegistroPonto?acao=listar");
