@@ -41,29 +41,56 @@
 <div class="container lista-funcionario">
     <div class="row">
         <div class="col-xs-12">
-            <div class="clearfix" style="margin-bottom: 20px;">
-                <h2 class="pull-left"><i class="fa fa-clock-o"></i> Registro de Ponto</h2>
-                <div class="pull-right">
-                    <c:if test="${ulogado.perfil.nome == 'Funcionario' || ulogado.perfil.nome == 'Gerente' || ulogado.perfil.nome == 'Administrador'}">
-                        <form action="GerenciarRegistroPonto" method="post" style="display:inline-block;">
-                            <input type="hidden" name="acao" value="registrarPonto" />
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fa fa-sign-in"></i> Bater Ponto
-                            </button>
-                        </form>
-                    </c:if>
-                    <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
-                        <a href="form_registro_ponto.jsp" class="btn btn-success">
-                            <i class="fa fa-plus"></i> Novo Registro
-                        </a>
-                    </c:if>
+            <br>
+
+            <!-- TOPO: barra de busca à esquerda, botões à direita -->
+            <div class="clearfix" style="margin-bottom: 10px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                    
+                    <!-- Barra de busca -->
+                    <form method="get" id="formBusca" style="margin: 0;">
+                        <input 
+                            type="text" 
+                            id="filtroBusca"
+                            class="form-control" 
+                            placeholder="Buscar registro..." 
+                            style="min-width: 220px; border-radius: 20px; padding: 6px 14px; height: 38px;"
+                        >
+                    </form>
+
+                    <!-- Botões -->
+                    <div style="display: flex; gap: 10px;">
+                        <c:if test="${ulogado.perfil.nome == 'Funcionario' || ulogado.perfil.nome == 'Gerente' || ulogado.perfil.nome == 'Administrador'}">
+                            <form action="GerenciarRegistroPonto" method="post" style="margin: 0;">
+                                <input type="hidden" name="acao" value="registrarPonto" />
+                                <button type="submit" class="btn btn-primary" style="height: 38px;">
+                                    <i class="fa fa-sign-in"></i> Bater Ponto
+                                </button>
+                            </form>
+                        </c:if>
+                        <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
+                            <a href="form_registro_ponto.jsp" class="btn btn-success" style="height: 38px;">
+                                <i class="fa fa-plus"></i> Novo Registro
+                            </a>
+                        </c:if>
+                    </div>
+                </div>
+
+                <!-- Título centralizado -->
+                <div style="text-align: center; margin-top: 20px;">
+                    <h2 style="margin: 0;"><i class="fa fa-clock-o"></i> Registro de Ponto</h2>
                 </div>
             </div>
 
-            <div class="form-group">
-                <input type="text" id="filtroBusca" class="form-control" placeholder="Buscar registro...">
-            </div>
+            <!-- MENSAGEM DE FEEDBACK -->
+            <c:if test="${not empty sessionScope.mensagem}">
+                <div class="alert alert-info text-center">${sessionScope.mensagem}</div>
+                <c:remove var="mensagem" scope="session"/>
+            </c:if>
 
+            <br>
+
+            <!-- Lista -->
             <c:choose>
                 <c:when test="${empty lista}">
                     <div class="alert alert-info">Nenhum registro encontrado.</div>
@@ -81,7 +108,7 @@
                                     <p><strong>Horas Trabalhadas:</strong> ${r.horasTrabalhadas} h</p>
                                     <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
                                         <p><strong>Funcionário:</strong> ${r.funcionario.nome}</p>
-                                        <div class="btn-group">
+                                        <div class="grupo-botoes-card">
                                             <a href="GerenciarRegistroPonto?acao=editar&idRegistro=${r.idRegistro_ponto}" class="btn btn-primary btn-sm">
                                                 <i class="fa fa-edit"></i> Editar
                                             </a>

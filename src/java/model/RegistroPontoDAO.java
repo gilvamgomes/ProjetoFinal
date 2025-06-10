@@ -238,4 +238,61 @@ public class RegistroPontoDAO extends DataBaseDAO {
         this.desconectar();
         return dias;
     }
+    
+    //Barra de busca
+    // Barra de busca com controle de perfil
+public List<RegistroPonto> buscarPorTermo(String termoBusca, int idFuncionarioFiltro, boolean isFuncionario) throws Exception {
+    this.conectar();
+    List<RegistroPonto> lista = new ArrayList<>();
+    String sql = "SELECT rp.*, f.nome AS nome_funcionario FROM registro_ponto rp " +
+                 "INNER JOIN funcionario f ON f.idFfuncionario = rp.funcionario_idFfuncionario " +
+                 "WHERE (CAST(rp.data AS CHAR) LIKE ? " +
+                 "OR CAST(rp.horaEntrada AS CHAR) LIKE ? " +
+                 "OR CAST(rp.horaAlmocoSaida AS CHAR) LIKE ? " +
+                 "OR CAST(rp.horaAlmocoVolta AS CHAR) LIKE ? " +
+                 "OR CAST(rp.horaSaida AS CHAR) LIKE ? " +
+                 "OR CAST(rp.horasTrabalhadas AS CHAR) LIKE ? " +
+                 "OR f.nome LIKE ?)";
+
+    if (isFuncionario) {
+        sql += " AND f.idFfuncionario = ?";
+    }
+
+    sql += " ORDER BY rp.data DESC, rp.horaEntrada ASC";
+
+    PreparedStatement stmt = conn.prepareStatement(sql);
+    String like = "%" + termoBusca + "%";
+    for (int i = 1; i <= 7; i++) {
+        stmt.setString(i, like);
+    }
+
+    if (isFuncionario) {
+        stmt.setInt(8, idFuncionarioFiltro);
+    }
+
+    ResultSet rs = stmt.executeQuery();
+    FuncionarioDAO fdao = new FuncionarioDAO();
+    fdao.conectar();
+
+    while (rs.next()) {
+        RegistroPonto rp = new RegistroPonto();
+        rp.setIdRegistro_ponto(rs.getInt("idRegistro_ponto"));
+        rp.setData(rs.getDate("data").toLocalDate());
+        rp.setHoraEntrada(rs.getTime("horaEntrada").toLocalTime());
+        rp.setHoraAlmocoSaida(rs.getTime("horaAlmocoSaida") != null ? rs.getTime("horaAlmocoSaida").toLocalTime() : null);
+        rp.setHoraAlmocoVolta(rs.getTime("horaAlmocoVolta") != null ? rs.getTime("horaAlmocoVolta").toLocalTime() : null);
+        rp.setHoraSaida(rs.getTime("horaSaida") != null ? rs.getTime("horaSaida").toLocalTime() : null);
+        rp.setHorasTrabalhadas(rs.getBigDecimal("horasTrabalhadas") != null ? rs.getBigDecimal("horasTrabalhadas").doubleValue() : 0);
+        int idFunc = rs.getInt("funcionario_idFfuncionario");
+        rp.setFuncionario_idFfuncionario(idFunc);
+        rp.setFuncionario(fdao.getCarregaPorID(idFunc));
+        lista.add(rp);
+    }
+
+    this.desconectar();
+    return lista;
+}
+
+
+    
 }

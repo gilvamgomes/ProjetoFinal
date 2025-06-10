@@ -56,9 +56,7 @@ public class GerenciarRegistroPonto extends HttpServlet {
 
                     for (RegistroPonto r : registros) {
                         totalHorasMes += r.getHorasTrabalhadas();
-                        if (r.getHorasTrabalhadas() > 0) {
-                            totalDias++;
-                        }
+                        if (r.getHorasTrabalhadas() > 0) totalDias++;
                     }
 
                     double cargaHorariaEsperada = totalDias * 8.0;
@@ -150,37 +148,16 @@ public class GerenciarRegistroPonto extends HttpServlet {
                     String horaSaidaStr = request.getParameter("horaSaida");
                     String funcIdStr = request.getParameter("funcionario_idFfuncionario");
 
-                    if (idStr != null && !idStr.isEmpty()) {
-                        r.setIdRegistro_ponto(Integer.parseInt(idStr));
-                    }
-
-                    if (dataStr != null && !dataStr.isEmpty()) {
-                        r.setData(LocalDate.parse(dataStr));
-                    }
-
-                    if (horaEntradaStr != null && !horaEntradaStr.isEmpty()) {
-                        r.setHoraEntrada(LocalTime.parse(horaEntradaStr));
-                    }
-
-                    if (horaAlmocoSaidaStr != null && !horaAlmocoSaidaStr.isEmpty()) {
-                        r.setHoraAlmocoSaida(LocalTime.parse(horaAlmocoSaidaStr));
-                    }
-
-                    if (horaAlmocoVoltaStr != null && !horaAlmocoVoltaStr.isEmpty()) {
-                        r.setHoraAlmocoVolta(LocalTime.parse(horaAlmocoVoltaStr));
-                    }
-
-                    if (horaSaidaStr != null && !horaSaidaStr.isEmpty()) {
-                        r.setHoraSaida(LocalTime.parse(horaSaidaStr));
-                    }
-
+                    if (idStr != null && !idStr.isEmpty()) r.setIdRegistro_ponto(Integer.parseInt(idStr));
+                    if (dataStr != null && !dataStr.isEmpty()) r.setData(LocalDate.parse(dataStr));
+                    if (horaEntradaStr != null && !horaEntradaStr.isEmpty()) r.setHoraEntrada(LocalTime.parse(horaEntradaStr));
+                    if (horaAlmocoSaidaStr != null && !horaAlmocoSaidaStr.isEmpty()) r.setHoraAlmocoSaida(LocalTime.parse(horaAlmocoSaidaStr));
+                    if (horaAlmocoVoltaStr != null && !horaAlmocoVoltaStr.isEmpty()) r.setHoraAlmocoVolta(LocalTime.parse(horaAlmocoVoltaStr));
+                    if (horaSaidaStr != null && !horaSaidaStr.isEmpty()) r.setHoraSaida(LocalTime.parse(horaSaidaStr));
                     r.setFuncionario_idFfuncionario(Integer.parseInt(funcIdStr));
 
-                    if (r.getHoraEntrada() != null &&
-                        r.getHoraAlmocoSaida() != null &&
-                        r.getHoraAlmocoVolta() != null &&
-                        r.getHoraSaida() != null) {
-
+                    if (r.getHoraEntrada() != null && r.getHoraAlmocoSaida() != null &&
+                        r.getHoraAlmocoVolta() != null && r.getHoraSaida() != null) {
                         long minutosManha = ChronoUnit.MINUTES.between(r.getHoraEntrada(), r.getHoraAlmocoSaida());
                         long minutosTarde = ChronoUnit.MINUTES.between(r.getHoraAlmocoVolta(), r.getHoraSaida());
                         double totalHoras = (minutosManha + minutosTarde) / 60.0;
@@ -188,10 +165,28 @@ public class GerenciarRegistroPonto extends HttpServlet {
                     }
 
                     rdao.gravar(r);
-                }
 
-                response.sendRedirect("GerenciarRegistroPonto?acao=listar");
-                return;
+                    // FORWARD após gravar
+                    List<RegistroPonto> registros = rdao.listarTodos();
+                    double totalHorasMes = 0.0;
+                    int totalDias = 0;
+                    for (RegistroPonto reg : registros) {
+                        totalHorasMes += reg.getHorasTrabalhadas();
+                        if (reg.getHorasTrabalhadas() > 0) totalDias++;
+                    }
+                    double cargaHorariaEsperada = totalDias * 8.0;
+                    double saldoHoras = totalHorasMes - cargaHorariaEsperada;
+
+                    request.setAttribute("lista", registros);
+                    request.setAttribute("ulogado", ulogado);
+                    request.setAttribute("totalHorasMes", totalHorasMes);
+                    request.setAttribute("cargaHorariaEsperada", cargaHorariaEsperada);
+                    request.setAttribute("saldoHoras", saldoHoras);
+                    request.setAttribute("totalDiasTrabalhados", totalDias);
+
+                    request.getRequestDispatcher("listar_registro_ponto.jsp").forward(request, response);
+                    return;
+                }
             }
 
             if ("registrarPonto".equals(acao)) {
@@ -199,7 +194,7 @@ public class GerenciarRegistroPonto extends HttpServlet {
                     Funcionario funcionarioLogado = fdao.getFuncionarioPorUsuario(ulogado.getIdUsuario());
                     if (funcionarioLogado != null) {
                         String msg = rdao.registrarPonto(funcionarioLogado.getIdFuncionario());
-                        session.setAttribute("mensagem", msg); // <-- agora vai!
+                        session.setAttribute("mensagem", msg);
                     }
                 }
                 response.sendRedirect("GerenciarRegistroPonto?acao=listar");
