@@ -53,7 +53,6 @@ public class GerenciarRegistroPonto extends HttpServlet {
 
                     double totalHorasMes = 0.0;
                     int totalDias = 0;
-
                     for (RegistroPonto r : registros) {
                         totalHorasMes += r.getHorasTrabalhadas();
                         if (r.getHorasTrabalhadas() > 0) totalDias++;
@@ -165,28 +164,11 @@ public class GerenciarRegistroPonto extends HttpServlet {
                     }
 
                     rdao.gravar(r);
-
-                    // FORWARD após gravar
-                    List<RegistroPonto> registros = rdao.listarTodos();
-                    double totalHorasMes = 0.0;
-                    int totalDias = 0;
-                    for (RegistroPonto reg : registros) {
-                        totalHorasMes += reg.getHorasTrabalhadas();
-                        if (reg.getHorasTrabalhadas() > 0) totalDias++;
-                    }
-                    double cargaHorariaEsperada = totalDias * 8.0;
-                    double saldoHoras = totalHorasMes - cargaHorariaEsperada;
-
-                    request.setAttribute("lista", registros);
-                    request.setAttribute("ulogado", ulogado);
-                    request.setAttribute("totalHorasMes", totalHorasMes);
-                    request.setAttribute("cargaHorariaEsperada", cargaHorariaEsperada);
-                    request.setAttribute("saldoHoras", saldoHoras);
-                    request.setAttribute("totalDiasTrabalhados", totalDias);
-
-                    request.getRequestDispatcher("listar_registro_ponto.jsp").forward(request, response);
-                    return;
                 }
+
+                // Redireciona direto pro listar, SEM forward
+                response.sendRedirect("GerenciarRegistroPonto?acao=listar");
+                return;
             }
 
             if ("registrarPonto".equals(acao)) {
