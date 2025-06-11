@@ -21,11 +21,12 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Registro de Ponto</title>
+     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width ,initial-scale=1.0">
-    <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
 
@@ -33,7 +34,7 @@
 <%@include file="menu.jsp" %>
 <%@include file="menu_mobile.jsp" %>
 
-<div class="container formulario-funcionario">
+<div class="formulario-funcionario">
     <div class="form-funcionario">
         <h2><i class="fa fa-clock-o"></i> Registro de Ponto</h2>
 
@@ -85,10 +86,10 @@
 
             <div class="mt-4 botoes-form">
                 <button type="submit" class="btn btn-success">
-                    <i class="fas fa-save"></i> Gravar
+                     Gravar
                 </button>
                 <a href="listar_registro_ponto.jsp" class="btn btn-warning text-dark">
-                    <i class="fas fa-arrow-left"></i> Voltar
+                     Voltar
                 </a>
             </div>
         </form>

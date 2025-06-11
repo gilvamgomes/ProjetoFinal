@@ -64,9 +64,10 @@
             </div>
 
             <div class="botoes-form">
-                <button class="btn btn-success" type="submit"><i class="fa fa-check"></i> Gravar</button>
-                <a href="listar_beneficio.jsp" class="btn btn-warning"><i class="fa fa-arrow-left"></i> Voltar</a>
-            </div>
+    <button type="submit" class="btn btn-success">Gravar</button>
+    <a href="listar_beneficio.jsp" class="btn btn-warning">Voltar</a>
+</div>
+
         </form>
     </div>
 </div>

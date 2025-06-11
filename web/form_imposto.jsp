@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Formulário de Imposto</title>
 </head>
 <body>
@@ -68,10 +68,10 @@
 
             <div class="botoes-form">
                 <button type="submit" class="btn btn-success">
-                    <i class="fa fa-save"></i> Gravar
+                    Gravar
                 </button>
                 <a href="listar_imposto.jsp" class="btn btn-warning">
-                    <i class="fa fa-arrow-left"></i> Voltar
+                     Voltar
                 </a>
             </div>
         </form>

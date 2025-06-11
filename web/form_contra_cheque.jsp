@@ -14,11 +14,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="datatables/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/estilo.css">
     <title>Contra-Cheque</title>
 </head>
 <body>
@@ -55,13 +55,10 @@
                 </div>
             </div>
 
+            <!-- Botões -->
             <div class="botoes-form">
-                <button type="submit" class="btn btn-success">
-                    <i class="fa fa-save"></i> Gravar
-                </button>
-                <a href="listar_contra_cheque.jsp" class="btn btn-warning">
-                    <i class="fa fa-arrow-left"></i> Voltar
-                </a>
+                <button class="btn btn-success" type="submit">Gravar</button>
+                <a href="listar_contra_cheque.jsp" class="btn btn-warning">Voltar</a>
             </div>
         </form>
     </div>

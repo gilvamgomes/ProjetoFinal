@@ -36,19 +36,11 @@
             </c:if>
         </c:forEach>
 
-        <c:set var="extras" value="false" />
-        <c:forEach var="menu" items="${ulogado.perfil.menus}" varStatus="st">
-            <c:if test="${menu.exibir == 1 && st.index >= 4}">
-                <c:set var="extras" value="true" />
-            </c:if>
-        </c:forEach>
-
-        <c:if test="${extras}">
-            <div class="menu-item" onclick="abrirMenuMais()">
-                <i class="fa fa-bars"></i>
-                <span>Mais</span>
-            </div>
-        </c:if>
+        <!-- Botão "Mais" sempre visível -->
+        <div class="menu-item" onclick="abrirMenuMais()">
+            <i class="fa fa-bars"></i>
+            <span>Mais</span>
+        </div>
     </div>
 
     <div class="menu-modal" id="menuMais">
