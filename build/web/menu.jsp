@@ -1,7 +1,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<!-- BARRA DE MENU MILANO UI 2 -->
 <div class="barra-menu">
-    
+
     <!-- ÁREA SCROLL DOS MENUS NO DESKTOP -->
     <div class="menu-scroll">
         <ul class="menu-links">
@@ -20,3 +21,18 @@
         <a href="GerenciarLogin" class="botao-sair">Sair</a>
     </div>
 </div>
+
+<!-- LOADER VISUAL -->
+<div id="loader-wrapper" style="display: none;">
+    <div class="loader"></div>
+</div>
+<!-- SCRIPT: Ativa loader ao clicar em links listar_* -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("a[href*='listar_']").forEach(link => {
+      link.addEventListener("click", function () {
+        document.getElementById("loader-wrapper").style.display = "flex";
+      });
+    });
+  });
+</script>
