@@ -1,20 +1,17 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import model.*;
 
 public class GerenciarLogin extends HttpServlet {
 
-    private static HttpServletResponse response;
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        GerenciarLogin.response = response;
         request.getSession().removeAttribute("ulogado");
         response.sendRedirect("form_login.jsp");
     }
@@ -22,7 +19,6 @@ public class GerenciarLogin extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        GerenciarLogin.response = response;
 
         String login = request.getParameter("login");
         String senha = request.getParameter("senha");
@@ -37,19 +33,15 @@ public class GerenciarLogin extends HttpServlet {
         }
 
         if (!erros.isEmpty()) {
-            String campos = "";
-            for (String erro : erros) {
-                campos += "\\n - " + erro;
-            }
-            exibirMensagem("Preencha o(s) campo(s):" + campos);
+            request.setAttribute("erro", String.join("<br>", erros));
+            RequestDispatcher dispatcher = request.getRequestDispatcher("form_login.jsp");
+            dispatcher.forward(request, response);
         } else {
             try {
                 UsuarioDAO uDAO = new UsuarioDAO();
                 Usuario u = uDAO.getRecuperarUsuario(login);
 
                 if (u.getIdUsuario() > 0 && u.getSenha().equals(senha)) {
-
-                    // 🔥 Carrega o funcionário correspondente ao usuário logado
                     FuncionarioDAO fDAO = new FuncionarioDAO();
                     Funcionario func = fDAO.getFuncionarioPorUsuario(u.getIdUsuario());
                     u.setFuncionario(func);
@@ -58,29 +50,20 @@ public class GerenciarLogin extends HttpServlet {
                     sessao.setAttribute("ulogado", u);
                     response.sendRedirect("index.jsp");
                 } else {
-                    exibirMensagem("Usuário ou senha inválida!");
+                    request.setAttribute("erro", "Usuário ou senha inválidos!");
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("form_login.jsp");
+                    dispatcher.forward(request, response);
                 }
             } catch (Exception e) {
-                exibirMensagem("Usuário ou perfil não encontrado");
+                request.setAttribute("erro", "Usuário ou perfil não encontrado.");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("form_login.jsp");
+                dispatcher.forward(request, response);
             }
-        }
-    }
-
-    private static void exibirMensagem(String mensagem) {
-        try {
-            PrintWriter out = response.getWriter();
-            out.println("<script type='text/javascript'>");
-            out.println("alert('" + mensagem + "')");
-            out.println("history.back();");
-            out.println("</script>");
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
     public static Usuario verificarAcesso(HttpServletRequest request, HttpServletResponse response) {
         Usuario u = null;
-        GerenciarLogin.response = response;
         try {
             HttpSession sessao = request.getSession();
             if (sessao.getAttribute("ulogado") == null) {
@@ -107,24 +90,19 @@ public class GerenciarLogin extends HttpServlet {
                         }
                     }
 
-                    if (!possuiAcesso) {
-                        if (uri.contains("Gerenciar")) {
-                            possuiAcesso = true;
-                        } else {
-                            exibirMensagem("Acesso Negado");
-                        }
+                    if (!possuiAcesso && !uri.contains("Gerenciar")) {
+                        response.getWriter().println("<script>alert('Acesso Negado'); location.href='index.jsp';</script>");
                     }
                 }
             }
         } catch (Exception e) {
-            exibirMensagem(e.getMessage());
+            e.printStackTrace();
         }
         return u;
     }
 
     public static boolean verificarPermissao(HttpServletRequest request, HttpServletResponse response) {
         Usuario u = null;
-        GerenciarLogin.response = response;
         boolean possuiAcesso = false;
         try {
             HttpSession sessao = request.getSession();
@@ -149,17 +127,13 @@ public class GerenciarLogin extends HttpServlet {
                         }
                     }
 
-                    if (!possuiAcesso) {
-                        if (uri.contains("Gerenciar")) {
-                            possuiAcesso = true;
-                        } else {
-                            exibirMensagem("Acesso Negado");
-                        }
+                    if (!possuiAcesso && !uri.contains("Gerenciar")) {
+                        response.getWriter().println("<script>alert('Acesso Negado'); location.href='index.jsp';</script>");
                     }
                 }
             }
         } catch (Exception e) {
-            exibirMensagem(e.getMessage());
+            e.printStackTrace();
         }
         return possuiAcesso;
     }
