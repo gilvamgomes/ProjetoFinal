@@ -1,3 +1,5 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="model.Usuario" %>
 <%@page import="controller.GerenciarLogin" %>
 <%
@@ -10,102 +12,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width ,initial-scale=1.0">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Dashboard - Sistema RH</title>
+    <link rel="stylesheet" href="css/estilo.css">
+    <title>Dashboard</title>
 </head>
 <body>
 
-    <%@include file="banner.jsp" %>
-    <%@include file="menu.jsp" %>
-    <%@include file="menu_mobile.jsp" %>
+<%@include file="banner.jsp" %>
+<%@include file="menu.jsp" %>
+<%@include file="menu_mobile.jsp" %>
 
-    <div class="index-container" style="padding: 30px; background-color: #f0f2f5; min-height: 85vh;">
-
-        <div class="row text-center">
-            <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
-                <div class="col-md-3 col-sm-6">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading"><i class="fas fa-users"></i> Funcionários</div>
-                        <div class="panel-body"><h3>${totalFuncionarios}</h3></div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <div class="panel panel-success">
-                        <div class="panel-heading"><i class="fas fa-gift"></i> Benefícios</div>
-                        <div class="panel-body"><h3>${totalBeneficios}</h3></div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <div class="panel panel-info">
-                        <div class="panel-heading"><i class="fas fa-money-bill-wave"></i> Pagamentos</div>
-                        <div class="panel-body">
-                            <h3>R$ ${totalPagamentos}</h3>
-                            <small>mês atual ou último</small>
-                        </div>
-                    </div>
-                </div>
-            </c:if>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6">
-                <h4>Últimos registros de ponto</h4>
-                <table class="table table-striped table-condensed">
-                    <thead>
-                        <tr>
-                            <th>Funcionário</th>
-                            <th>Data</th>
-                            <th>Entrada</th>
-                            <th>Almoço</th>
-                            <th>Volta</th>
-                            <th>Saída</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach var="ponto" items="${ultimosPontos}">
-                            <tr>
-                                <td>${ponto.funcionario.nome}</td>
-                                <td>${ponto.data}</td>
-                                <td>${ponto.horaEntrada}</td>
-                                <td>${ponto.horaAlmocoSaida}</td>
-                                <td>${ponto.horaAlmocoVolta}</td>
-                                <td>${ponto.horaSaida}</td>
-                            </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="col-md-6">
-                <h4>Férias Solicitadas</h4>
-                <table class="table table-bordered table-condensed">
-                    <thead>
-                        <tr>
-                            <th>Funcionário</th>
-                            <th>Início</th>
-                            <th>Fim</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach var="ferias" items="${feriasSolicitadas}">
-                            <tr>
-                                <td>${ferias.funcionario.nome}</td>
-                                <td>${ferias.dataInicio}</td>
-                                <td>${ferias.dataFim}</td>
-                                <td><span class="label label-warning">${ferias.status}</span></td>
-                            </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
+<div class="dashboard-milano">
+    <div class="dashboard-cards">
+        <div class="card-dashboard"><div class="titulo-card">FuncionÃ¡rios</div><div class="valor-card">12</div></div>
+        <div class="card-dashboard"><div class="titulo-card">FÃ©rias Agendadas</div><div class="valor-card">5</div></div>
+        <div class="card-dashboard"><div class="titulo-card">Registros Semanais</div><div class="valor-card">47</div></div>
+        <div class="card-dashboard"><div class="titulo-card">BenefÃ­cios Pagos</div><div class="valor-card">R$ 7.300</div></div>
+        <div class="card-dashboard"><div class="titulo-card">Contra-Cheques Emitidos</div><div class="valor-card">22</div></div>
     </div>
+
+    <div class="dashboard-graficos">
+        <div class="grafico-box">
+            <h3 class="titulo-grafico">DistribuiÃ§Ã£o de BenefÃ­cios</h3>
+            <canvas id="graficoPizza" width="300" height="300"></canvas>
+        </div>
+        <div class="grafico-box">
+            <h3 class="titulo-grafico">Registros de Ponto por Dia</h3>
+            <canvas id="graficoBarra" width="300" height="300"></canvas>
+        </div>
+        <div class="grafico-box">
+            <h3 class="titulo-grafico">Status de FÃ©rias</h3>
+            <canvas id="graficoDonut" width="300" height="300"></canvas>
+        </div>
+    </div>
+
+    <div class="blocos-lista">
+        <div class="bloco-recentes">
+            <h4>Ãšltimos FuncionÃ¡rios</h4>
+            <ul>
+                <li>Maria - Atendente - 10/06/2025</li>
+                <li>JoÃ£o - Vendedor - 09/06/2025</li>
+                <li>Luciana - Gerente - 07/06/2025</li>
+            </ul>
+        </div>
+        <div class="bloco-recentes">
+            <h4>Ãšltimos Registros de Ponto</h4>
+            <ul>
+                <li>Maria - 10/06 08:00</li>
+                <li>JoÃ£o - 09/06 07:58</li>
+                <li>Luciana - 08/06 08:05</li>
+            </ul>
+        </div>
+        <div class="bloco-recentes">
+            <h4>Ãšltimos Pagamentos</h4>
+            <ul>
+                <li>Maria - R$ 2.500 - 05/06</li>
+                <li>JoÃ£o - R$ 3.100 - 04/06</li>
+                <li>Luciana - R$ 4.200 - 03/06</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script src="bootstrap/js/Chart.min.js"></script>
+<script>
+const ctx1 = document.getElementById("graficoPizza").getContext("2d");
+new Chart(ctx1, {
+    type: "pie",
+    data: {
+        labels: ["VT", "VA", "BÃ´nus"],
+        datasets: [{
+            data: [5, 3, 2],
+            backgroundColor: ["#4caf50", "#ff9800", "#2196f3"]
+        }]
+    }
+});
+
+const ctx2 = document.getElementById("graficoBarra").getContext("2d");
+new Chart(ctx2, {
+    type: "bar",
+    data: {
+        labels: ["Seg", "Ter", "Qua", "Qui", "Sex"],
+        datasets: [{
+            label: "Registros de Ponto",
+            data: [8, 10, 9, 7, 12],
+            backgroundColor: ["#4caf50", "#ff9800", "#2196f3", "#f44336", "#9c27b0"]
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{ ticks: { beginAtZero: true } }]
+        }
+    }
+});
+
+const ctx3 = document.getElementById("graficoDonut").getContext("2d");
+new Chart(ctx3, {
+    type: "doughnut",
+    data: {
+        labels: ["Aprovadas", "Em AnÃ¡lise", "Recusadas"],
+        datasets: [{
+            data: [4, 2, 1],
+            backgroundColor: ["#4caf50", "#ffc107", "#f44336"]
+        }]
+    }
+});
+</script>
+
+<script>
+function toggleMenu() {
+    var menu = document.getElementById("nav-links");
+    menu.classList.toggle("show");
+}
+</script>
 
 </body>
 </html>
