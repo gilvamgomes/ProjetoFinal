@@ -64,6 +64,10 @@
         <servlet-name>CarregarFuncionarioBeneficio</servlet-name>
         <servlet-class>controller.CarregarFuncionarioBeneficio</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GerenciarDashboard</servlet-name>
+        <servlet-class>controller.GerenciarDashboard</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GerenciarLogin</servlet-name>
         <url-pattern>/GerenciarLogin</url-pattern>
@@ -127,6 +131,10 @@
     <servlet-mapping>
         <servlet-name>CarregarFuncionarioBeneficio</servlet-name>
         <url-pattern>/CarregarFuncionarioBeneficio</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GerenciarDashboard</servlet-name>
+        <url-pattern>/GerenciarDashboard</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
