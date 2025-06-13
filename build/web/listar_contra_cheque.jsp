@@ -4,11 +4,22 @@
 <%
     Usuario ulogado = GerenciarLogin.verificarAcesso(request, response);
     request.setAttribute("ulogado", ulogado);
+
+    String[] meses = {
+        "", "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+        "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+    };
+    request.setAttribute("meses", meses);
 %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<jsp:useBean class="model.FuncionarioDAO" id="fDAO" />
+<%
+    request.setAttribute("funcionarios", fDAO.getLista());
+%>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -32,26 +43,66 @@
 
     <div class="content">
         <h2>Lista de Contra-Cheques</h2>
-        <a href="form_contra_cheque.jsp" class="btn btn-primary">Novo Cadastro</a>
 
-        <table class="table table-hover table-striped table-bordered display" id="listarContraCheque">
+        <!-- ALERTA DE MENSAGEM COM JSTL -->
+        <c:if test="${not empty sessionScope.mensagem}">
+            <script>
+                alert('${sessionScope.mensagem}');
+            </script>
+            <c:remove var="mensagem" scope="session" />
+        </c:if>
+
+        <a href="form_contra_cheque.jsp" class="btn btn-primary">Novo Cadastro Manual</a>
+
+        <!-- FORMULÁRIO PARA GERAR CONTRA-CHEQUE AUTOMÁTICO -->
+        <form method="get" action="GerenciarContraCheque" class="form-inline" style="margin-top: 20px;">
+            <input type="hidden" name="acao" value="gerar">
+            <div class="form-group">
+                <label for="idFuncionario">Funcionário:</label>
+                <select name="idFuncionario" class="form-control" required>
+                    <option value="">-- Selecione --</option>
+                    <c:forEach var="f" items="${funcionarios}">
+                        <option value="${f.idFuncionario}">${f.nome}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="mes">Mês:</label>
+                <select name="mes" class="form-control" required>
+                    <option value="">-- Mês --</option>
+                    <c:forEach var="i" begin="1" end="12">
+                        <option value="${i}">${meses[i]}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="ano">Ano:</label>
+                <input type="number" name="ano" value="2025" required class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success">Gerar Contra-Cheque</button>
+        </form>
+
+        <!-- TABELA DE LISTAGEM -->
+        <table class="table table-hover table-striped table-bordered display" id="listarContraCheque" style="margin-top: 20px;">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>Mês</th>
+                    <th>Ano</th>
                     <th>Valor Bruto</th>
                     <th>Descontos</th>
                     <th>Valor Líquido</th>
-                    <th>ID Funcionário</th>
+                    <th>Funcionário</th>
                     <th>Opções</th>
                 </tr>
             </thead>
             <tfoot>
                 <tr>
-                    <th>ID</th>
+                    <th>Mês</th>
+                    <th>Ano</th>
                     <th>Valor Bruto</th>
                     <th>Descontos</th>
                     <th>Valor Líquido</th>
-                    <th>ID Funcionário</th>
+                    <th>Funcionário</th>
                     <th>Opções</th>
                 </tr>
             </tfoot>
@@ -60,11 +111,12 @@
             <tbody>
                 <c:forEach var="c" items="${cDAO.lista}">
                     <tr>
-                        <td>${c.idContraCheque}</td>
+                        <td>${meses[c.mes]}</td>
+                        <td>${c.ano}</td>
                         <td>${c.valorBruto}</td>
                         <td>${c.descontos}</td>
                         <td>${c.valorLiquido}</td>
-                        <td>${c.funcionarioId}</td>
+                        <td>${c.nomeFuncionario}</td>
                         <td>
                             <a class="btn btn-primary" href="GerenciarContraCheque?acao=alterar&idContraCheque=${c.idContraCheque}">
                                 <i class="glyphicon glyphicon-pencil"></i>
@@ -95,9 +147,7 @@
                 location.href = 'GerenciarContraCheque?acao=excluir&idContraCheque=' + idContraCheque;
             }
         }
-    </script>
 
-    <script>
         function toggleMenu(){
             var menu = document.getElementById("nav-links");
             menu.classList.toggle("show");

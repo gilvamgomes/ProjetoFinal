@@ -9,6 +9,9 @@ public class ContraCheque {
     private BigDecimal descontos;
     private BigDecimal valorLiquido;
     private int funcionarioId;
+    private int mes;
+    private int ano;
+    private String nomeFuncionario; // Novo campo
 
     public ContraCheque() {
     }
@@ -59,5 +62,29 @@ public class ContraCheque {
 
     public void setFuncionarioId(int funcionarioId) {
         this.funcionarioId = funcionarioId;
+    }
+
+    public int getMes() {
+        return mes;
+    }
+
+    public void setMes(int mes) {
+        this.mes = mes;
+    }
+
+    public int getAno() {
+        return ano;
+    }
+
+    public void setAno(int ano) {
+        this.ano = ano;
+    }
+
+    public String getNomeFuncionario() {
+        return nomeFuncionario;
+    }
+
+    public void setNomeFuncionario(String nomeFuncionario) {
+        this.nomeFuncionario = nomeFuncionario;
     }
 }

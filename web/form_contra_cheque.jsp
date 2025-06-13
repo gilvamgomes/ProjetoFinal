@@ -47,6 +47,12 @@
             <label for="funcionarioId" class="control-label">ID do Funcionário</label>
             <input type="number" class="form-control" id="funcionarioId" name="funcionarioId" required value="${c.funcionarioId}">
 
+            <label for="mes" class="control-label">Mês</label>
+            <input type="number" min="1" max="12" class="form-control" id="mes" name="mes" required value="${c.mes}">
+
+            <label for="ano" class="control-label">Ano</label>
+            <input type="number" class="form-control" id="ano" name="ano" required value="${c.ano}">
+
             <br>
             <button class="btn btn-success">Gravar</button>
             <a href="listar_contra_cheque.jsp" class="btn btn-warning">Voltar</a>

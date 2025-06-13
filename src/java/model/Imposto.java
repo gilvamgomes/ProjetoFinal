@@ -11,6 +11,10 @@ public class Imposto {
     private BigDecimal aliquota;
     private BigDecimal parcelaDeduzir;
 
+    // ✅ Novo campo: valor efetivamente descontado (relacionamento com contra_cheque)
+    private BigDecimal valorDescontado;
+
+    // Getters e Setters
     public int getIdImposto() {
         return idImposto;
     }
@@ -65,5 +69,13 @@ public class Imposto {
 
     public void setParcelaDeduzir(BigDecimal parcelaDeduzir) {
         this.parcelaDeduzir = parcelaDeduzir;
+    }
+
+    public BigDecimal getValorDescontado() {
+        return valorDescontado;
+    }
+
+    public void setValorDescontado(BigDecimal valorDescontado) {
+        this.valorDescontado = valorDescontado;
     }
 }

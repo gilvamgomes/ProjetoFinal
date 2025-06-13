@@ -1,25 +1,20 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import model.ContraCheque;
 import model.ContraChequeDAO;
+import model.RegistroPontoDAO;
 
 public class GerenciarContraCheque extends HttpServlet {
-
-    private static HttpServletResponse response;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        GerenciarContraCheque.response = response;
-
-        PrintWriter out = response.getWriter();
         String mensagem = "";
         String idContraCheque = request.getParameter("idContraCheque");
         String acao = request.getParameter("acao");
@@ -27,6 +22,42 @@ public class GerenciarContraCheque extends HttpServlet {
 
         try {
             ContraChequeDAO cDAO = new ContraChequeDAO();
+
+            if ("gerar".equals(acao)) {
+                if (GerenciarLogin.verificarPermissao(request, response)) {
+                    try {
+                        String idFuncionarioStr = request.getParameter("idFuncionario");
+                        String anoStr = request.getParameter("ano");
+                        String mesStr = request.getParameter("mes");
+
+                        if (idFuncionarioStr == null || anoStr == null || mesStr == null ||
+                            idFuncionarioStr.isEmpty() || anoStr.isEmpty() || mesStr.isEmpty()) {
+                            mensagem = "Parâmetros ausentes para gerar contra-cheque.";
+                        } else {
+                            int idFuncionario = Integer.parseInt(idFuncionarioStr);
+                            int ano = Integer.parseInt(anoStr);
+                            int mes = Integer.parseInt(mesStr);
+                            boolean trabalhaSabado = true;
+
+                            RegistroPontoDAO rDAO = new RegistroPontoDAO();
+                            double horasTrabalhadas = rDAO.getTotalHorasTrabalhadasMes(idFuncionario, mes, ano);
+
+                            boolean sucesso = cDAO.gerarContraCheque(idFuncionario, ano, mes, trabalhaSabado, horasTrabalhadas);
+                            mensagem = sucesso ? "Contra-cheque gerado com sucesso!" : "Erro ao gerar contra-cheque.";
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        mensagem = "Erro na geração do contra-cheque: " + ex.getMessage();
+                    }
+
+                    request.getSession().setAttribute("mensagem", mensagem);
+                    response.sendRedirect("listar_contra_cheque.jsp");
+                    return;
+                } else {
+                    mensagem = "Acesso negado.";
+                }
+            }
+
             if ("alterar".equals(acao)) {
                 if (GerenciarLogin.verificarPermissao(request, response)) {
                     if (idContraCheque != null && !idContraCheque.isEmpty()) {
@@ -69,17 +100,14 @@ public class GerenciarContraCheque extends HttpServlet {
             mensagem = "Erro ao acessar o banco de dados: " + e.getMessage();
         }
 
-        out.println("<script type='text/javascript'>");
-        out.println("alert('" + mensagem + "');");
-        out.println("location.href='listar_contra_cheque.jsp';");
-        out.println("</script>");
+        request.getSession().setAttribute("mensagem", mensagem);
+        response.sendRedirect("listar_contra_cheque.jsp");
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        GerenciarContraCheque.response = response;
         response.setContentType("text/html");
 
         String idContraCheque = request.getParameter("idContraCheque");
@@ -100,14 +128,16 @@ public class GerenciarContraCheque extends HttpServlet {
             for (String erro : erros) {
                 campos += "\\n - " + erro;
             }
-            exibirMensagem("Preencha o(s) campo(s): " + campos, false);
+            request.getSession().setAttribute("mensagem", "Preencha o(s) campo(s): " + campos);
+            response.sendRedirect("form_contra_cheque.jsp");
         } else {
             ContraCheque c = new ContraCheque();
             if (idContraCheque != null && !idContraCheque.isEmpty()) {
                 try {
                     c.setIdContraCheque(Integer.parseInt(idContraCheque));
                 } catch (NumberFormatException e) {
-                    exibirMensagem("ID de contra-cheque inválido", false);
+                    request.getSession().setAttribute("mensagem", "ID de contra-cheque inválido");
+                    response.sendRedirect("form_contra_cheque.jsp");
                     return;
                 }
             }
@@ -120,30 +150,17 @@ public class GerenciarContraCheque extends HttpServlet {
 
                 ContraChequeDAO cDAO = new ContraChequeDAO();
                 if (cDAO.gravar(c)) {
-                    exibirMensagem("Gravado com sucesso", true);
+                    request.getSession().setAttribute("mensagem", "Gravado com sucesso");
+                    response.sendRedirect("listar_contra_cheque.jsp");
                 } else {
-                    exibirMensagem("Erro ao gravar o contra-cheque", false);
+                    request.getSession().setAttribute("mensagem", "Erro ao gravar o contra-cheque");
+                    response.sendRedirect("form_contra_cheque.jsp");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                exibirMensagem("Erro ao processar dados: " + e.getMessage(), false);
+                request.getSession().setAttribute("mensagem", "Erro ao processar dados: " + e.getMessage());
+                response.sendRedirect("form_contra_cheque.jsp");
             }
-        }
-    }
-
-    private static void exibirMensagem(String mensagem, boolean resposta) {
-        try {
-            PrintWriter out = response.getWriter();
-            out.println("<script type='text/javascript'>");
-            out.println("alert('" + mensagem + "');");
-            if (resposta) {
-                out.println("location.href='listar_contra_cheque.jsp';");
-            } else {
-                out.println("history.back();");
-            }
-            out.println("</script>");
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
