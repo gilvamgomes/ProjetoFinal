@@ -8,40 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/estilo.css">
-
-    <style>
-        /* Loader */
-        #loader-wrapper {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            background: white;
-            top: 0;
-            left: 0;
-            z-index: 9999;
-            display: none;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .loader {
-            border: 8px solid #f3f3f3;
-            border-top: 8px solid #008CBA;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-    </style>
 </head>
 <body class="login-body">
 
-    <!-- Loader visual -->
-    <div id="loader-wrapper">
+    <!-- Loader universal -->
+    <div id="loader-wrapper" style="display: none;">
         <div class="loader"></div>
     </div>
 
@@ -76,9 +47,9 @@
                 document.getElementById("loader-wrapper").style.display = "flex";
             });
 
-            // Garante que o loader some se houver erro de login
-            const erroLogin = document.querySelector(".alert-danger");
-            if (erroLogin) {
+            // Garante que o loader não fique travado se houver erro
+            const erro = document.querySelector(".alert-danger");
+            if (erro) {
                 document.getElementById("loader-wrapper").style.display = "none";
             }
         });
