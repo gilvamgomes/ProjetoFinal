@@ -29,7 +29,7 @@
 
     <div class="formulario-funcionario">
         <form class="form-funcionario" action="GerenciarMenu" method="POST">
-            <h2><i class="fa fa-bars"></i> Cadastro de Menu</h2>
+            <h2>Cadastro de Menu</h2>
 
             <div class="grupo-campos">
                 <input type="hidden" id="idMenu" name="idMenu" value="${m.idMenu}"/>

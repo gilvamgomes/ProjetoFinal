@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="datatables/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/estilo.css">
-    <title>Contra-Cheque</title>
+    <title>Cadastro de Contra-Cheque</title>
 </head>
 <body>
 

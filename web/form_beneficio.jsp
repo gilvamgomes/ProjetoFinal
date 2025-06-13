@@ -28,7 +28,7 @@
 
 <div class="formulario-funcionario">
     <div class="form-funcionario">
-        <h2><i class="fa fa-gift"></i> Cadastrar Benefício</h2>
+        <h2>Cadastrar Benefício</h2>
         <form action="GerenciarBeneficio" method="POST">
             <input type="hidden" id="idBeneficio" name="idBeneficio" value="${b.idBeneficio}"/>
 

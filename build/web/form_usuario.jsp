@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Usuário</title>
+    <title>Cadastro de Usuário</title>
 </head>
 <body>
 
@@ -24,9 +24,9 @@
 <%@include file="menu.jsp" %>
 <%@include file="menu_mobile.jsp" %>
 
-<div class="container formulario-funcionario">
+<div class="formulario-funcionario">
     <div class="form-funcionario">
-        <h2><i class="fas fa-user-plus"></i> Cadastrar Usuário</h2>
+        <h2>Cadastrar Usuário</h2>
 
         <form action="GerenciarUsuario" method="POST">
             <input type="hidden" id="idUsuario" name="idUsuario" value="${u.idUsuario}"/>
@@ -78,10 +78,10 @@
             <!-- Botões -->
             <div class="mt-4 botoes-form">
                 <button class="btn btn-success">
-                    <i class="fas fa-save"></i> Gravar
+                     Gravar
                 </button>
                 <a href="listar_usuario.jsp" class="btn btn-warning text-dark">
-                    <i class="fas fa-arrow-left"></i> Voltar
+                    Voltar
                 </a>
             </div>
         </form>

@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/estilo.css">
+    <title>Cadastro de Registro de Ponto</title>
 </head>
 <body>
 
@@ -36,7 +37,7 @@
 
 <div class="formulario-funcionario">
     <div class="form-funcionario">
-        <h2><i class="fa fa-clock-o"></i> Registro de Ponto</h2>
+        <h2>Registro de Ponto</h2>
 
         <form action="GerenciarRegistroPonto" method="POST">
             <input type="hidden" name="acao" value="${registroPonto.idRegistro_ponto == 0 ? 'gravar' : 'alterar'}" />
