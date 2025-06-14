@@ -1,12 +1,11 @@
 package model;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
-import java.sql.Connection;
 import java.sql.Statement;
-import java.sql.Date;            // IMPORTAÇÃO CORRETA de java.sql.Date
+import java.sql.Date;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,9 +21,6 @@ public class ContraChequeDAO extends DataBaseDAO {
 
     public ContraChequeDAO() throws Exception {}
 
-    /**
-     * Retorna a lista completa de contra-cheques, já incluindo o nome do funcionário.
-     */
     public List<ContraCheque> getLista() throws SQLException {
         List<ContraCheque> lista = new ArrayList<>();
         String SQL = "SELECT c.*, f.nome AS nomeFuncionario " +
@@ -56,11 +52,6 @@ public class ContraChequeDAO extends DataBaseDAO {
         return lista;
     }
 
-    /**
-     * Insere ou atualiza um contra-cheque na tabela.
-     * Se o objeto tiver id=0, faz INSERT e obtém o generated key.
-     * Caso contrário, faz UPDATE.
-     */
     public boolean gravar(ContraCheque c) {
         try {
             this.conectar();
@@ -80,7 +71,6 @@ public class ContraChequeDAO extends DataBaseDAO {
                 pstm.setInt(6, c.getAno());
                 pstm.executeUpdate();
 
-                // captura o ID gerado pelo auto_increment
                 ResultSet rs = pstm.getGeneratedKeys();
                 if (rs.next()) {
                     c.setIdContraCheque(rs.getInt(1));
@@ -102,16 +92,12 @@ public class ContraChequeDAO extends DataBaseDAO {
 
             this.desconectar();
             return true;
-
         } catch (SQLException e) {
-            System.out.println("Erro ao gravar: " + e);
+            System.err.println("Erro ao gravar: " + e.getMessage());
             return false;
         }
     }
 
-    /**
-     * Carrega um contra-cheque pelo seu ID, trazendo também o nome do funcionário.
-     */
     public ContraCheque getCarregaPorID(int idContraCheque) throws Exception {
         ContraCheque c = new ContraCheque();
         String sql = "SELECT c.*, f.nome AS nomeFuncionario " +
@@ -139,73 +125,57 @@ public class ContraChequeDAO extends DataBaseDAO {
         return c;
     }
 
-    /**
-     * Exclui um contra-cheque: remove primeiro eventos e impostos associados,
-     * depois remove o registro de contra_cheque em si.
-     */
     public boolean excluir(ContraCheque c) {
         try {
             this.conectar();
 
-            String sqlEventos = "DELETE FROM evento_contra_cheque WHERE idContra_cheque = ?";
-            PreparedStatement stmtEventos = conn.prepareStatement(sqlEventos);
+            PreparedStatement stmtEventos = conn.prepareStatement(
+                "DELETE FROM evento_contra_cheque WHERE idContra_cheque = ?");
             stmtEventos.setInt(1, c.getIdContraCheque());
             stmtEventos.executeUpdate();
 
-            String sqlImpostos = "DELETE FROM contra_cheque_imposto WHERE idContra_cheque = ?";
-            PreparedStatement stmtImpostos = conn.prepareStatement(sqlImpostos);
+            PreparedStatement stmtImpostos = conn.prepareStatement(
+                "DELETE FROM contra_cheque_imposto WHERE idContra_cheque = ?");
             stmtImpostos.setInt(1, c.getIdContraCheque());
             stmtImpostos.executeUpdate();
 
-            String sqlCC = "DELETE FROM contra_cheque WHERE idContra_cheque = ?";
-            PreparedStatement stmtCC = conn.prepareStatement(sqlCC);
+            PreparedStatement stmtCC = conn.prepareStatement(
+                "DELETE FROM contra_cheque WHERE idContra_cheque = ?");
             stmtCC.setInt(1, c.getIdContraCheque());
             stmtCC.executeUpdate();
 
             this.desconectar();
             return true;
-
         } catch (SQLException e) {
-            System.out.println("Erro ao excluir contra-cheque: " + e.getMessage());
+            System.err.println("Erro ao excluir contra-cheque: " + e.getMessage());
             return false;
         }
     }
 
-    /**
-     * Retorna o total de benefícios ativos (status = 1) para um funcionário.
-     */
     public BigDecimal getTotalBeneficiosAtivos(int funcionarioId) throws Exception {
         this.conectar();
-        String sql = 
+        PreparedStatement stmt = conn.prepareStatement(
             "SELECT SUM(fb.valor) AS total " +
             "FROM funcionario_beneficio fb " +
             "JOIN beneficio b ON fb.beneficio_idBeneficio = b.idBeneficio " +
-            "WHERE fb.funcionario_idFfuncionario = ? AND b.status = 1";
-        PreparedStatement stmt = conn.prepareStatement(sql);
+            "WHERE fb.funcionario_idFfuncionario = ? AND b.status = 1");
         stmt.setInt(1, funcionarioId);
         ResultSet rs = stmt.executeQuery();
 
         BigDecimal total = BigDecimal.ZERO;
-        if (rs.next()) {
+        if (rs.next() && rs.getBigDecimal("total") != null) {
             total = rs.getBigDecimal("total");
-            if (total == null) {
-                total = BigDecimal.ZERO;
-            }
         }
 
         this.desconectar();
         return total;
     }
 
-    /**
-     * Insere um evento de contra-cheque (vencimento ou desconto) na tabela evento_contra_cheque.
-     */
     public void registrarEvento(int contraChequeId, String descricao, BigDecimal valor, boolean ehDesconto) throws Exception {
         this.conectar();
-        String sql = 
+        PreparedStatement stmt = conn.prepareStatement(
             "INSERT INTO evento_contra_cheque " +
-            "(descricao, valor, tipo, idContra_cheque) VALUES (?, ?, ?, ?)";
-        PreparedStatement stmt = conn.prepareStatement(sql);
+            "(descricao, valor, tipo, idContra_cheque) VALUES (?, ?, ?, ?)");
         stmt.setString(1, descricao);
         stmt.setBigDecimal(2, valor);
         stmt.setString(3, ehDesconto ? "DESCONTO" : "VENCIMENTO");
@@ -214,30 +184,48 @@ public class ContraChequeDAO extends DataBaseDAO {
         this.desconectar();
     }
 
-    /**
-     * Insere um imposto de contra-cheque na tabela contra_cheque_imposto.
-     */
-    public void registrarImposto(int contraChequeId, int idImposto, BigDecimal valor) throws Exception {
-        this.conectar();
-        String sql = 
-            "INSERT INTO contra_cheque_imposto " +
-            "(idContra_cheque, idImposto, valorDescontado) VALUES (?, ?, ?)";
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setInt(1, contraChequeId);
-        stmt.setInt(2, idImposto);
-        stmt.setBigDecimal(3, valor);
-        stmt.execute();
-        this.desconectar();
+    public void registrarImposto(int contraChequeId, int idImposto, BigDecimal valor) {
+        String sql = "INSERT INTO contra_cheque_imposto " +
+                     "(idContra_cheque, idImposto, valorDescontado) VALUES (?, ?, ?)";
+        try {
+            this.conectar();
+            conn.setAutoCommit(false);
+
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setInt(1, contraChequeId);
+                ps.setInt(2, idImposto);
+                ps.setBigDecimal(3, valor);
+
+                int rows = ps.executeUpdate();
+                System.out.println("registrarImposto(): inseriu " + rows + " linha(s) para ID=" + contraChequeId);
+
+                conn.commit();
+                System.out.println("registrarImposto(): commit OK para ID=" + contraChequeId);
+            }
+        } catch (SQLException e) {
+            try {
+                conn.rollback();
+                System.err.println("registrarImposto(): rollback para ID=" + contraChequeId);
+            } catch (SQLException ex) {
+                System.err.println("Erro no rollback: " + ex.getMessage());
+            }
+            System.err.println("Erro em registrarImposto (ID=" + contraChequeId + "): " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+                this.desconectar();
+            } catch (Exception ex) {
+                System.err.println("Erro ao desconectar após registrarImposto: " + ex.getMessage());
+            }
+        }
     }
 
-    /**
-     * Retorna a lista de eventos (vencimentos e descontos) associados a um contra-cheque.
-     */
     public List<EventoContraCheque> getEventosPorContraCheque(int contraChequeId) throws Exception {
-        this.conectar();
         List<EventoContraCheque> lista = new ArrayList<>();
-        String sql = "SELECT * FROM evento_contra_cheque WHERE idContra_cheque = ?";
-        PreparedStatement stmt = conn.prepareStatement(sql);
+        this.conectar();
+        PreparedStatement stmt = conn.prepareStatement(
+            "SELECT * FROM evento_contra_cheque WHERE idContra_cheque = ?");
         stmt.setInt(1, contraChequeId);
         ResultSet rs = stmt.executeQuery();
 
@@ -253,13 +241,14 @@ public class ContraChequeDAO extends DataBaseDAO {
         return lista;
     }
 
-    /**
-     * Retorna a lista de impostos cadastrados para um dado contra-cheque (unidos à tabela imposto).
-     */
     public List<Imposto> getImpostosPorContraCheque(int contraChequeId) throws Exception {
+        List<Imposto> lista = new ArrayList<>();
         this.conectar();
         String sql = 
-            "SELECT i.*, cci.valorDescontado " +
+            "SELECT i.idImposto, i.descricao, i.tipo, " +
+            "i.faixa_inicio AS faixaInicio, i.faixa_fim AS faixaFim, " +
+            "i.aliquota, i.parcela_deduzir AS parcelaDeduzir, " +
+            "cci.valorDescontado " +
             "FROM contra_cheque_imposto cci " +
             "JOIN imposto i ON i.idImposto = cci.idImposto " +
             "WHERE cci.idContra_cheque = ?";
@@ -267,7 +256,6 @@ public class ContraChequeDAO extends DataBaseDAO {
         stmt.setInt(1, contraChequeId);
         ResultSet rs = stmt.executeQuery();
 
-        List<Imposto> lista = new ArrayList<>();
         while (rs.next()) {
             Imposto i = new Imposto();
             i.setIdImposto(rs.getInt("idImposto"));
@@ -285,61 +273,29 @@ public class ContraChequeDAO extends DataBaseDAO {
         return lista;
     }
 
-    /**
-     * Gera um novo contra-cheque para o funcionário, no mês e ano indicados.
-     * Cálculos:
-     *   - Salário-base: obtido de PagamentoDAO.getUltimoSalario(...)
-     *   - Horas esperadas: HorasUtils.calcularHorasEsperadasMes(...)
-     *   - Se faltas: calcula desconto = valorHora * (horasEsperadas - horasTrabalhadas)
-     *   - Se horas extras: calcula adicional = valorHora * 1.5 * (horasTrabalhadas - horasEsperadas)
-     *   - Benefícios ativos: soma de todos os fb.valor onde fb.status=1
-     *   - Para cada imposto (INSS, IRRF): calculaValorImposto(...), registra em contra_cheque_imposto e evento_contra_cheque
-     *   - Re-grava descontos e valor líquido após somar totalImpostos.
-     *
-     * Foi ajustado para:
-     *   1) ler todos os registros de "imposto" em memória primeiro (List<Imposto>),
-     *   2) só depois, iterar essa lista e chamar registrarImposto(...) e registrarEvento(...)
-     * para não fechar o ResultSet antes de terminar a iteração.
-     */
     public boolean gerarContraCheque(int funcionarioId, int ano, int mes, boolean trabalhaSabado, double horasTrabalhadas) throws Exception {
-        // 1) busca salário-base atual
         PagamentoDAO pDAO = new PagamentoDAO();
         BigDecimal salarioBase = BigDecimal.valueOf(pDAO.getUltimoSalario(funcionarioId));
 
-        // 2) feriados do DF no ano
         List<LocalDate> feriados = FeriadoUtils.buscarFeriadosRelevantes(ano, "DF");
-
-        // 3) calcula horas esperadas no mês (inclui sábados se trabalhaSabado=true)
         double horasEsperadas = HorasUtils.calcularHorasEsperadasMes(ano, mes, feriados, trabalhaSabado);
 
-        // 4) calcula valor da hora
         BigDecimal valorHora = salarioBase
-                .divide(BigDecimal.valueOf(horasEsperadas), 2, BigDecimal.ROUND_HALF_UP);
+            .divide(BigDecimal.valueOf(horasEsperadas), 2, BigDecimal.ROUND_HALF_UP);
 
-        // 5) calcula desconto ou adicional
         BigDecimal desconto = BigDecimal.ZERO;
         BigDecimal adicional = BigDecimal.ZERO;
-
         if (horasTrabalhadas < horasEsperadas) {
-            double dif = horasEsperadas - horasTrabalhadas;
-            desconto = valorHora.multiply(BigDecimal.valueOf(dif));
+            desconto = valorHora.multiply(BigDecimal.valueOf(horasEsperadas - horasTrabalhadas));
         } else if (horasTrabalhadas > horasEsperadas) {
-            double extra = horasTrabalhadas - horasEsperadas;
-            adicional = valorHora
-                    .multiply(BigDecimal.valueOf(1.5))
-                    .multiply(BigDecimal.valueOf(extra));
+            adicional = valorHora.multiply(BigDecimal.valueOf(1.5))
+                                  .multiply(BigDecimal.valueOf(horasTrabalhadas - horasEsperadas));
         }
 
-        // 6) obtém benefícios ativos
         BigDecimal beneficios = getTotalBeneficiosAtivos(funcionarioId);
-
-        // 7) soma vencimentos = salárioBase + adicional + benefícios
         BigDecimal vencimentos = salarioBase.add(adicional).add(beneficios);
-
-        // 8) valor líquido inicial = vencimentos - desconto
         BigDecimal valorLiquido = vencimentos.subtract(desconto);
 
-        // 9) monta objeto ContraCheque e grava pela primeira vez (c/ descontos sem impostos)
         ContraCheque c = new ContraCheque();
         c.setFuncionarioId(funcionarioId);
         c.setValorBruto(salarioBase);
@@ -348,12 +304,9 @@ public class ContraChequeDAO extends DataBaseDAO {
         c.setMes(mes);
         c.setAno(ano);
 
-        boolean ok = this.gravar(c); // aqui já insere na tabela e define c.idContraCheque
-
+        boolean ok = this.gravar(c);
         if (ok) {
-            // 10) registra eventos (Salário base, Hora extra, Benefícios, Desconto por faltas)
             registrarEvento(c.getIdContraCheque(), "Salário base", salarioBase, false);
-
             if (adicional.compareTo(BigDecimal.ZERO) > 0) {
                 registrarEvento(c.getIdContraCheque(), "Hora extra (50%)", adicional, false);
             }
@@ -364,27 +317,30 @@ public class ContraChequeDAO extends DataBaseDAO {
                 registrarEvento(c.getIdContraCheque(), "Desconto por faltas", desconto, true);
             }
 
-            // 11) BUSCA todos os impostos (INSS, IRRF) em memória antes de inserir
+            // Carrega impostos com alias camelCase
             this.conectar();
-            String sql = "SELECT * FROM imposto WHERE tipo IN ('INSS', 'IRRF')";
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery();
+            String impSQL = 
+                "SELECT idImposto, descricao, tipo, " +
+                "faixa_inicio AS faixaInicio, faixa_fim AS faixaFim, " +
+                "aliquota, parcela_deduzir AS parcelaDeduzir " +
+                "FROM imposto WHERE tipo IN ('INSS','IRRF')";
+            PreparedStatement impStmt = conn.prepareStatement(impSQL);
+            ResultSet impRs = impStmt.executeQuery();
 
             List<Imposto> listaImpostos = new ArrayList<>();
-            while (rs.next()) {
-                Imposto i = new Imposto();
-                i.setIdImposto(rs.getInt("idImposto"));
-                i.setDescricao(rs.getString("descricao"));
-                i.setTipo(rs.getString("tipo"));
-                i.setFaixaInicio(rs.getBigDecimal("faixaInicio"));
-                i.setFaixaFim(rs.getBigDecimal("faixaFim"));
-                i.setAliquota(rs.getBigDecimal("aliquota"));
-                i.setParcelaDeduzir(rs.getBigDecimal("parcelaDeduzir"));
-                listaImpostos.add(i);
+            while (impRs.next()) {
+                Imposto imp = new Imposto();
+                imp.setIdImposto(impRs.getInt("idImposto"));
+                imp.setDescricao(impRs.getString("descricao"));
+                imp.setTipo(impRs.getString("tipo"));
+                imp.setFaixaInicio(impRs.getBigDecimal("faixaInicio"));
+                imp.setFaixaFim(impRs.getBigDecimal("faixaFim"));
+                imp.setAliquota(impRs.getBigDecimal("aliquota"));
+                imp.setParcelaDeduzir(impRs.getBigDecimal("parcelaDeduzir"));
+                listaImpostos.add(imp);
             }
             this.desconectar();
 
-            // 12) itera a lista em memória e só depois chama registrarImposto e registrarEvento
             BigDecimal totalImpostos = BigDecimal.ZERO;
             for (Imposto i : listaImpostos) {
                 BigDecimal valorImp = calcularValorImposto(i, salarioBase);
@@ -395,23 +351,19 @@ public class ContraChequeDAO extends DataBaseDAO {
                 }
             }
 
-            // 13) atualiza descontos (já somando totalImpostos) e recalcula valor líquido
             c.setDescontos(c.getDescontos().add(totalImpostos));
             c.setValorLiquido(vencimentos.subtract(c.getDescontos()));
-            this.gravar(c); // faz um UPDATE para armazenar descontos finais e valorLiquido finais
+            this.gravar(c);
         }
 
         return ok;
     }
 
-    /**
-     * Calcula o valor de imposto para um dado "imposto" baseado na base salarial.
-     * Se a base estiver dentro da faixa, faz base * aliquota - parcelaDeduzir.
-     */
     public BigDecimal calcularValorImposto(Imposto imposto, BigDecimal base) {
         if (base.compareTo(imposto.getFaixaInicio()) >= 0 &&
             (imposto.getFaixaFim() == null || base.compareTo(imposto.getFaixaFim()) <= 0)) {
-            BigDecimal aliquotaFrac = imposto.getAliquota().divide(BigDecimal.valueOf(100));
+            BigDecimal aliquotaFrac = imposto.getAliquota()
+                                             .divide(BigDecimal.valueOf(100), 10, BigDecimal.ROUND_HALF_UP);
             return base.multiply(aliquotaFrac).subtract(imposto.getParcelaDeduzir());
         }
         return BigDecimal.ZERO;
