@@ -93,7 +93,7 @@ public class RegistroPonto {
     //metodo para hora formatada corretamente
     public String getDataFormatada() {
     if (data == null) return "-";
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy", new Locale("pt", "BR"));
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     return data.format(formatter);
 }
     
