@@ -59,10 +59,10 @@
             <!-- Botões -->
             <div class="mt-4 botoes-form">
                 <button type="submit" class="btn btn-success">
-                    <i class="fas fa-save"></i> Gravar
+                   Gravar
                 </button>
                 <a href="listar_pagamento.jsp" class="btn btn-warning text-dark">
-                    <i class="fas fa-arrow-left"></i> Voltar
+                    Voltar
                 </a>
             </div>
         </form>

@@ -100,12 +100,12 @@
                         <c:forEach var="r" items="${lista}">
                             <div class="col-sm-6 col-xs-12 registro-card">
                                 <div class="card-funcionario">
-                                    <h4><i class="fa fa-calendar"></i> ${r.data}</h4>
+                                    <h4><i class="fa fa-calendar"></i> ${r.dataFormatada}</h4>
                                     <p><strong>Entrada:</strong> ${r.horaEntrada != null ? r.horaEntrada : '-'}</p>
                                     <p><strong>Saída Almoço:</strong> ${r.horaAlmocoSaida != null ? r.horaAlmocoSaida : '-'}</p>
                                     <p><strong>Volta Almoço:</strong> ${r.horaAlmocoVolta != null ? r.horaAlmocoVolta : '-'}</p>
                                     <p><strong>Saída Final:</strong> ${r.horaSaida != null ? r.horaSaida : '-'}</p>
-                                    <p><strong>Horas Trabalhadas:</strong> ${r.horasTrabalhadas} h</p>
+                                    <p><strong>Horas Trabalhadas:</strong> ${r.horasTrabalhadasFormatado}</p>
                                     <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
                                         <p><strong>Funcionário:</strong> ${r.funcionario.nome}</p>
                                         <div class="grupo-botoes-card">
