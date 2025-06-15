@@ -12,15 +12,15 @@
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="datatables/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Gerenciar Acessos</title>
 </head>
 <body>
 
-    <div class="banner">
-        <%@include file="banner.jsp" %>
-    </div>
-
+   
+   <%@include file="banner.jsp" %>
     <%@include file="menu.jsp" %>
+     <%@ include file="menu_mobile.jsp" %>   <!-- Menu mobile -->
 
     <div class="content">
         <h2>Gerenciar Acessos</h2>
