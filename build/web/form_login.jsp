@@ -1,42 +1,59 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="css/estilo.css">
-        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-        <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="datatables/jquery.dataTables.min.css">
-        <title>Login - Sistema Ótica</title>
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Ótica Milano</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body class="login-body">
 
-        <div class="content">
-            <% 
-                String mensagem = (String) request.getSession().getAttribute("mensagem");
-                if (mensagem != null) {
-            %>
-                <div class="alert alert-info"><%= mensagem %></div>
-            <%
-                    request.getSession().removeAttribute("mensagem");
-                }
-            %>
+    <!-- Loader universal -->
+    <div id="loader-wrapper" style="display: none;">
+        <div class="loader"></div>
+    </div>
 
-            <form action="GerenciarLogin" method="POST">
-                <legend>Formulário de Login</legend>
+    <div class="login-overlay">
+        <div class="login-card">
 
-                <label for="login" class="control-label">Login</label>
-                <input type="text" class="form-control" id="login" name="login" required>
+            <!-- Alerta de erro -->
+            <c:if test="${not empty erro}">
+                <div class="alert alert-danger" style="text-align: center;">
+                    ${erro}
+                </div>
+            </c:if>
 
-                <label for="senha" class="control-label">Senha</label>
-                <input type="password" class="form-control" name="senha" id="senha" required>
-                
-                <br>
-                <button class="btn btn-success">Acessar</button>
-            </form>    
+            <form action="GerenciarLogin" method="POST" style="width: 100%;">
+                <div class="campo-form">
+                    <input type="text" name="login" placeholder="Login" class="login-input" required>
+                </div>
+
+                <div class="campo-form">
+                    <input type="password" name="senha" placeholder="Senha" class="login-input" required>
+                </div>
+
+                <button type="submit" class="botao-login">Acessar</button>
+            </form>
         </div>
+    </div>
 
-    </body>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.querySelector("form");
+            form.addEventListener("submit", function () {
+                document.getElementById("loader-wrapper").style.display = "flex";
+            });
+
+            // Garante que o loader não fique travado se houver erro
+            const erro = document.querySelector(".alert-danger");
+            if (erro) {
+                document.getElementById("loader-wrapper").style.display = "none";
+            }
+        });
+    </script>
+
+</body>
 </html>
