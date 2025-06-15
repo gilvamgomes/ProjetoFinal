@@ -17,59 +17,60 @@
     <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="datatables/jquery.dataTables.min.css">
-    <title>Benefício</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Cadastro de Benefício</title>
 </head>
 <body>
 
-    <div class="banner">
-        <%@include file="banner.jsp" %>
-    </div>
+<%@include file="banner.jsp" %>
+<%@include file="menu.jsp" %>
+<%@include file="menu_mobile.jsp" %>
 
-    <%@include file="menu.jsp" %>
-
-    <div class="content">
+<div class="formulario-funcionario">
+    <div class="form-funcionario">
         <h2>Cadastrar Benefício</h2>
         <form action="GerenciarBeneficio" method="POST">
-            <legend>Formulário de Benefício</legend>
-            
             <input type="hidden" id="idBeneficio" name="idBeneficio" value="${b.idBeneficio}"/>
-            
-            <label for="nome" class="control-label">Nome do Benefício</label>
-            <input type="text" class="form-control" id="nome" name="nome" required value="${b.nome}">
-            
-            <label for="descricao" class="control-label">Descrição</label>
-            <input type="text" class="form-control" id="descricao" name="descricao" required value="${b.descricao}">
-            
-            <label for="status" class="control-label">Status</label>
-            <select name="status" class="form-control">
-                <c:if test="${b.status == null}">
-                    <option value="0">Escolha uma opção</option>
-                    <option value="1">Ativo</option>
-                    <option value="2">Inativo</option>
-                </c:if>
-                <c:if test="${b.status == 1}">
-                    <option value="1" selected>Ativo</option>
-                    <option value="2">Inativo</option>
-                </c:if>
-                <c:if test="${b.status == 2}">
-                    <option value="1">Ativo</option>
-                    <option value="2" selected>Inativo</option>
-                </c:if>
-            </select>
 
-            <br>
-            <button class="btn btn-success">Gravar</button>
-            <a href="listar_beneficio.jsp" class="btn btn-warning">Voltar</a>
+            <div class="grupo-campos">
+                <div class="campo-form">
+                    <label for="nome">Nome do Benefício</label>
+                    <input type="text" id="nome" name="nome" required value="${b.nome}">
+                </div>
+
+                <div class="campo-form">
+                    <label for="descricao">Descrição</label>
+                    <input type="text" id="descricao" name="descricao" required value="${b.descricao}">
+                </div>
+
+                <div class="campo-form">
+                    <label for="status">Status</label>
+                    <select name="status" id="status" required>
+                        <c:if test="${b.status == null}">
+                            <option value="0">Escolha uma opção</option>
+                            <option value="1">Ativo</option>
+                            <option value="2">Inativo</option>
+                        </c:if>
+                        <c:if test="${b.status == 1}">
+                            <option value="1" selected>Ativo</option>
+                            <option value="2">Inativo</option>
+                        </c:if>
+                        <c:if test="${b.status == 2}">
+                            <option value="1">Ativo</option>
+                            <option value="2" selected>Inativo</option>
+                        </c:if>
+                    </select>
+                </div>
+            </div>
+
+            <div class="botoes-form">
+    <button type="submit" class="btn btn-success">Gravar</button>
+    <a href="listar_beneficio.jsp" class="btn btn-warning">Voltar</a>
+</div>
+
         </form>
     </div>
-
-    <script>
-        function toggleMenu(){
-            var menu = document.getElementById("nav-links");
-            menu.classList.toggle("show");
-        }
-    </script>
+</div>
 
 </body>
 </html>
