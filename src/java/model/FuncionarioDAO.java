@@ -177,5 +177,76 @@ public class FuncionarioDAO extends DataBaseDAO {
 
         return resultado;
     }
+   //barra de busca
+    public List<Funcionario> buscarPorTermo(String termo) throws Exception {
+    List<Funcionario> lista = new ArrayList<>();
+    String sql = "SELECT f.* " +
+                 "FROM funcionario f " +
+                 "JOIN usuario u ON f.usuario_idUsuario = u.idUsuario " +
+                 "WHERE f.nome LIKE ? " +
+                 "OR f.cpf LIKE ? " +
+                 "OR f.cargo LIKE ? " +
+                 "OR u.nome LIKE ? ";
+
+    boolean filtrarPorID = false;
+    boolean filtrarPorStatus = false;
+    int valorID = 0;
+    int valorStatus = 0;
+
+    // Tenta identificar se é ID
+    try {
+        valorID = Integer.parseInt(termo);
+        filtrarPorID = true;
+        sql += " OR f.idFfuncionario = ? ";
+    } catch (NumberFormatException e) {
+        // Não é número
+    }
+
+    // Tenta identificar se é um status
+    if (termo.equalsIgnoreCase("ativo")) {
+        valorStatus = 1;
+        filtrarPorStatus = true;
+        sql += " OR f.status = ? ";
+    } else if (termo.equalsIgnoreCase("inativo")) {
+        valorStatus = 2;
+        filtrarPorStatus = true;
+        sql += " OR f.status = ? ";
+    }
+
+    this.conectar();
+    UsuarioDAO uDAO = new UsuarioDAO();
+
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        int i = 1;
+        ps.setString(i++, "%" + termo + "%");
+        ps.setString(i++, "%" + termo + "%");
+        ps.setString(i++, "%" + termo + "%");
+        ps.setString(i++, "%" + termo + "%");
+
+        if (filtrarPorID) {
+            ps.setInt(i++, valorID);
+        }
+        if (filtrarPorStatus) {
+            ps.setInt(i++, valorStatus);
+        }
+
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Funcionario f = new Funcionario();
+            f.setIdFuncionario(rs.getInt("idFfuncionario"));
+            f.setNome(rs.getString("nome"));
+            f.setDataNasc(rs.getDate("dataNasc"));
+            f.setCpf(rs.getString("cpf"));
+            f.setCargo(rs.getString("cargo"));
+            f.setStatus(rs.getInt("status"));
+            f.setUsuario(uDAO.getCarregaPorID(rs.getInt("usuario_idUsuario")));
+            lista.add(f);
+        }
+    } finally {
+        this.desconectar();
+    }
+
+    return lista;
+}
 
 }

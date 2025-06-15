@@ -1,3 +1,6 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page import="model.Usuario" %>
 <%@page import="controller.GerenciarLogin" %>
 
@@ -12,147 +15,166 @@
     request.setAttribute("meses", meses);
 %>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
-<jsp:useBean class="model.FuncionarioDAO" id="fDAO" />
-<%
-    request.setAttribute("funcionarios", fDAO.getLista());
-%>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width ,initial-scale=1.0">
     <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="datatables/jquery.dataTables.min.css">
-    <title>Lista de Contra-Cheques</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Contra-Cheques</title>
 </head>
 <body>
 
-    <div class="banner">
-        <%@include file="banner.jsp" %>
-    </div>
+<%@include file="banner.jsp" %>
+<%@include file="menu.jsp" %>
+<%@include file="menu_mobile.jsp" %>
 
-    <%@include file="menu.jsp" %>
+<div class="container lista-funcionario">
+    <div class="row">
+        <div class="col-xs-12">
+            <br>
 
-    <div class="content">
-        <h2>Lista de Contra-Cheques</h2>
+            <div class="clearfix" style="margin-bottom: 10px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                    <form method="get" id="formBusca" style="margin: 0;">
+                        <input 
+                            type="text" 
+                            name="busca" 
+                            id="campoBusca"
+                            value="${param.busca}" 
+                            class="form-control" 
+                            placeholder="Buscar contra-cheque..." 
+                            style="min-width: 220px; border-radius: 20px; padding: 6px 14px; height: 38px;"
+                        >
+                    </form>
 
-        <!-- ALERTA DE MENSAGEM COM JSTL -->
-        <c:if test="${not empty sessionScope.mensagem}">
-            <script>
-                alert('${sessionScope.mensagem}');
-            </script>
-            <c:remove var="mensagem" scope="session" />
-        </c:if>
+                    <a href="form_contra_cheque.jsp" class="btn btn-primary" style="height: 38px;">
+                        <i class="fa fa-plus"></i> Novo Cadastro Manual
+                    </a>
+                </div>
 
-        <a href="form_contra_cheque.jsp" class="btn btn-primary">Novo Cadastro Manual</a>
+                <!-- FORMULÁRIO DE GERAÇÃO AUTOMÁTICA -->
+                <jsp:useBean class="model.FuncionarioDAO" id="fDAO" />
+                <%
+                    request.setAttribute("funcionarios", fDAO.getLista());
+                %>
 
-        <!-- FORMULÁRIO PARA GERAR CONTRA-CHEQUE AUTOMÁTICO -->
-        <form method="get" action="GerenciarContraCheque" class="form-inline" style="margin-top: 20px;">
-            <input type="hidden" name="acao" value="gerar">
-            <div class="form-group">
-                <label for="idFuncionario">Funcionário:</label>
-                <select name="idFuncionario" class="form-control" required>
-                    <option value="">-- Selecione --</option>
-                    <c:forEach var="f" items="${funcionarios}">
-                        <option value="${f.idFuncionario}">${f.nome}</option>
-                    </c:forEach>
-                </select>
+                <form method="get" action="GerenciarContraCheque" class="form-gerar-contracheque" onsubmit="exibirLoader()">
+                    <input type="hidden" name="acao" value="gerar">
+
+                    <div class="form-group">
+                        <label>Funcionário:</label>
+                        <select name="idFuncionario" class="form-control" required>
+                            <option value="">-- Selecione --</option>
+                            <c:forEach var="f" items="${funcionarios}"><option value="${f.idFuncionario}">${f.nome}</option></c:forEach>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Mês:</label>
+                        <select name="mes" class="form-control" required>
+                            <option value="">-- Mês --</option>
+                            <c:forEach var="i" begin="1" end="12"><option value="${i}">${meses[i]}</option></c:forEach>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ano:</label>
+                        <input type="number" name="ano" value="2025" required class="form-control">
+                    </div>
+
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa fa-cogs"></i> Gerar
+                    </button>
+                </form>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <h2 style="margin: 0;"><i class="fa fa-file-text-o"></i> Contra-Cheques</h2>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="mes">Mês:</label>
-                <select name="mes" class="form-control" required>
-                    <option value="">-- Mês --</option>
-                    <c:forEach var="i" begin="1" end="12">
-                        <option value="${i}">${meses[i]}</option>
-                    </c:forEach>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="ano">Ano:</label>
-                <input type="number" name="ano" value="2025" required class="form-control">
-            </div>
-            <button type="submit" class="btn btn-success">Gerar Contra-Cheque</button>
-        </form>
 
-        <!-- TABELA DE LISTAGEM -->
-        <table class="table table-hover table-striped table-bordered display" id="listarContraCheque" style="margin-top: 20px;">
-            <thead>
-                <tr>
-                    <th>Mês</th>
-                    <th>Ano</th>
-                    <th>Valor Bruto</th>
-                    <th>Descontos</th>
-                    <th>Valor Líquido</th>
-                    <th>Funcionário</th>
-                    <th>Opções</th>
-                </tr>
-            </thead>
-            <tfoot>
-                <tr>
-                    <th>Mês</th>
-                    <th>Ano</th>
-                    <th>Valor Bruto</th>
-                    <th>Descontos</th>
-                    <th>Valor Líquido</th>
-                    <th>Funcionário</th>
-                    <th>Opções</th>
-                </tr>
-            </tfoot>
+            <c:if test="${not empty sessionScope.mensagem}">
+                <div class="alert alert-info text-center">${sessionScope.mensagem}</div>
+                <c:remove var="mensagem" scope="session"/>
+            </c:if>
 
+            <!-- LISTAGEM EM CARDS -->
             <jsp:useBean class="model.ContraChequeDAO" id="cDAO"/>
-            <tbody>
-                <c:forEach var="c" items="${cDAO.lista}">
-                    <tr>
-                        <td>${meses[c.mes]}</td>
-                        <td>${c.ano}</td>
-                        <td>${c.valorBruto}</td>
-                        <td>${c.descontos}</td>
-                        <td>${c.valorLiquido}</td>
-                        <td>${c.nomeFuncionario}</td>
-                        <td>
-                            <a class="btn btn-primary" href="GerenciarContraCheque?acao=alterar&idContraCheque=${c.idContraCheque}">
-                                <i class="glyphicon glyphicon-pencil"></i>
-                            </a>
-                            <button class="btn btn-danger" onclick="confirmarExclusao(${c.idContraCheque})">
-                                <i class="glyphicon glyphicon-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                </c:forEach>
-            </tbody>
-        </table>
+            <c:set var="lista" value="${empty param.busca ? cDAO.lista : cDAO.buscarPorTermo(param.busca)}"/>
+
+            <c:choose>
+                <c:when test="${empty lista}">
+                    <div class="alert alert-warning text-center">⚠ Nenhum contra-cheque encontrado.</div>
+                </c:when>
+                <c:otherwise>
+                    <div class="row">
+                        <c:forEach var="c" items="${lista}">
+                            <div class="col-sm-6 col-xs-12">
+                                <div class="card-funcionario">
+                                    <h4><i class="fa fa-file-text"></i> ${meses[c.mes]} / ${c.ano}</h4>
+                                    <p><strong>Valor Bruto:</strong> R$ ${c.valorBruto}</p>
+                                    <p><strong>Descontos:</strong> R$ ${c.descontos}</p>
+                                    <p><strong>Valor Líquido:</strong> R$ ${c.valorLiquido}</p>
+                                    <p><strong>Funcionário:</strong> ${c.nomeFuncionario}</p>
+                                    <div class="btn-group">
+                                        <a class="btn btn-primary btn-sm" href="GerenciarContraCheque?acao=alterar&idContraCheque=${c.idContraCheque}">
+                                            <i class="fa fa-edit"></i> Editar
+                                        </a>
+                                        <button class="btn btn-danger btn-sm" onclick="confirmarExclusao(${c.idContraCheque})">
+                                            <i class="fa fa-trash"></i> Excluir
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+        </div>
     </div>
+</div>
 
-    <script type="text/javascript" src="datatables/jquery.js"></script>
-    <script type="text/javascript" src="datatables/jquery.dataTables.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $("#listarContraCheque").DataTable({
-                "language": {
-                    "url": "datatables/portugues.json"
-                }
-            });
-        });
+<!-- Loader Universal -->
+<div id="loader-wrapper" style="display:none;">
+    <div class="loader"></div>
+</div>
 
-        function confirmarExclusao(idContraCheque) {
-            if (confirm('Deseja realmente excluir o contra-cheque ID ' + idContraCheque + ' ?')) {
-                location.href = 'GerenciarContraCheque?acao=excluir&idContraCheque=' + idContraCheque;
-            }
+<script>
+    function exibirLoader() {
+        document.getElementById('loader-wrapper').style.display = 'flex';
+    }
+
+    function confirmarExclusao(idContraCheque) {
+        if (confirm('Deseja realmente excluir o contra-cheque ID ' + idContraCheque + '?')) {
+            location.href = 'GerenciarContraCheque?acao=excluir&idContraCheque=' + idContraCheque;
         }
+    }
 
-        function toggleMenu(){
-            var menu = document.getElementById("nav-links");
-            menu.classList.toggle("show");
-        }
-    </script>
+    let timeout = null;
+    const campo = document.getElementById("campoBusca");
+
+    if (localStorage.getItem("posCursor") !== null) {
+        const pos = parseInt(localStorage.getItem("posCursor"));
+        campo.focus();
+        campo.setSelectionRange(pos, pos);
+        localStorage.removeItem("posCursor");
+    }
+
+    campo.addEventListener("input", function () {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            localStorage.setItem("posCursor", campo.selectionStart);
+            document.getElementById("formBusca").submit();
+        }, 500);
+    });
+
+    function toggleMenu(){
+        var menu = document.getElementById("nav-links");
+        menu.classList.toggle("show");
+    }
+</script>
 
 </body>
 </html>

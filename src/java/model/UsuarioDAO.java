@@ -149,4 +149,49 @@ public class UsuarioDAO extends DataBaseDAO {
             return null;
         }
     }
+    //Barra de busca
+    public List<Usuario> buscarPorTermo(String termo) throws Exception {
+    List<Usuario> lista = new ArrayList<>();
+
+    String sql = "SELECT u.*, p.nome AS perfil_nome FROM usuario u " +
+                 "JOIN perfil p ON u.idPerfil = p.idPerfil " +
+                 "WHERE LOWER(u.nome) LIKE ? " +
+                 "OR CAST(u.idUsuario AS CHAR) LIKE ? " +
+                 "OR LOWER(u.login) LIKE ? " +
+                 "OR LOWER(p.nome) LIKE ? " +
+                 "OR (u.status = 1 AND ? = 'ativo') " +
+                 "OR (u.status = 0 AND ? = 'inativo')";
+
+    this.conectar();
+    try (PreparedStatement pstm = conn.prepareStatement(sql)) {
+        String filtro = "%" + termo.toLowerCase() + "%";
+        for (int i = 1; i <= 4; i++) {
+            pstm.setString(i, filtro);
+        }
+        pstm.setString(5, termo.toLowerCase()); // ativo
+        pstm.setString(6, termo.toLowerCase()); // inativo
+
+        ResultSet rs = pstm.executeQuery();
+        while (rs.next()) {
+            Usuario u = new Usuario();
+            u.setIdUsuario(rs.getInt("idUsuario"));
+            u.setNome(rs.getString("nome"));
+            u.setLogin(rs.getString("login"));
+            u.setSenha(rs.getString("senha"));
+            u.setStatus(rs.getInt("status"));
+
+            Perfil p = new Perfil();
+            p.setIdPerfil(rs.getInt("idPerfil"));
+            p.setNome(rs.getString("perfil_nome"));
+            u.setPerfil(p);
+
+            lista.add(u);
+        }
+    } finally {
+        this.desconectar();
+    }
+
+    return lista;
+}
+
 }

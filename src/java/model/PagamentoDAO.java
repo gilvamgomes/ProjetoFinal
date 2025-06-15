@@ -127,4 +127,38 @@ public class PagamentoDAO extends DataBaseDAO {
         }
         return salario;
     }
+     //Barra de busca
+    public List<Pagamento> buscarPorTermo(String termo) throws Exception {
+    List<Pagamento> lista = new ArrayList<>();
+    String sql = "SELECT * FROM pagamento WHERE " +
+                 "CAST(idPagamento AS CHAR) LIKE ? OR " +
+                 "LOWER(tipoPagamento) LIKE ? OR " +
+                 "CAST(valor AS CHAR) LIKE ? OR " +
+                 "CAST(dataPagamento AS CHAR) LIKE ? OR " +
+                 "CAST(funcionario_idFfuncionario AS CHAR) LIKE ?";
+
+    this.conectar();
+    try (PreparedStatement pstm = conn.prepareStatement(sql)) {
+        String filtro = "%" + termo.toLowerCase() + "%";
+        for (int i = 1; i <= 5; i++) {
+            pstm.setString(i, filtro);
+        }
+
+        ResultSet rs = pstm.executeQuery();
+        while (rs.next()) {
+            Pagamento p = new Pagamento();
+            p.setIdPagamento(rs.getInt("idPagamento"));
+            p.setTipoPagamento(rs.getString("tipoPagamento"));
+            p.setValor(rs.getDouble("valor")); // compatível com double
+            p.setDataPagamento(rs.getDate("dataPagamento")); // java.util.Date
+            p.setFuncionario_idFfuncionario(rs.getInt("funcionario_idFfuncionario"));
+            lista.add(p);
+        }
+    } finally {
+        this.desconectar();
+    }
+
+    return lista;
+}
+
 }

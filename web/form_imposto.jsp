@@ -1,3 +1,5 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="model.Usuario" %>
 <%@page import="controller.GerenciarLogin" %>
 
@@ -6,69 +8,87 @@
     request.setAttribute("ulogado", ulogado);
 %>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <title>Cadastro de Imposto</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
-    <title>Formulário de Imposto</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 
-    <div class="banner">
-        <%@include file="banner.jsp" %>
-    </div>
+<%@include file="banner.jsp" %>
+<%@include file="menu.jsp" %>
+<%@include file="menu_mobile.jsp" %>
 
-    <%@include file="menu.jsp" %>
+<div class="container formulario-funcionario">
+    <div class="form-funcionario">
+        <h2><i class="fa fa-file-invoice-dollar"></i> Cadastro de Imposto</h2>
 
-    <div class="content">
-        <h2>Cadastrar Imposto</h2>
         <form action="GerenciarImposto" method="POST">
-            <legend>Formulário de Imposto</legend>
-
             <input type="hidden" id="idImposto" name="idImposto" value="${imposto.idImposto}"/>
 
-            <label for="descricao" class="control-label">Descrição</label>
-            <input type="text" class="form-control" id="descricao" name="descricao" required value="${imposto.descricao}">
+            <div class="grupo-campos">
+                <div class="campo-form">
+                    <label for="descricao">Descrição</label>
+                    <input type="text" id="descricao" name="descricao" required value="${imposto.descricao}" class="form-control">
+                </div>
 
-            <label for="tipo" class="control-label">Tipo</label>
-            <select class="form-control" id="tipo" name="tipo" required>
-                <option value="">Selecione o tipo</option>
-                <option value="INSS" ${imposto.tipo == 'INSS' ? 'selected' : ''}>INSS</option>
-                <option value="IRRF" ${imposto.tipo == 'IRRF' ? 'selected' : ''}>IRRF</option>
-            </select>
+                <div class="campo-form">
+                    <label for="tipo">Tipo</label>
+                    <select id="tipo" name="tipo" class="form-control" required>
+                        <option value="">Selecione o tipo</option>
+                        <option value="INSS" <c:if test="${imposto.tipo == 'INSS'}">selected</c:if>>INSS</option>
+                        <option value="IRRF" <c:if test="${imposto.tipo == 'IRRF'}">selected</c:if>>IRRF</option>
+                    </select>
+                </div>
+            </div>
 
-            <label for="faixaInicio" class="control-label">Faixa Início (R$)</label>
-            <input type="number" step="0.01" class="form-control" id="faixaInicio" name="faixaInicio" required value="${imposto.faixaInicio}">
+            <div class="grupo-campos">
+                <div class="campo-form">
+                    <label for="faixaInicio">Faixa Início (R$)</label>
+                    <input type="number" step="0.01" id="faixaInicio" name="faixaInicio" required value="${imposto.faixaInicio}" class="form-control">
+                </div>
 
-            <label for="faixaFim" class="control-label">Faixa Fim (R$)</label>
-            <input type="number" step="0.01" class="form-control" id="faixaFim" name="faixaFim" value="${imposto.faixaFim}">
+                <div class="campo-form">
+                    <label for="faixaFim">Faixa Fim (R$)</label>
+                    <input type="number" step="0.01" id="faixaFim" name="faixaFim" value="${imposto.faixaFim}" class="form-control">
+                </div>
+            </div>
 
-            <label for="aliquota" class="control-label">Alíquota (%)</label>
-            <input type="number" step="0.01" class="form-control" id="aliquota" name="aliquota" required value="${imposto.aliquota}">
+            <div class="grupo-campos">
+                <div class="campo-form">
+                    <label for="aliquota">Alíquota (%)</label>
+                    <input type="number" step="0.01" id="aliquota" name="aliquota" required value="${imposto.aliquota}" class="form-control">
+                </div>
 
-            <label for="parcelaDeduzir" class="control-label">Parcela a Deduzir (R$)</label>
-            <input type="number" step="0.01" class="form-control" id="parcelaDeduzir" name="parcelaDeduzir" required value="${imposto.parcelaDeduzir}">
+                <div class="campo-form">
+                    <label for="parcelaDeduzir">Parcela a Deduzir (R$)</label>
+                    <input type="number" step="0.01" id="parcelaDeduzir" name="parcelaDeduzir" required value="${imposto.parcelaDeduzir}" class="form-control">
+                </div>
+            </div>
 
-            <br>
-            <button class="btn btn-success">Gravar</button>
-            <a href="listar_imposto.jsp" class="btn btn-warning">Voltar</a>
+            <div class="botoes-form mt-4">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-save"></i> Gravar
+                </button>
+                <a href="listar_imposto.jsp" class="btn btn-warning text-dark">
+                    <i class="fas fa-arrow-left"></i> Voltar
+                </a>
+            </div>
         </form>
     </div>
+</div>
 
-    <script>
-        function toggleMenu(){
-            var menu = document.getElementById("nav-links");
-            menu.classList.toggle("show");
-        }
-    </script>
+<script>
+    function toggleMenu() {
+        var menu = document.getElementById("nav-links");
+        menu.classList.toggle("show");
+    }
+</script>
 
 </body>
 </html>

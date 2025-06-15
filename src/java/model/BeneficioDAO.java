@@ -125,4 +125,47 @@ public class BeneficioDAO extends DataBaseDAO {
             return false;
         }
     }
+    //Barra de busca
+    public List<Beneficio> buscarPorTermo(String termo) throws Exception {
+    List<Beneficio> lista = new ArrayList<>();
+
+    // Mapeia palavras como "ativo" e "inativo" pra status 1 e 2
+    Integer status = null;
+    if (termo.equalsIgnoreCase("ativo")) {
+        status = 1;
+    } else if (termo.equalsIgnoreCase("inativo")) {
+        status = 2;
+    }
+
+    String sql = "SELECT * FROM beneficio WHERE " +
+                 "nome LIKE ? OR descricao LIKE ? OR idBeneficio LIKE ?" +
+                 (status != null ? " OR status = ?" : "");
+
+    this.conectar();
+    try (PreparedStatement pstm = conn.prepareStatement(sql)) {
+        String buscaLike = "%" + termo + "%";
+        pstm.setString(1, buscaLike); // nome
+        pstm.setString(2, buscaLike); // descricao
+        pstm.setString(3, buscaLike); // id
+
+        if (status != null) {
+            pstm.setInt(4, status);
+        }
+
+        ResultSet rs = pstm.executeQuery();
+        while (rs.next()) {
+            Beneficio b = new Beneficio();
+            b.setIdBeneficio(rs.getInt("idBeneficio"));
+            b.setNome(rs.getString("nome"));
+            b.setDescricao(rs.getString("descricao"));
+            b.setStatus(rs.getInt("status"));
+            lista.add(b);
+        }
+    } finally {
+        this.desconectar();
+    }
+
+    return lista;
+}
+
 }

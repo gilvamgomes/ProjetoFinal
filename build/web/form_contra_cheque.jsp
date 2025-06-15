@@ -18,53 +18,72 @@
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="datatables/jquery.dataTables.min.css">
-    <title>Contra-Cheque</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Cadastro de Contra-Cheque</title>
 </head>
 <body>
 
-    <div class="banner">
-        <%@include file="banner.jsp" %>
-    </div>
+<%@include file="banner.jsp" %>
+<%@include file="menu.jsp" %>
+<%@include file="menu_mobile.jsp" %>
 
-    <%@include file="menu.jsp" %>
+<div class="container formulario-funcionario">
+    <div class="form-funcionario">
+        <h2><i class="fa fa-file-text"></i> Cadastro de Contra-Cheque</h2>
 
-    <div class="content">
-        <h2>Cadastrar Contra-Cheque</h2>
         <form action="GerenciarContraCheque" method="POST">
-            <legend>Formulário de Contra-Cheque</legend>
-            
             <input type="hidden" id="idContraCheque" name="idContraCheque" value="${c.idContraCheque}"/>
-            
-            <label for="valorBruto" class="control-label">Valor Bruto</label>
-            <input type="number" step="0.01" class="form-control" id="valorBruto" name="valorBruto" required value="${c.valorBruto}">
-            
-            <label for="descontos" class="control-label">Descontos</label>
-            <input type="number" step="0.01" class="form-control" id="descontos" name="descontos" required value="${c.descontos}">
-            
-            <label for="valorLiquido" class="control-label">Valor Líquido</label>
-            <input type="number" step="0.01" class="form-control" id="valorLiquido" name="valorLiquido" required value="${c.valorLiquido}">
-            
-            <label for="funcionarioId" class="control-label">ID do Funcionário</label>
-            <input type="number" class="form-control" id="funcionarioId" name="funcionarioId" required value="${c.funcionarioId}">
 
-            <label for="mes" class="control-label">Mês</label>
-            <input type="number" min="1" max="12" class="form-control" id="mes" name="mes" required value="${c.mes}">
+            <div class="grupo-campos">
+                <div class="campo-form">
+                    <label for="valorBruto">Valor Bruto</label>
+                    <input type="number" step="0.01" id="valorBruto" name="valorBruto" required value="${c.valorBruto}" />
+                </div>
 
-            <label for="ano" class="control-label">Ano</label>
-            <input type="number" class="form-control" id="ano" name="ano" required value="${c.ano}">
+                <div class="campo-form">
+                    <label for="descontos">Descontos</label>
+                    <input type="number" step="0.01" id="descontos" name="descontos" required value="${c.descontos}" />
+                </div>
 
-            <br>
-            <button class="btn btn-success">Gravar</button>
-            <a href="listar_contra_cheque.jsp" class="btn btn-warning">Voltar</a>
+                <div class="campo-form">
+                    <label for="valorLiquido">Valor Líquido</label>
+                    <input type="number" step="0.01" id="valorLiquido" name="valorLiquido" required value="${c.valorLiquido}" />
+                </div>
+
+                <div class="campo-form">
+                    <label for="funcionarioId">ID do Funcionário</label>
+                    <input type="number" id="funcionarioId" name="funcionarioId" required value="${c.funcionarioId}" />
+                </div>
+
+                <div class="campo-form">
+                    <label for="mes">Mês</label>
+                    <input type="number" min="1" max="12" id="mes" name="mes" required value="${c.mes}" />
+                </div>
+
+                <div class="campo-form">
+                    <label for="ano">Ano</label>
+                    <input type="number" id="ano" name="ano" required value="${c.ano}" />
+                </div>
+            </div>
+
+            <div class="botoes-form">
+                <button type="submit" class="btn btn-success">
+                    <i class="fa fa-save"></i> Gravar
+                </button>
+                <a href="listar_contra_cheque.jsp" class="btn btn-warning">
+                    <i class="fa fa-arrow-left"></i> Voltar
+                </a>
+            </div>
         </form>
     </div>
+</div>
 
-    <script>
-        function toggleMenu(){
-            var menu = document.getElementById("nav-links");
-            menu.classList.toggle("show");
-        }
-    </script>
+<script>
+    function toggleMenu(){
+        var menu = document.getElementById("nav-links");
+        menu.classList.toggle("show");
+    }
+</script>
 
 </body>
 </html>

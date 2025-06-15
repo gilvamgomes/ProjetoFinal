@@ -159,4 +159,34 @@ public class PerfilDAO extends DataBaseDAO {
             return false;
         }
     }
+    
+      //Barra de busca
+    public List<Perfil> buscarPorTermo(String termo) throws Exception {
+    List<Perfil> lista = new ArrayList<>();
+    String sql = "SELECT * FROM perfil WHERE " +
+                 "LOWER(nome) LIKE ? OR " +
+                 "CAST(idPerfil AS CHAR) LIKE ? OR " +
+                 "CAST(status AS CHAR) LIKE ?";
+
+    this.conectar();
+    try (PreparedStatement pstm = conn.prepareStatement(sql)) {
+        String filtro = "%" + termo.toLowerCase() + "%";
+        for (int i = 1; i <= 3; i++) {
+            pstm.setString(i, filtro);
+        }
+
+        ResultSet rs = pstm.executeQuery();
+        while (rs.next()) {
+            Perfil p = new Perfil();
+            p.setIdPerfil(rs.getInt("idPerfil"));
+            p.setNome(rs.getString("nome"));
+            p.setStatus(rs.getInt("status"));
+            lista.add(p);
+        }
+    } finally {
+        this.desconectar();
+    }
+
+    return lista;
+}
 }

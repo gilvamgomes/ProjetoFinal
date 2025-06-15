@@ -1,127 +1,154 @@
-<%@page import="model.Usuario" %>
+<%@page import="model.RegistroPontoDAO, model.FuncionarioDAO, model.Funcionario, model.Usuario" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<jsp:useBean class="model.RegistroPontoDAO" id="rdao" />
 <%
     Usuario ulogado = (Usuario) session.getAttribute("ulogado");
     if (ulogado == null) {
         response.sendRedirect("form_login.jsp");
         return;
     }
+
+    request.setAttribute("ulogado", ulogado);
+
+    FuncionarioDAO fdao = new FuncionarioDAO();
+    Funcionario funcionarioLogado = fdao.getFuncionarioPorUsuario(ulogado.getIdUsuario());
+
+    java.util.List lista = "Funcionario".equals(ulogado.getPerfil().getNome())
+        ? rdao.listarPorFuncionario(funcionarioLogado.getIdFuncionario())
+        : rdao.listarTodos();
+
+    request.setAttribute("lista", lista);
 %>
 
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/estilo.css" />
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css" />
-    <link rel="stylesheet" href="datatables/jquery.dataTables.min.css" />
-    <title>Lista de Registro de Ponto</title>
+    <meta charset="UTF-8">
+    <title>Registro de Ponto</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/estilo.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 
-    <div class="banner">
-        <%@include file="banner.jsp" %>
-    </div>
+<%@include file="banner.jsp" %>
+<%@include file="menu.jsp" %>
+<%@include file="menu_mobile.jsp" %>
 
-    <%@include file="menu.jsp" %>
+<div class="container lista-funcionario">
+    <div class="row">
+        <div class="col-xs-12">
+            <br>
 
-    <div class="content">
-        <h2>Registro de Ponto</h2>
+            <!-- TOPO: barra de busca à esquerda, botões à direita -->
+            <div class="clearfix" style="margin-bottom: 10px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                    
+                    <!-- Barra de busca -->
+                    <form method="get" id="formBusca" style="margin: 0;">
+                        <input 
+                            type="text" 
+                            id="filtroBusca"
+                            class="form-control" 
+                            placeholder="Buscar registro..." 
+                            style="min-width: 220px; border-radius: 20px; padding: 6px 14px; height: 38px;"
+                        >
+                    </form>
 
-        <c:if test="${ulogado.perfil.nome == 'Funcionario' || ulogado.perfil.nome == 'Gerente' || ulogado.perfil.nome == 'Administrador'}">
-            <form action="GerenciarRegistroPonto" method="post" style="display:inline-block;">
-                <input type="hidden" name="acao" value="registrarPonto" />
-                <button type="submit" class="btn btn-primary">Bater Ponto</button>
-            </form>
-        </c:if>
+                    <!-- Botões -->
+                    <div style="display: flex; gap: 10px;">
+                        <c:if test="${ulogado.perfil.nome == 'Funcionario' || ulogado.perfil.nome == 'Gerente' || ulogado.perfil.nome == 'Administrador'}">
+                            <form action="GerenciarRegistroPonto" method="post" style="margin: 0;">
+                                <input type="hidden" name="acao" value="registrarPonto" />
+                                <button type="submit" class="btn btn-primary" style="height: 38px;">
+                                    <i class="fa fa-sign-in"></i> Bater Ponto
+                                </button>
+                            </form>
+                        </c:if>
+                        <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
+                            <a href="form_registro_ponto.jsp" class="btn btn-success" style="height: 38px;">
+                                <i class="fa fa-plus"></i> Novo Registro
+                            </a>
+                        </c:if>
+                    </div>
+                </div>
 
-        <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
-            <a href="GerenciarRegistroPonto?acao=novo" class="btn btn-success" style="margin-left: 20px;">Novo Registro</a>
-        </c:if>
+                <!-- Título centralizado -->
+                <div style="text-align: center; margin-top: 20px;">
+                    <h2 style="margin: 0;"><i class="fa fa-clock-o"></i> Registro de Ponto</h2>
+                </div>
+            </div>
 
-        <br/><br/>
+            <!-- MENSAGEM DE FEEDBACK -->
+            <c:if test="${not empty sessionScope.mensagem}">
+                <div class="alert alert-info text-center">${sessionScope.mensagem}</div>
+                <c:remove var="mensagem" scope="session"/>
+            </c:if>
 
-        <c:if test="${not empty mensagem}">
-            <div class="alert alert-info">${mensagem}</div>
-        </c:if>
+            <br>
 
-        <c:choose>
-            <c:when test="${empty lista}">
-                <div class="alert alert-info">Nenhum registro encontrado.</div>
-            </c:when>
-            <c:otherwise>
-                <table class="table table-hover table-striped table-bordered display" id="listarRegistroPonto">
-                    <thead>
-                        <tr>
-                            <th>Data</th>
-                            <th>Entrada</th>
-                            <th>Saída Almoço</th>
-                            <th>Volta Almoço</th>
-                            <th>Saída Final</th>
-                            <th>Horas Trabalhadas</th>
-
-                            <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
-                                <th>Funcionário</th>
-                                <th>Opções</th>
-                            </c:if>
-                        </tr>
-                    </thead>
-                    <tbody>
+            <!-- Lista -->
+            <c:choose>
+                <c:when test="${empty lista}">
+                    <div class="alert alert-info">Nenhum registro encontrado.</div>
+                </c:when>
+                <c:otherwise>
+                    <div class="row" id="registrosContainer">
                         <c:forEach var="r" items="${lista}">
-                            <tr>
-                                <td><fmt:formatDate value="${r.dataFormatada}" pattern="dd/MM/yyyy" /></td>
-                                <td><c:out value="${r.horaEntrada != null ? r.horaEntrada : '-'}" /></td>
-                                <td><c:out value="${r.horaAlmocoSaida != null ? r.horaAlmocoSaida : '-'}" /></td>
-                                <td><c:out value="${r.horaAlmocoVolta != null ? r.horaAlmocoVolta : '-'}" /></td>
-                                <td><c:out value="${r.horaSaida != null ? r.horaSaida : '-'}" /></td>
-                                <td><c:out value="${r.horasTrabalhadasFormatada}" /></td>
-
-
-                                <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
-                                    <td><c:out value="${r.funcionario.nome}" /></td>
-                                    <td>
-                                        <a class="btn btn-primary" href="GerenciarRegistroPonto?acao=editar&idRegistro=${r.idRegistro_ponto}">
-                                            <i class="glyphicon glyphicon-pencil"></i> Editar
-                                        </a>
-                                        <button class="btn btn-danger" onclick="confirmarExclusao(${r.idRegistro_ponto}, '${r.data}')">
-                                            <i class="glyphicon glyphicon-trash"></i> Excluir
-                                        </button>
-                                    </td>
-                                </c:if>
-                            </tr>
+                            <div class="col-sm-6 col-xs-12 registro-card">
+                                <div class="card-funcionario">
+                                    <h4><i class="fa fa-calendar"></i> ${r.dataFormatada}</h4>
+                                    <p><strong>Entrada:</strong> ${r.horaEntrada != null ? r.horaEntrada : '-'}</p>
+                                    <p><strong>Saída Almoço:</strong> ${r.horaAlmocoSaida != null ? r.horaAlmocoSaida : '-'}</p>
+                                    <p><strong>Volta Almoço:</strong> ${r.horaAlmocoVolta != null ? r.horaAlmocoVolta : '-'}</p>
+                                    <p><strong>Saída Final:</strong> ${r.horaSaida != null ? r.horaSaida : '-'}</p>
+                                    <p><strong>Horas Trabalhadas:</strong> ${r.horasTrabalhadasFormatado}</p>
+                                    <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
+                                        <p><strong>Funcionário:</strong> ${r.funcionario.nome}</p>
+                                        <div class="grupo-botoes-card">
+                                            <a href="GerenciarRegistroPonto?acao=editar&idRegistro=${r.idRegistro_ponto}" class="btn btn-primary btn-sm">
+                                                <i class="fa fa-edit"></i> Editar
+                                            </a>
+                                            <button class="btn btn-danger btn-sm" onclick="confirmarExclusao(${r.idRegistro_ponto}, '${r.data}')">
+                                                <i class="fa fa-trash"></i> Excluir
+                                            </button>
+                                        </div>
+                                    </c:if>
+                                </div>
+                            </div>
                         </c:forEach>
-                    </tbody>
-                </table>
-            </c:otherwise>
-        </c:choose>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+        </div>
     </div>
+</div>
 
-    <script type="text/javascript" src="datatables/jquery.js"></script>
-    <script type="text/javascript" src="datatables/jquery.dataTables.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $("#listarRegistroPonto").DataTable({
-                "language": {
-                    "url": "datatables/portugues.json"
-                }
-            });
+<script>
+    function confirmarExclusao(id, data) {
+        if (confirm('Deseja excluir o registro do dia ' + data + '?')) {
+            window.location.href = 'GerenciarRegistroPonto?acao=excluir&idRegistro=' + id;
+        }
+    }
+
+    document.getElementById("filtroBusca").addEventListener("input", function() {
+        let termo = this.value.toLowerCase();
+        let cards = document.querySelectorAll(".registro-card");
+
+        cards.forEach(card => {
+            let texto = card.innerText.toLowerCase();
+            card.style.display = texto.includes(termo) ? "block" : "none";
         });
+    });
 
-        function confirmarExclusao(idRegistro, data) {
-            if (confirm('Deseja realmente excluir o registro do dia ' + data + '?')) {
-                location.href = 'GerenciarRegistroPonto?acao=excluir&idRegistro=' + idRegistro;
-            }
-        }
+    function toggleMenu(){
+        var menu = document.getElementById("nav-links");
+        menu.classList.toggle("show");
+    }
+</script>
 
-        function toggleMenu(){
-            var menu = document.getElementById("nav-links");
-            menu.classList.toggle("show");
-        }
-    </script>
 </body>
 </html>
