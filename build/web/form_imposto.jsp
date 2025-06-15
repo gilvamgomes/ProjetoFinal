@@ -26,7 +26,7 @@
 
 <div class="container formulario-funcionario">
     <div class="form-funcionario">
-        <h2><i class="fa fa-file-invoice-dollar"></i> Cadastro de Imposto</h2>
+        <h2>Cadastro de Imposto</h2>
 
         <form action="GerenciarImposto" method="POST">
             <input type="hidden" id="idImposto" name="idImposto" value="${imposto.idImposto}"/>
@@ -73,10 +73,10 @@
 
             <div class="botoes-form mt-4">
                 <button type="submit" class="btn btn-success">
-                    <i class="fas fa-save"></i> Gravar
+                     Gravar
                 </button>
                 <a href="listar_imposto.jsp" class="btn btn-warning text-dark">
-                    <i class="fas fa-arrow-left"></i> Voltar
+                    Voltar
                 </a>
             </div>
         </form>
