@@ -24,7 +24,7 @@
 
     <!-- Bloco Formulário -->
     <div class="form-funcionario">
-        <h2 class="text-center"><i class="fa fa-list"></i> Gerenciar Menus do Perfil</h2>
+        <h2>Gerenciar Menus do Perfil</h2>
 
         <form action="GerenciarMenuPerfil" method="POST">
             <input type="hidden" id="idPerfil" name="idPerfil" value="${perfilv.idPerfil}">
@@ -48,30 +48,30 @@
 
             <div class="botoes-form">
                 <button type="submit" class="btn btn-success">
-                    <i class="fa fa-link"></i> Vincular
+                   Vincular
                 </button>
                 <a href="listar_perfil.jsp" class="btn btn-warning">
-                    <i class="fa fa-arrow-left"></i> Voltar
+                   Voltar
                 </a>
             </div>
         </form>
     </div>
 
-           <div style="margin-top: 10px;">
+    <div style="margin-top: 10px;">
         <h3 class="text-center"><i class="fa fa-list-alt"></i> Menus vinculados ao perfil: ${perfilv.nome}</h3>
-</div>         
-                
-    <!-- Barra de Busca com estilo centralizado e pequeno -->
+    </div>         
+
+    <!-- Barra de Busca REAL - Integrada com o método novo do DAO -->
     <div class="text-center" style="margin: 20px 0;">
-        <form method="get" id="formBusca" style="display: inline-block; max-width: 300px; width: 100%;">
+        <form method="get" id="formBusca" action="GerenciarMenuPerfil" style="display: inline-block; max-width: 300px; width: 100%;">
             <input type="hidden" name="acao" value="gerenciar">
             <input type="hidden" name="idPerfil" value="${perfilv.idPerfil}">
             <input 
                 type="text" 
-                name="busca" 
+                name="termo" 
                 id="campoBusca"
-                value="${param.busca}" 
-                placeholder="Buscar menus vinculados..." 
+                value="${param.termo}" 
+                placeholder="Buscar por ID, Nome ou Link..." 
                 class="form-control"
                 style="border-radius: 20px; padding: 6px 14px; height: 36px; width: 100%;"
                 autofocus
@@ -79,27 +79,23 @@
         </form>
     </div>
 
-    <!-- Bloco Cards -->
-
-        <div class="row">
-            <c:forEach var="m" items="${perfilv.menus}">
-                <c:if test="${empty param.busca || fn:containsIgnoreCase(m.nome, param.busca)}">
-                    <div class="col-sm-6 col-xs-12">
-                        <div class="card-funcionario">
-                            <h4><i class="fa fa-cog"></i> ${m.nome}</h4>
-                            <p><strong>ID:</strong> ${m.idMenu}</p>
-                            <p><strong>Link:</strong> ${m.link}</p>
-                            <div class="btn-group">
-                                <button class="btn btn-danger btn-sm" onclick="confirmarExclusao(${perfilv.idPerfil}, '${m.nome}', ${m.idMenu})">
-                                    <i class="fa fa-trash"></i> Excluir
-                                </button>
-                            </div>
-                        </div>
+    <!-- Bloco Cards - Agora sem filtro na JSP, pois o filtro já vem do DAO -->
+    <div class="row">
+        <c:forEach var="m" items="${perfilv.menus}">
+            <div class="col-sm-6 col-xs-12">
+                <div class="card-funcionario">
+                    <h4><i class="fa fa-cog"></i> ${m.nome}</h4>
+                    <p><strong>ID:</strong> ${m.idMenu}</p>
+                    <p><strong>Link:</strong> ${m.link}</p>
+                    <div class="btn-group">
+                        <button class="btn btn-danger btn-sm" onclick="confirmarExclusao(${perfilv.idPerfil}, '${m.nome}', ${m.idMenu})">
+                            <i class="fa fa-trash"></i> Excluir
+                        </button>
                     </div>
-                </c:if>
-            </c:forEach>
-        </div>
-    
+                </div>
+            </div>
+        </c:forEach>
+    </div>
 
 </div>
 
