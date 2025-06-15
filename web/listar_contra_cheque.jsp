@@ -92,7 +92,7 @@
 
                 <div style="text-align: center; margin-top: 20px;">
                     <h2 style="margin: 0;"><i class="fa fa-file-text-o"></i> Contra-Cheques</h2>
-                </div>
+                </div><br>
             </div>
 
             <c:if test="${not empty sessionScope.mensagem}">
@@ -113,7 +113,7 @@
                         <c:forEach var="c" items="${lista}">
                             <div class="col-sm-6 col-xs-12">
                                 <div class="card-funcionario">
-                                    <h4><i class="fa fa-file-text"></i> ${meses[c.mes]} / ${c.ano}</h4>
+                                    <h4><i class="fa fa-calendar"></i> <fmt:formatNumber value="${c.mes}" pattern="00"/>/${c.ano}</h4>
                                     <p><strong>Valor Bruto:</strong> R$ ${c.valorBruto}</p>
                                     <p><strong>Descontos:</strong> R$ ${c.descontos}</p>
                                     <p><strong>Valor Líquido:</strong> R$ ${c.valorLiquido}</p>

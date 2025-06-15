@@ -26,14 +26,40 @@
 <%@include file="banner.jsp" %>
 <%@include file="menu.jsp" %>
 <%@include file="menu_mobile.jsp" %>
+<br>
 
 <div class="container lista-funcionario">
     <div class="row">
         <div class="col-xs-12">
-            <h2 style="text-align:center; margin:20px 0;"><i class="fa fa-file-text-o"></i> Meus Contra-Cheques</h2>
+
+            <!-- TOPO: barra de busca alinhada à esquerda -->
+            <div class="clearfix" style="margin-bottom: 10px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                    
+                    <!-- Barra de busca -->
+                    <form method="get" id="formBusca" style="margin: 0;">
+                        <input 
+                            type="text" 
+                            name="busca" 
+                            id="campoBusca"
+                            value="${param.busca}" 
+                            class="form-control" 
+                            placeholder="Buscar mês, ano, valor..." 
+                            style="min-width: 220px; border-radius: 20px; padding: 6px 14px; height: 38px;"
+                            autofocus
+                        >
+                    </form>
+                </div>
+
+                <!-- Título centralizado -->
+                <div style="text-align: center; margin-top: 20px;">
+                    <h2 style="margin: 0;"><i class="fa fa-file-text-o"></i> Meus Contra-Cheques</h2>
+                </div>
+                <br>
+            </div>
 
             <jsp:useBean class="model.ContraChequeDAO" id="cDAO"/>
-            <c:set var="minhaLista" value="${cDAO.lista}" />
+            <c:set var="minhaLista" value="${empty param.busca ? cDAO.lista : cDAO.buscarPorTermo(param.busca)}" />
 
             <c:choose>
                 <c:when test="${empty minhaLista}">
@@ -47,15 +73,18 @@
                             <c:if test="${c.funcionarioId == ulogado.funcionario.idFuncionario}">
                                 <div class="col-sm-6 col-xs-12">
                                     <div class="card-funcionario">
-                                        <h4><i class="fa fa-calendar"></i> ${c.mes} / ${c.ano}</h4>
+                                        <h4><i class="fa fa-calendar"></i> <fmt:formatNumber value="${c.mes}" pattern="00"/>/${c.ano}</h4>
                                         <p><strong>Valor Bruto:</strong> R$ ${c.valorBruto}</p>
                                         <p><strong>Descontos:</strong> R$ ${c.descontos}</p>
                                         <p><strong>Valor Líquido:</strong> R$ ${c.valorLiquido}</p>
-                                        <div class="btn-group">
+
+                                        <!-- Botões com alinhamento e espaçamento -->
+                                        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px;">
                                             <a class="btn btn-info btn-sm" target="_blank" href="GerarPDF?idContraCheque=${c.idContraCheque}">
                                                 <i class="fa fa-print"></i> PDF
                                             </a>
                                         </div>
+
                                     </div>
                                 </div>
                             </c:if>
@@ -63,25 +92,41 @@
                     </div>
                 </c:otherwise>
             </c:choose>
+
         </div>
     </div>
 </div>
 
+<!-- Loader Universal -->
+<div id="loader-wrapper" style="display:none;">
+    <div class="loader"></div>
+</div>
+
 <script type="text/javascript" src="datatables/jquery.js"></script>
 <script type="text/javascript" src="datatables/jquery.dataTables.min.js"></script>
-<script type="text/javascript">
-    $(document).ready(function(){
-        $("#minhaTabela").DataTable({
-            "language": {
-                "url": "datatables/portugues.json"
-            }
-        });
-    });
-
-    function toggleMenu(){
+<script>
+    function toggleMenu() {
         var menu = document.getElementById("nav-links");
         menu.classList.toggle("show");
     }
+
+    let timeout = null;
+    const campo = document.getElementById("campoBusca");
+
+    if (localStorage.getItem("posCursor") !== null) {
+        const pos = parseInt(localStorage.getItem("posCursor"));
+        campo.focus();
+        campo.setSelectionRange(pos, pos);
+        localStorage.removeItem("posCursor");
+    }
+
+    campo.addEventListener("input", function () {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            localStorage.setItem("posCursor", campo.selectionStart);
+            document.getElementById("formBusca").submit();
+        }, 500);
+    });
 </script>
 
 </body>

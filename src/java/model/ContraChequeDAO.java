@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.stream.Collectors;
 import utils.FeriadoUtils;
 import utils.HorasUtils;
 
@@ -368,22 +368,43 @@ public class ContraChequeDAO extends DataBaseDAO {
         }
         return BigDecimal.ZERO;
     }
+    
+    
+    
     //Barra de busca
-    public List<ContraCheque> buscarPorTermo(String termo) throws Exception {
+//barra de busca para o funcionario
+public List<ContraCheque> buscarPorTermo(String termo) throws Exception {
     List<ContraCheque> lista = new ArrayList<>();
 
-    String sql = "SELECT * FROM contra_cheque WHERE " +
-                 "CAST(idContra_cheque AS CHAR) LIKE ? OR " +
-                 "CAST(valorBruto AS CHAR) LIKE ? OR " +
-                 "CAST(descontos AS CHAR) LIKE ? OR " +
-                 "CAST(valorLiquido AS CHAR) LIKE ? OR " +
-                 "CAST(funcionario_idFfuncionario AS CHAR) LIKE ?";
+    String[] palavras = termo.trim().split("\\s+"); // Divide o termo por espaços se tiver mais de um termo
+
+    StringBuilder sql = new StringBuilder();
+    sql.append("SELECT c.*, f.nome AS nomeFuncionario FROM contra_cheque c ");
+    sql.append("INNER JOIN funcionario f ON f.idFfuncionario = c.funcionario_idFfuncionario ");
+    sql.append("WHERE 1=1 ");
+
+    for (String palavra : palavras) {
+        sql.append("AND (");
+        sql.append("CAST(c.idContra_cheque AS CHAR) LIKE ? OR ");
+        sql.append("CAST(c.valorBruto AS CHAR) LIKE ? OR ");
+        sql.append("CAST(c.descontos AS CHAR) LIKE ? OR ");
+        sql.append("CAST(c.valorLiquido AS CHAR) LIKE ? OR ");
+        sql.append("CAST(c.funcionario_idFfuncionario AS CHAR) LIKE ? OR ");
+        sql.append("CAST(c.mes AS CHAR) LIKE ? OR ");
+        sql.append("CAST(c.ano AS CHAR) LIKE ? OR ");
+        sql.append("f.nome LIKE ? OR ");
+        sql.append("CONCAT(LPAD(c.mes, 2, '0'), '/', c.ano) LIKE ? ");  // <- Aqui a mágica pra "02/2024"
+        sql.append(") ");
+    }
 
     this.conectar();
-    try (PreparedStatement pstm = conn.prepareStatement(sql)) {
-        String filtro = "%" + termo + "%";
-        for (int i = 1; i <= 5; i++) {
-            pstm.setString(i, filtro);
+    try (PreparedStatement pstm = conn.prepareStatement(sql.toString())) {
+        int paramIndex = 1;
+        for (String palavra : palavras) {
+            String filtro = "%" + palavra + "%";
+            for (int j = 0; j < 9; j++) {  // Agora são 9 campos por palavra (8 antigos + 1 novo do CONCAT)
+                pstm.setString(paramIndex++, filtro);
+            }
         }
 
         ResultSet rs = pstm.executeQuery();
@@ -394,6 +415,9 @@ public class ContraChequeDAO extends DataBaseDAO {
             c.setDescontos(rs.getBigDecimal("descontos"));
             c.setValorLiquido(rs.getBigDecimal("valorLiquido"));
             c.setFuncionarioId(rs.getInt("funcionario_idFfuncionario"));
+            c.setMes(rs.getInt("mes"));
+            c.setAno(rs.getInt("ano"));
+            c.setNomeFuncionario(rs.getString("nomeFuncionario"));
             lista.add(c);
         }
     } finally {
@@ -402,6 +426,5 @@ public class ContraChequeDAO extends DataBaseDAO {
 
     return lista;
 }
-
 
 }

@@ -102,6 +102,8 @@ public class GerenciarContraCheque extends HttpServlet {
 
         request.getSession().setAttribute("mensagem", mensagem);
         response.sendRedirect("listar_contra_cheque.jsp");
+        
+        
     }
 
     @Override
