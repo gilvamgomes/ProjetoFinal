@@ -57,25 +57,29 @@
         </form>
     </div>
 
-    <!-- Barra de Busca - Milano IU 2 -->
-    <form method="get" id="formBusca" style="margin-top: 20px; margin-bottom: 20px;">
-        <input type="hidden" name="acao" value="gerenciar">
-        <input type="hidden" name="idPerfil" value="${perfilv.idPerfil}">
-        <input 
-            type="text" 
-            name="busca" 
-            id="campoBusca"
-            value="${param.busca}" 
-            placeholder="Buscar menu vinculado..." 
-            class="form-control"
-            style="border-radius: 20px; padding: 6px 14px; min-width: 220px;"
-            autofocus
-        >
-    </form>
+           <div style="margin-top: 10px;">
+        <h3 class="text-center"><i class="fa fa-list-alt"></i> Menus vinculados ao perfil: ${perfilv.nome}</h3>
+</div>         
+                
+    <!-- Barra de Busca com estilo centralizado e pequeno -->
+    <div class="text-center" style="margin: 20px 0;">
+        <form method="get" id="formBusca" style="display: inline-block; max-width: 300px; width: 100%;">
+            <input type="hidden" name="acao" value="gerenciar">
+            <input type="hidden" name="idPerfil" value="${perfilv.idPerfil}">
+            <input 
+                type="text" 
+                name="busca" 
+                id="campoBusca"
+                value="${param.busca}" 
+                placeholder="Buscar menus vinculados..." 
+                class="form-control"
+                style="border-radius: 20px; padding: 6px 14px; height: 36px; width: 100%;"
+                autofocus
+            >
+        </form>
+    </div>
 
     <!-- Bloco Cards -->
-    <div style="margin-top: 10px;">
-        <h3 class="text-center"><i class="fa fa-list-alt"></i> Menus vinculados ao perfil: ${perfilv.nome}</h3>
 
         <div class="row">
             <c:forEach var="m" items="${perfilv.menus}">
@@ -95,7 +99,7 @@
                 </c:if>
             </c:forEach>
         </div>
-    </div>
+    
 
 </div>
 
@@ -111,22 +115,22 @@
     let timeout = null;
     const campo = document.getElementById("campoBusca");
 
-    // Salvar posição do cursor ao digitar
+    // Recupera posição do cursor ao recarregar
+    if (localStorage.getItem("posCursorPerfilMenu") !== null) {
+        const pos = parseInt(localStorage.getItem("posCursorPerfilMenu"));
+        campo.focus();
+        campo.setSelectionRange(pos, pos);
+        localStorage.removeItem("posCursorPerfilMenu");
+    }
+
+    // Salva posição do cursor antes de submeter
     campo.addEventListener("input", function () {
         clearTimeout(timeout);
         timeout = setTimeout(() => {
-            localStorage.setItem("posCursorMenu", campo.selectionStart);
+            localStorage.setItem("posCursorPerfilMenu", campo.selectionStart);
             document.getElementById("formBusca").submit();
         }, 500);
     });
-
-    // Recuperar posição ao recarregar
-    if (localStorage.getItem("posCursorMenu") !== null) {
-        const pos = parseInt(localStorage.getItem("posCursorMenu"));
-        campo.focus();
-        campo.setSelectionRange(pos, pos);
-        localStorage.removeItem("posCursorMenu");
-    }
 
     function toggleMenu() {
         var menu = document.getElementById("nav-links");
