@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -56,20 +57,20 @@
         </form>
     </div>
 
-    <!-- Barra de Busca -->
-    <form method="get" action="GerenciarMenuPerfil" style="margin-top: 20px; margin-bottom: 20px;">
+    <!-- Barra de Busca - Milano IU 2 -->
+    <form method="get" id="formBusca" style="margin-top: 20px; margin-bottom: 20px;">
         <input type="hidden" name="acao" value="gerenciar">
         <input type="hidden" name="idPerfil" value="${perfilv.idPerfil}">
         <input 
             type="text" 
             name="busca" 
+            id="campoBusca"
             value="${param.busca}" 
             placeholder="Buscar menu vinculado..." 
-            style="border-radius: 20px; padding: 6px 14px; min-width: 220px; border: 1px solid #ccc;"
+            class="form-control"
+            style="border-radius: 20px; padding: 6px 14px; min-width: 220px;"
+            autofocus
         >
-        <button type="submit" class="btn btn-primary btn-sm">
-            <i class="fa fa-search"></i> Buscar
-        </button>
     </form>
 
     <!-- Bloco Cards -->
@@ -107,7 +108,27 @@
         }
     }
 
-    function toggleMenu(){
+    let timeout = null;
+    const campo = document.getElementById("campoBusca");
+
+    // Salvar posição do cursor ao digitar
+    campo.addEventListener("input", function () {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            localStorage.setItem("posCursorMenu", campo.selectionStart);
+            document.getElementById("formBusca").submit();
+        }, 500);
+    });
+
+    // Recuperar posição ao recarregar
+    if (localStorage.getItem("posCursorMenu") !== null) {
+        const pos = parseInt(localStorage.getItem("posCursorMenu"));
+        campo.focus();
+        campo.setSelectionRange(pos, pos);
+        localStorage.removeItem("posCursorMenu");
+    }
+
+    function toggleMenu() {
         var menu = document.getElementById("nav-links");
         menu.classList.toggle("show");
     }
