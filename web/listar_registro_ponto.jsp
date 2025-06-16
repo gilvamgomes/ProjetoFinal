@@ -60,7 +60,7 @@
 
                     <!-- Botões -->
                     <div style="display: flex; gap: 10px;">
-                        <c:if test="${ulogado.perfil.nome == 'Funcionario' || ulogado.perfil.nome == 'Gerente' || ulogado.perfil.nome == 'Administrador'}">
+                        <c:if test="${ulogado.perfil.nome == 'Funcionario' || ulogado.perfil.nome == 'Gerente'}">
                             <form action="GerenciarRegistroPonto" method="post" style="margin: 0;">
                                 <input type="hidden" name="acao" value="registrarPonto" />
                                 <button type="submit" class="btn btn-primary" style="height: 38px;">
@@ -69,9 +69,10 @@
                             </form>
                         </c:if>
                         <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
-                            <a href="form_registro_ponto.jsp" class="btn btn-success" style="height: 38px;">
-                                <i class="fa fa-plus"></i> Novo Registro
-                            </a>
+                              <!-- Botão Novo Cadastro -->
+                    <a href="form_registro_ponto.jsp" class="btn btn-primary" style="height: 38px;">
+                        <i class="fa fa-plus"></i> Novo
+                    </a>
                         </c:if>
                     </div>
                 </div>
