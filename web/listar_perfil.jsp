@@ -48,9 +48,22 @@
 
                     <!-- Botão Novo Cadastro -->
                     <a href="form_perfil.jsp" class="btn btn-primary" style="height: 38px;">
+<<<<<<< HEAD
                         <i class="fa fa-plus"></i> Novo Cadastro
                     </a>
                 </div>
+=======
+                        <i class="fa fa-plus"></i> Novo
+                    </a>
+                </div>
+
+                <!-- Título centralizado -->
+                <div style="text-align: center; margin-top: 20px;">
+                    <h2 style="margin: 0;"><i class="fa fa-id-badge"></i> Perfis</h2>
+                </div>
+            </div>
+            <br>
+>>>>>>> Juntar_codigo
 
                 <!-- Título centralizado -->
                 <div style="text-align: center; margin-top: 20px;">
@@ -72,7 +85,12 @@
                                     <c:out value="${p.status == 1 ? 'Ativo' : 'Inativo'}"/>
                                 </span>
                             </p>
+<<<<<<< HEAD
                             <div class="btn-group">
+=======
+
+                            <div class="btn-group" style="display: flex; flex-wrap: wrap; gap: 5px;">
+>>>>>>> Juntar_codigo
                                 <a class="btn btn-primary btn-sm" href="GerenciarPerfil?acao=alterar&idPerfil=${p.idPerfil}">
                                     <i class="fa fa-edit"></i> Editar
                                 </a>

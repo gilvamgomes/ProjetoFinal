@@ -23,6 +23,7 @@
 <%@include file="banner.jsp" %>
 <%@include file="menu.jsp" %>
 <%@include file="menu_mobile.jsp" %>
+<<<<<<< HEAD
 
 <div class="dashboard-milano">
     <div class="dashboard-cards">
@@ -46,6 +47,33 @@
             <h3 class="titulo-grafico">Status de Férias</h3>
             <canvas id="graficoDonut" width="300" height="300"></canvas>
         </div>
+=======
+<br>
+
+
+    <div class="dashboard-graficos">
+        <div class="grafico-box">
+            <h3 class="titulo-grafico">Distribuição de Benefícios</h3>
+            <canvas id="graficoPizza" width="300" height="300"></canvas>
+        </div>
+        <div class="grafico-box">
+            <h3 class="titulo-grafico">Registros de Ponto por Dia</h3>
+            <canvas id="graficoBarra" width="300" height="300"></canvas>
+        </div>
+        <div class="grafico-box">
+            <h3 class="titulo-grafico">Status de Férias</h3>
+            <canvas id="graficoDonut" width="300" height="300"></canvas>
+        </div>
+    </div>
+
+<div class="dashboard-milano">
+    <div class="dashboard-cards">
+        <div class="card-dashboard"><div class="titulo-card">Funcionários</div><div class="valor-card">12</div></div>
+        <div class="card-dashboard"><div class="titulo-card">Férias Agendadas</div><div class="valor-card">5</div></div>
+        <div class="card-dashboard"><div class="titulo-card">Registros Semanais</div><div class="valor-card">47</div></div>
+        <div class="card-dashboard"><div class="titulo-card">Benefícios Pagos</div><div class="valor-card">R$ 7.300</div></div>
+        <div class="card-dashboard"><div class="titulo-card">Contra-Cheques Emitidos</div><div class="valor-card">22</div></div>
+>>>>>>> Juntar_codigo
     </div>
 
     <div class="blocos-lista">

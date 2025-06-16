@@ -160,7 +160,11 @@ public class PerfilDAO extends DataBaseDAO {
         }
     }
     
+<<<<<<< HEAD
     //Barra de busca
+=======
+      //Barra de busca
+>>>>>>> Juntar_codigo
     public List<Perfil> buscarPorTermo(String termo) throws Exception {
     List<Perfil> lista = new ArrayList<>();
     String sql = "SELECT * FROM perfil WHERE " +
@@ -189,5 +193,8 @@ public class PerfilDAO extends DataBaseDAO {
 
     return lista;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> Juntar_codigo
 }

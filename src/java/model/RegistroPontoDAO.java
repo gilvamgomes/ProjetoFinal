@@ -239,6 +239,7 @@ public class RegistroPontoDAO extends DataBaseDAO {
         return dias;
     }
     
+<<<<<<< HEAD
     //Barra de busca
     // Barra de busca com controle de perfil
 public List<RegistroPonto> buscarPorTermo(String termoBusca, int idFuncionarioFiltro, boolean isFuncionario) throws Exception {
@@ -290,9 +291,71 @@ public List<RegistroPonto> buscarPorTermo(String termoBusca, int idFuncionarioFi
     }
 
     this.desconectar();
+=======
+     
+    //Barra de busca
+public List<RegistroPonto> buscarPorTermo(String termo) throws Exception {
+    List<RegistroPonto> lista = new ArrayList<>();
+
+    String[] palavras = termo.trim().split("\\s+");  // Divide por espaço
+
+    StringBuilder sql = new StringBuilder();
+    sql.append("SELECT rp.*, f.nome AS nome_funcionario FROM registro_ponto rp ");
+    sql.append("INNER JOIN funcionario f ON f.idFfuncionario = rp.funcionario_idFfuncionario ");
+    sql.append("WHERE 1=1 ");
+
+    for (String palavra : palavras) {
+        sql.append("AND (");
+        sql.append("CAST(rp.idRegistro_ponto AS CHAR) LIKE ? OR ");
+        sql.append("DATE_FORMAT(rp.data, '%d/%m/%Y') LIKE ? OR ");  // ✅ Formatação de data com barra
+        sql.append("CAST(rp.horaEntrada AS CHAR) LIKE ? OR ");
+        sql.append("CAST(rp.horaAlmocoSaida AS CHAR) LIKE ? OR ");
+        sql.append("CAST(rp.horaAlmocoVolta AS CHAR) LIKE ? OR ");
+        sql.append("CAST(rp.horaSaida AS CHAR) LIKE ? OR ");
+        sql.append("CAST(rp.horasTrabalhadas AS CHAR) LIKE ? OR ");
+        sql.append("f.nome LIKE ? ");
+        sql.append(") ");
+    }
+
+    this.conectar();
+    try (PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+        int paramIndex = 1;
+        for (String palavra : palavras) {
+            String filtro = "%" + palavra + "%";
+            for (int i = 0; i < 8; i++) {  // 8 campos por palavra
+                stmt.setString(paramIndex++, filtro);
+            }
+        }
+
+        ResultSet rs = stmt.executeQuery();
+        FuncionarioDAO fdao = new FuncionarioDAO();
+        fdao.conectar();
+
+        while (rs.next()) {
+            RegistroPonto rp = new RegistroPonto();
+            rp.setIdRegistro_ponto(rs.getInt("idRegistro_ponto"));
+            rp.setData(rs.getDate("data").toLocalDate());
+            rp.setHoraEntrada(rs.getTime("horaEntrada") != null ? rs.getTime("horaEntrada").toLocalTime() : null);
+            rp.setHoraAlmocoSaida(rs.getTime("horaAlmocoSaida") != null ? rs.getTime("horaAlmocoSaida").toLocalTime() : null);
+            rp.setHoraAlmocoVolta(rs.getTime("horaAlmocoVolta") != null ? rs.getTime("horaAlmocoVolta").toLocalTime() : null);
+            rp.setHoraSaida(rs.getTime("horaSaida") != null ? rs.getTime("horaSaida").toLocalTime() : null);
+            rp.setHorasTrabalhadas(rs.getBigDecimal("horasTrabalhadas") != null ? rs.getBigDecimal("horasTrabalhadas").doubleValue() : 0);
+            int idFunc = rs.getInt("funcionario_idFfuncionario");
+            rp.setFuncionario_idFfuncionario(idFunc);
+            rp.setFuncionario(fdao.getCarregaPorID(idFunc));
+            lista.add(rp);
+        }
+    } finally {
+        this.desconectar();
+    }
+
+>>>>>>> Juntar_codigo
     return lista;
 }
 
 
+<<<<<<< HEAD
     
+=======
+>>>>>>> Juntar_codigo
 }

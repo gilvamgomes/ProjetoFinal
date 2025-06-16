@@ -108,8 +108,31 @@ public class PagamentoDAO extends DataBaseDAO {
 
         return p;
     }
+<<<<<<< HEAD
     
     //Barra de busca
+=======
+
+    // ✅ NOVO MÉTODO: retorna o último salário lançado para o funcionário
+    public double getUltimoSalario(int idFuncionario) {
+        double salario = 0;
+        try {
+            this.conectar();
+            String sql = "SELECT valor FROM pagamento WHERE funcionario_idFfuncionario = ? ORDER BY dataPagamento DESC LIMIT 1";
+            PreparedStatement stmt = this.conn.prepareStatement(sql);
+            stmt.setInt(1, idFuncionario);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                salario = rs.getDouble("valor");
+            }
+            this.desconectar();
+        } catch (Exception e) {
+            System.out.println("Erro ao buscar último salário: " + e.getMessage());
+        }
+        return salario;
+    }
+     //Barra de busca
+>>>>>>> Juntar_codigo
     public List<Pagamento> buscarPorTermo(String termo) throws Exception {
     List<Pagamento> lista = new ArrayList<>();
     String sql = "SELECT * FROM pagamento WHERE " +

@@ -782,3 +782,55 @@ body {
 }
 /* FIM ANIMAÇÃO DE LOADING*/
 /* FIM ANIMAÇÃO DE LOADING*/
+
+
+
+
+/* === FORMULÁRIO DE GERAÇÃO AUTOMÁTICA DE CONTRACHEQUE === */
+.form-gerar-contracheque {
+    display: flex;
+    justify-content: center;       /* Centraliza horizontalmente */
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;                     /* Espaçamento horizontal menor */
+    margin: 10px 0 20px 0;
+}
+
+.form-gerar-contracheque .form-group {
+    flex: 0 0 auto;
+    width: auto;
+    margin: 0;
+}
+
+.form-gerar-contracheque .form-control {
+    min-width: 140px;
+    max-width: 160px;               /* Um pouco maior */
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 20px;            /* Arredondado igual busca */
+}
+
+.form-gerar-contracheque select[name="mes"],
+.form-gerar-contracheque select[name="idFuncionario"] {
+    min-width: 140px;
+}
+
+.form-gerar-contracheque input[name="ano"] {
+    max-width: 90px;
+}
+
+.form-gerar-contracheque button {
+    white-space: nowrap;
+    height: 40px;
+    padding: 8px 20px;
+    font-size: 14px;
+    border-radius: 20px;
+}
+.titulo-formulario {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* === FIM FORMULÁRIO DE GERAÇÃO AUTOMÁTICA DE CONTRACHEQUE === */

@@ -12,10 +12,18 @@
                 <a href="${menu.link}" class="menu-item <c:if test='${fn:contains(paginaAtual, menu.link)}'>ativo</c:if>">
                     <i class="fa
                         <c:choose>
+<<<<<<< HEAD
                             <c:when test="${menu.nome eq 'Dashbord'}"> fa-home</c:when>
                             <c:when test="${menu.nome eq 'Registro de Ponto'}"> fa-clock-o</c:when>
                             <c:when test="${menu.nome eq 'Férias'}"> fa-plane</c:when>
                             <c:when test="${menu.nome eq 'Contra-cheques'}"> fa-file-text</c:when>
+=======
+                            <c:when test="${menu.nome eq 'Dashboard'}"> fa-home</c:when>
+                            <c:when test="${menu.nome eq 'Registro de Ponto'}"> fa-clock-o</c:when>
+                            <c:when test="${menu.nome eq 'Férias'}"> fa-plane</c:when>
+                            <c:when test="${menu.nome eq 'Contracheque'}"> fa-file-text</c:when>
+                            <c:when test="${menu.nome eq 'Contra-Cheque'}"> fa-file-text-o</c:when>
+>>>>>>> Juntar_codigo
                             <c:when test="${menu.nome eq 'Funcionários'}"> fa-users</c:when>
                             <c:when test="${menu.nome eq 'Benefícios'}"> fa-briefcase</c:when>
                             <c:when test="${menu.nome eq 'Usuário'}"> fa-user</c:when>
@@ -49,10 +57,18 @@
                 <a href="${menu.link}" class="<c:if test='${fn:contains(paginaAtual, menu.link)}'>ativo</c:if>">
                     <i class="fa
                         <c:choose>
+<<<<<<< HEAD
                             <c:when test="${menu.nome eq 'Dashbord'}"> fa-home</c:when>
                             <c:when test="${menu.nome eq 'Registro de Ponto'}"> fa-clock-o</c:when>
                             <c:when test="${menu.nome eq 'Férias'}"> fa-plane</c:when>
                             <c:when test="${menu.nome eq 'Contra-cheques'}"> fa-file-text</c:when>
+=======
+                            <c:when test="${menu.nome eq 'Dashboard'}"> fa-home</c:when>
+                            <c:when test="${menu.nome eq 'Registro de Ponto'}"> fa-clock-o</c:when>
+                            <c:when test="${menu.nome eq 'Férias'}"> fa-plane</c:when>
+                            <c:when test="${menu.nome eq 'Contracheque'}"> fa-file-text</c:when>
+                            <c:when test="${menu.nome eq 'Contra-Cheque'}"> fa-file-text-o</c:when>
+>>>>>>> Juntar_codigo
                             <c:when test="${menu.nome eq 'Funcionários'}"> fa-users</c:when>
                             <c:when test="${menu.nome eq 'Benefícios'}"> fa-briefcase</c:when>
                             <c:when test="${menu.nome eq 'Usuário'}"> fa-user</c:when>

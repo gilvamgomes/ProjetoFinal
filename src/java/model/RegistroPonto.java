@@ -2,6 +2,8 @@ package model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class RegistroPonto {
     private int idRegistro_ponto;
@@ -86,4 +88,23 @@ public class RegistroPonto {
     public void setFuncionario(Funcionario funcionario) {
         this.funcionario = funcionario;
     }
+    
+    
+    //metodo para hora formatada corretamente
+    public String getDataFormatada() {
+    if (data == null) return "-";
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    return data.format(formatter);
+}
+    
+    //metodo para horas trabalhadas formatadas corretamente
+    public String getHorasTrabalhadasFormatado() {
+    int horas = (int) horasTrabalhadas;
+    int minutos = (int) Math.round((horasTrabalhadas - horas) * 60);
+
+    return horas + " horas e " + minutos + " minutos";
+}
+
+    //metodo para deixar a data dd/mm/yy no formulario
+    
 }

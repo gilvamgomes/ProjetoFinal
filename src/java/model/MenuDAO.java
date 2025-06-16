@@ -92,8 +92,12 @@ public class MenuDAO extends DataBaseDAO {
             return false;
         }
     }
+<<<<<<< HEAD
     
     //Barra de busca
+=======
+     //Barra de busca
+>>>>>>> Juntar_codigo
     public List<Menu> buscarPorTermo(String termo) throws Exception {
     List<Menu> lista = new ArrayList<>();
     String sql = "SELECT * FROM menu WHERE " +
@@ -126,4 +130,35 @@ public class MenuDAO extends DataBaseDAO {
     return lista;
 }
 
+<<<<<<< HEAD
+=======
+    // Barra de busca avançada (para perfil - só ID, Nome, Link)
+    public List<Menu> buscarPorTermoAvancado(String termo) throws Exception {
+        List<Menu> lista = new ArrayList<>();
+        String sql = "SELECT * FROM menu WHERE " +
+                     "CAST(idMenu AS CHAR) LIKE ? OR " +
+                     "nome LIKE ? OR " +
+                     "link LIKE ?";
+
+        this.conectar();
+        try (PreparedStatement pstm = conn.prepareStatement(sql)) {
+            String filtro = "%" + termo + "%";
+            pstm.setString(1, filtro);
+            pstm.setString(2, filtro);
+            pstm.setString(3, filtro);
+
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                Menu m = new Menu();
+                m.setIdMenu(rs.getInt("idMenu"));
+                m.setNome(rs.getString("nome"));
+                m.setLink(rs.getString("link"));
+                lista.add(m);
+            }
+        } finally {
+            this.desconectar();
+        }
+        return lista;
+    }
+>>>>>>> Juntar_codigo
 }

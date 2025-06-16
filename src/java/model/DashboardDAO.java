@@ -3,6 +3,10 @@ package model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+<<<<<<< HEAD
+=======
+import model.DataBaseDAO;
+>>>>>>> Juntar_codigo
 
 public class DashboardDAO {
 

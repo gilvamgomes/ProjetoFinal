@@ -11,6 +11,7 @@
     }
 
     request.setAttribute("ulogado", ulogado);
+<<<<<<< HEAD
 
     FuncionarioDAO fdao = new FuncionarioDAO();
     Funcionario funcionarioLogado = fdao.getFuncionarioPorUsuario(ulogado.getIdUsuario());
@@ -20,6 +21,8 @@
         : rdao.listarTodos();
 
     request.setAttribute("lista", lista);
+=======
+>>>>>>> Juntar_codigo
 %>
 
 <!DOCTYPE html>
@@ -48,10 +51,18 @@
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                     
                     <!-- Barra de busca -->
+<<<<<<< HEAD
                     <form method="get" id="formBusca" style="margin: 0;">
                         <input 
                             type="text" 
                             id="filtroBusca"
+=======
+                    <form method="get" id="formBusca" action="listar_registro_ponto.jsp" style="margin: 0;">
+                        <input 
+                            type="text" 
+                            name="busca" 
+                            value="${param.busca}" 
+>>>>>>> Juntar_codigo
                             class="form-control" 
                             placeholder="Buscar registro..." 
                             style="min-width: 220px; border-radius: 20px; padding: 6px 14px; height: 38px;"
@@ -60,7 +71,11 @@
 
                     <!-- Botões -->
                     <div style="display: flex; gap: 10px;">
+<<<<<<< HEAD
                         <c:if test="${ulogado.perfil.nome == 'Funcionario' || ulogado.perfil.nome == 'Gerente' || ulogado.perfil.nome == 'Administrador'}">
+=======
+                        <c:if test="${ulogado.perfil.nome == 'Funcionario' || ulogado.perfil.nome == 'Gerente'}">
+>>>>>>> Juntar_codigo
                             <form action="GerenciarRegistroPonto" method="post" style="margin: 0;">
                                 <input type="hidden" name="acao" value="registrarPonto" />
                                 <button type="submit" class="btn btn-primary" style="height: 38px;">
@@ -69,8 +84,13 @@
                             </form>
                         </c:if>
                         <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
+<<<<<<< HEAD
                             <a href="form_registro_ponto.jsp" class="btn btn-success" style="height: 38px;">
                                 <i class="fa fa-plus"></i> Novo Registro
+=======
+                            <a href="form_registro_ponto.jsp" class="btn btn-primary" style="height: 38px;">
+                                <i class="fa fa-plus"></i> Novo
+>>>>>>> Juntar_codigo
                             </a>
                         </c:if>
                     </div>
@@ -90,7 +110,13 @@
 
             <br>
 
+<<<<<<< HEAD
             <!-- Lista -->
+=======
+            <!-- LISTA -->
+            <c:set var="lista" value="${empty param.busca ? rdao.listarTodos() : rdao.buscarPorTermo(param.busca)}"/>
+
+>>>>>>> Juntar_codigo
             <c:choose>
                 <c:when test="${empty lista}">
                     <div class="alert alert-info">Nenhum registro encontrado.</div>
@@ -100,12 +126,20 @@
                         <c:forEach var="r" items="${lista}">
                             <div class="col-sm-6 col-xs-12 registro-card">
                                 <div class="card-funcionario">
+<<<<<<< HEAD
                                     <h4><i class="fa fa-calendar"></i> ${r.data}</h4>
+=======
+                                    <h4><i class="fa fa-calendar"></i> ${r.dataFormatada}</h4>
+>>>>>>> Juntar_codigo
                                     <p><strong>Entrada:</strong> ${r.horaEntrada != null ? r.horaEntrada : '-'}</p>
                                     <p><strong>Saída Almoço:</strong> ${r.horaAlmocoSaida != null ? r.horaAlmocoSaida : '-'}</p>
                                     <p><strong>Volta Almoço:</strong> ${r.horaAlmocoVolta != null ? r.horaAlmocoVolta : '-'}</p>
                                     <p><strong>Saída Final:</strong> ${r.horaSaida != null ? r.horaSaida : '-'}</p>
+<<<<<<< HEAD
                                     <p><strong>Horas Trabalhadas:</strong> ${r.horasTrabalhadas} h</p>
+=======
+                                    <p><strong>Horas Trabalhadas:</strong> ${r.horasTrabalhadasFormatado}</p>
+>>>>>>> Juntar_codigo
                                     <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
                                         <p><strong>Funcionário:</strong> ${r.funcionario.nome}</p>
                                         <div class="grupo-botoes-card">
@@ -134,6 +168,7 @@
         }
     }
 
+<<<<<<< HEAD
     document.getElementById("filtroBusca").addEventListener("input", function() {
         let termo = this.value.toLowerCase();
         let cards = document.querySelectorAll(".registro-card");
@@ -142,6 +177,24 @@
             let texto = card.innerText.toLowerCase();
             card.style.display = texto.includes(termo) ? "block" : "none";
         });
+=======
+    let timeout = null;
+    const campo = document.getElementsByName("busca")[0];
+
+    if (localStorage.getItem("posCursor") !== null) {
+        const pos = parseInt(localStorage.getItem("posCursor"));
+        campo.focus();
+        campo.setSelectionRange(pos, pos);
+        localStorage.removeItem("posCursor");
+    }
+
+    campo.addEventListener("input", function () {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            localStorage.setItem("posCursor", campo.selectionStart);
+            document.getElementById("formBusca").submit();
+        }, 500);
+>>>>>>> Juntar_codigo
     });
 
     function toggleMenu(){

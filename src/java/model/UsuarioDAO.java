@@ -149,7 +149,10 @@ public class UsuarioDAO extends DataBaseDAO {
             return null;
         }
     }
+<<<<<<< HEAD
     
+=======
+>>>>>>> Juntar_codigo
     //Barra de busca
     public List<Usuario> buscarPorTermo(String termo) throws Exception {
     List<Usuario> lista = new ArrayList<>();
