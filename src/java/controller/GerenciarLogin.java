@@ -90,6 +90,11 @@ public class GerenciarLogin extends HttpServlet {
                         }
                     }
 
+                    // Liberando especificamente o GerenciarFerias
+                    if (uri.contains("GerenciarFerias")) {
+                        possuiAcesso = true;
+                    }
+
                     if (!possuiAcesso && !uri.contains("Gerenciar")) {
                         response.getWriter().println("<script>alert('Acesso Negado'); location.href='index.jsp';</script>");
                     }
@@ -125,6 +130,11 @@ public class GerenciarLogin extends HttpServlet {
                             possuiAcesso = true;
                             break;
                         }
+                    }
+
+                    // Liberando especificamente o GerenciarFerias
+                    if (uri.contains("GerenciarFerias")) {
+                        possuiAcesso = true;
                     }
 
                     if (!possuiAcesso && !uri.contains("Gerenciar")) {

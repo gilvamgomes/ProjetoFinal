@@ -4,12 +4,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
 import model.Ferias;
 import model.FeriasDAO;
+import model.Funcionario;
+import model.FuncionarioDAO;
 import model.Usuario;
 
 public class GerenciarFerias extends HttpServlet {
@@ -35,8 +38,14 @@ public class GerenciarFerias extends HttpServlet {
                     if (idFerias != null && !idFerias.isEmpty()) {
                         f = fDAO.getCarregaPorID(Integer.parseInt(idFerias));
                         if (f.getIdFerias() > 0) {
-                            RequestDispatcher disp = getServletContext().getRequestDispatcher("/form_ferias.jsp");
+
+                            // Corrigido: Carregar lista de funcionários usando List ao invés de ArrayList
+                            FuncionarioDAO funDAO = new FuncionarioDAO();
+                            List<Funcionario> listaFuncionarios = funDAO.getLista();
+                            request.setAttribute("funcionarios", listaFuncionarios);
+
                             request.setAttribute("ferias", f);
+                            RequestDispatcher disp = getServletContext().getRequestDispatcher("/form_ferias.jsp");
                             disp.forward(request, response);
                             return;
                         } else {
