@@ -69,29 +69,12 @@
             </div>
         </form>
     </div>
-
+                <br>
     <div style="margin-top: 10px;">
-        <h3 class="text-center"><i class="fa fa-list-alt"></i> Menus vinculados ao perfil: ${perfilv.nome}</h3>
-    </div>         
+        <h3 class="text-center"><i class="fa fa-list-alt"></i> Menus vinculados ao perfil de ${perfilv.nome}</h3>
+    </div> <br>        
 
-    <!-- Barra de Busca REAL - Integrada com o método novo do DAO -->
-    <div class="text-center" style="margin: 20px 0;">
-        <form method="get" id="formBusca" action="GerenciarMenuPerfil" style="display: inline-block; max-width: 300px; width: 100%;">
-            <input type="hidden" name="acao" value="gerenciar">
-            <input type="hidden" name="idPerfil" value="${perfilv.idPerfil}">
-            <input 
-                type="text" 
-                name="termo" 
-                id="campoBusca"
-                value="${param.termo}" 
-                placeholder="Buscar por ID, Nome ou Link..." 
-                class="form-control"
-                style="border-radius: 20px; padding: 6px 14px; height: 36px; width: 100%;"
-                autofocus
-            >
-        </form>
-    </div>
-
+    
     <!-- Bloco Cards - Agora sem filtro na JSP, pois o filtro já vem do DAO -->
     <div class="row">
         <c:forEach var="m" items="${perfilv.menus}">

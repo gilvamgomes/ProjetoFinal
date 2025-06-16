@@ -26,10 +26,11 @@
 <div id="loader-wrapper" style="display: none;">
     <div class="loader"></div>
 </div>
-<!-- SCRIPT: Ativa loader ao clicar em links listar_* -->
+
+<!-- SCRIPT: Ativa loader ao clicar nos links de listar_* e meus_contra_cheques.jsp -->
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll("a[href*='listar_']").forEach(link => {
+    document.querySelectorAll("a[href*='listar_'], a[href*='meus_contra_cheques.jsp']").forEach(link => {
       link.addEventListener("click", function () {
         document.getElementById("loader-wrapper").style.display = "flex";
       });
