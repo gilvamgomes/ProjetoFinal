@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body>
+<body class="fundo-branco">
 
 <%@include file="banner.jsp" %>
 <%@include file="menu.jsp" %>
@@ -30,7 +30,6 @@
     <div class="row">
         <div class="col-xs-12">
             <br>
-            <!-- TOPO: busca à esquerda, botão à direita -->
             <div class="clearfix" style="margin-bottom: 10px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                     
@@ -58,12 +57,12 @@
                     </a>
                 </div>
 
-                <!-- Título centralizado -->
                 <div style="text-align: center; margin-top: 20px;">
                     <h2 style="margin: 0;"><i class="fa fa-calendar"></i> Férias</h2>
                 </div>
             </div>
-                  <br>
+            <br>
+
             <jsp:useBean class="model.FeriasDAO" id="fDAO"/>
             <c:set var="lista" value="${empty param.busca ? fDAO.lista : fDAO.buscarPorTermo(param.busca)}"/>
 
@@ -71,7 +70,7 @@
                 <c:forEach var="f" items="${lista}">
                     <c:if test="${ulogado.perfil.nome == 'Administrador' || ulogado.perfil.nome == 'Gerente' || f.funcionario.idFuncionario == ulogado.funcionario.idFuncionario}">
                         <div class="col-sm-6 col-xs-12">
-                            <div class="card-funcionario">
+                            <div class="card-funcionario" style="display: flex; flex-direction: column; min-height: 210px; height: 100%;">
                                 <h4><i class="fa fa-plane"></i> Férias</h4>
                                 <p><strong>Data Início:</strong> <fmt:formatDate value="${f.dataInicio}" pattern="dd/MM/yyyy"/></p>
                                 <p><strong>Data Fim:</strong> <fmt:formatDate value="${f.dataFim}" pattern="dd/MM/yyyy"/></p>
@@ -81,14 +80,19 @@
                                     <p><strong>Funcionário:</strong> ${f.funcionario.nome}</p>
                                 </c:if>
 
-                                <a href="GerenciarFerias?acao=alterar&idFerias=${f.idFerias}" class="btn btn-primary btn-sm">
-                                    <i class="fa fa-edit"></i> Editar
-                                </a>
-                                <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
-                                    <a href="GerenciarFerias?acao=excluir&idFerias=${f.idFerias}" class="btn btn-danger btn-sm" onclick="return confirm('Deseja excluir?');">
-                                        <i class="fa fa-trash"></i> Excluir
-                                    </a>
-                                </c:if>
+                                <div style="margin-top: auto; text-align: left;">
+                                    <c:if test="${ulogado.perfil.nome != 'Funcionario' || f.status == 'Em analise'}">
+                                        <a href="GerenciarFerias?acao=alterar&idFerias=${f.idFerias}" class="btn btn-primary btn-sm">
+                                            <i class="fa fa-edit"></i> Editar
+                                        </a>
+                                    </c:if>
+
+                                    <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
+                                        <a href="GerenciarFerias?acao=excluir&idFerias=${f.idFerias}" class="btn btn-danger btn-sm" onclick="return confirm('Deseja excluir?');">
+                                            <i class="fa fa-trash"></i> Excluir
+                                        </a>
+                                    </c:if>
+                                </div>
                             </div>
                         </div>
                     </c:if>

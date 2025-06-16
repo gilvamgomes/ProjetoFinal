@@ -4,12 +4,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
 import model.Ferias;
 import model.FeriasDAO;
+import model.Funcionario;
+import model.FuncionarioDAO;
 import model.Usuario;
 
 public class GerenciarFerias extends HttpServlet {
@@ -21,7 +24,6 @@ public class GerenciarFerias extends HttpServlet {
             throws ServletException, IOException {
 
         GerenciarFerias.response = response;
-
         PrintWriter out = response.getWriter();
         String mensagem = "";
         String idFerias = request.getParameter("idFerias");
@@ -30,20 +32,21 @@ public class GerenciarFerias extends HttpServlet {
 
         try {
             FeriasDAO fDAO = new FeriasDAO();
+
             if ("alterar".equals(acao)) {
                 if (GerenciarLogin.verificarPermissao(request, response)) {
-                    if (idFerias != null && !idFerias.isEmpty()) {
-                        f = fDAO.getCarregaPorID(Integer.parseInt(idFerias));
-                        if (f.getIdFerias() > 0) {
-                            RequestDispatcher disp = getServletContext().getRequestDispatcher("/form_ferias.jsp");
-                            request.setAttribute("ferias", f);
-                            disp.forward(request, response);
-                            return;
-                        } else {
-                            mensagem = "Férias não encontrada";
-                        }
+                    f = fDAO.getCarregaPorID(Integer.parseInt(idFerias));
+                    if (f.getIdFerias() > 0) {
+                        FuncionarioDAO funDAO = new FuncionarioDAO();
+                        List<Funcionario> listaFuncionarios = funDAO.getLista();
+                        request.setAttribute("funcionarios", listaFuncionarios);
+
+                        request.setAttribute("ferias", f);
+                        RequestDispatcher disp = getServletContext().getRequestDispatcher("/form_ferias.jsp");
+                        disp.forward(request, response);
+                        return;
                     } else {
-                        mensagem = "ID inválido";
+                        mensagem = "Férias não encontrada";
                     }
                 } else {
                     mensagem = "Acesso Negado";
@@ -95,7 +98,7 @@ public class GerenciarFerias extends HttpServlet {
 
         if (dataInicio == null || dataInicio.trim().isEmpty()) erros.add("Preencha a data de início");
         if (dataFim == null || dataFim.trim().isEmpty()) erros.add("Preencha a data de fim");
-        if (funcionarioId == null || funcionarioId.trim().isEmpty()) erros.add("Informe o ID do funcionário");
+        if (funcionarioId == null || funcionarioId.trim().isEmpty()) erros.add("Informe o funcionário");
 
         if (!erros.isEmpty()) {
             String campos = "";
@@ -106,14 +109,22 @@ public class GerenciarFerias extends HttpServlet {
         } else {
             Ferias f = new Ferias();
             try {
+                FeriasDAO fDAO = new FeriasDAO();
+
                 if (idFerias != null && !idFerias.isEmpty()) {
                     f.setIdFerias(Integer.parseInt(idFerias));
+
+                    // Aqui é o pulo do gato: manter o funcionário original!
+                    Ferias feriasAntiga = fDAO.getCarregaPorID(f.getIdFerias());
+                    f.setFuncionario_idFfuncionario(feriasAntiga.getFuncionario_idFfuncionario());
+                } else {
+                    // Se for uma nova férias, pega do formulário
+                    f.setFuncionario_idFfuncionario(Integer.parseInt(funcionarioId));
                 }
 
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 f.setDataInicio(sdf.parse(dataInicio));
                 f.setDataFim(sdf.parse(dataFim));
-                f.setFuncionario_idFfuncionario(Integer.parseInt(funcionarioId));
 
                 Usuario ulogado = (Usuario) request.getSession().getAttribute("ulogado");
                 if ("Funcionario".equals(ulogado.getPerfil().getNome())) {
@@ -122,7 +133,6 @@ public class GerenciarFerias extends HttpServlet {
                     f.setStatus(status);
                 }
 
-                FeriasDAO fDAO = new FeriasDAO();
                 if (fDAO.gravar(f)) {
                     exibirMensagem("Férias gravada com sucesso", true);
                 } else {
@@ -131,7 +141,7 @@ public class GerenciarFerias extends HttpServlet {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                exibirMensagem("Erro ao processar os dados: " + e.getMessage(), false);
+                exibirMensagem("Erro ao gravar no banco de dados: " + e.getMessage(), false);
             }
         }
     }

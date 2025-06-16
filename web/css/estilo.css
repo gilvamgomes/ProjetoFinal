@@ -1223,6 +1223,9 @@ body {
     margin-bottom: 0;
   }
 }
+.fundo-branco {
+    background-color: #ffffff;
+}
 /* === FIM FORM/LISTAR ESTILO GLOBAL === */
 /* === FIM FORM/LISTAR ESTILO GLOBAL === */
 
