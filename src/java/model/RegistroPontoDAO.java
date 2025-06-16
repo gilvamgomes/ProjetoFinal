@@ -241,10 +241,10 @@ public class RegistroPontoDAO extends DataBaseDAO {
     
      
     //Barra de busca
-   public List<RegistroPonto> buscarPorTermo(String termo) throws Exception {
+public List<RegistroPonto> buscarPorTermo(String termo) throws Exception {
     List<RegistroPonto> lista = new ArrayList<>();
 
-    String[] palavras = termo.trim().split("\\s+");  // Divide o termo por espaços
+    String[] palavras = termo.trim().split("\\s+");  // Divide por espaço
 
     StringBuilder sql = new StringBuilder();
     sql.append("SELECT rp.*, f.nome AS nome_funcionario FROM registro_ponto rp ");
@@ -254,7 +254,7 @@ public class RegistroPontoDAO extends DataBaseDAO {
     for (String palavra : palavras) {
         sql.append("AND (");
         sql.append("CAST(rp.idRegistro_ponto AS CHAR) LIKE ? OR ");
-        sql.append("CAST(rp.data AS CHAR) LIKE ? OR ");
+        sql.append("DATE_FORMAT(rp.data, '%d/%m/%Y') LIKE ? OR ");  // ✅ Formatação de data com barra
         sql.append("CAST(rp.horaEntrada AS CHAR) LIKE ? OR ");
         sql.append("CAST(rp.horaAlmocoSaida AS CHAR) LIKE ? OR ");
         sql.append("CAST(rp.horaAlmocoVolta AS CHAR) LIKE ? OR ");
@@ -299,5 +299,5 @@ public class RegistroPontoDAO extends DataBaseDAO {
     return lista;
 }
 
-    
+
 }

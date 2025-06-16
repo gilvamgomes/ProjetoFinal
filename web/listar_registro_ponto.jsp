@@ -11,15 +11,6 @@
     }
 
     request.setAttribute("ulogado", ulogado);
-
-    FuncionarioDAO fdao = new FuncionarioDAO();
-    Funcionario funcionarioLogado = fdao.getFuncionarioPorUsuario(ulogado.getIdUsuario());
-
-    java.util.List lista = "Funcionario".equals(ulogado.getPerfil().getNome())
-        ? rdao.listarPorFuncionario(funcionarioLogado.getIdFuncionario())
-        : rdao.listarTodos();
-
-    request.setAttribute("lista", lista);
 %>
 
 <!DOCTYPE html>
@@ -48,10 +39,11 @@
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                     
                     <!-- Barra de busca -->
-                    <form method="get" id="formBusca" style="margin: 0;">
+                    <form method="get" id="formBusca" action="listar_registro_ponto.jsp" style="margin: 0;">
                         <input 
                             type="text" 
-                            id="filtroBusca"
+                            name="busca" 
+                            value="${param.busca}" 
                             class="form-control" 
                             placeholder="Buscar registro..." 
                             style="min-width: 220px; border-radius: 20px; padding: 6px 14px; height: 38px;"
@@ -69,10 +61,9 @@
                             </form>
                         </c:if>
                         <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
-                              <!-- Botão Novo Cadastro -->
-                    <a href="form_registro_ponto.jsp" class="btn btn-primary" style="height: 38px;">
-                        <i class="fa fa-plus"></i> Novo
-                    </a>
+                            <a href="form_registro_ponto.jsp" class="btn btn-primary" style="height: 38px;">
+                                <i class="fa fa-plus"></i> Novo
+                            </a>
                         </c:if>
                     </div>
                 </div>
@@ -91,7 +82,9 @@
 
             <br>
 
-            <!-- Lista -->
+            <!-- LISTA -->
+            <c:set var="lista" value="${empty param.busca ? rdao.listarTodos() : rdao.buscarPorTermo(param.busca)}"/>
+
             <c:choose>
                 <c:when test="${empty lista}">
                     <div class="alert alert-info">Nenhum registro encontrado.</div>
@@ -135,14 +128,22 @@
         }
     }
 
-    document.getElementById("filtroBusca").addEventListener("input", function() {
-        let termo = this.value.toLowerCase();
-        let cards = document.querySelectorAll(".registro-card");
+    let timeout = null;
+    const campo = document.getElementsByName("busca")[0];
 
-        cards.forEach(card => {
-            let texto = card.innerText.toLowerCase();
-            card.style.display = texto.includes(termo) ? "block" : "none";
-        });
+    if (localStorage.getItem("posCursor") !== null) {
+        const pos = parseInt(localStorage.getItem("posCursor"));
+        campo.focus();
+        campo.setSelectionRange(pos, pos);
+        localStorage.removeItem("posCursor");
+    }
+
+    campo.addEventListener("input", function () {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            localStorage.setItem("posCursor", campo.selectionStart);
+            document.getElementById("formBusca").submit();
+        }, 500);
     });
 
     function toggleMenu(){
