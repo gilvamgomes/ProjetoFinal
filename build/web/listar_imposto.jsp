@@ -45,9 +45,12 @@
                         <input type="text" id="filtroBusca" class="form-control" placeholder="Buscar imposto..."
                                style="min-width: 220px; border-radius: 20px; padding: 6px 14px; height: 38px;">
                     </form>
-                    <a href="form_imposto.jsp" class="btn btn-success" style="height: 38px;">
-                        <i class="fa fa-plus"></i> Novo Cadastro
+                    
+                     <!-- Botão Novo Cadastro -->
+                    <a href="form_imposto.jsp" class="btn btn-primary" style="height: 38px;">
+                        <i class="fa fa-plus"></i> Novo
                     </a>
+                   
                 </div>
 
                 <div style="text-align: center; margin-top: 20px;">

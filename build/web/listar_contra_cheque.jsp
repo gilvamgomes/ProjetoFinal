@@ -51,7 +51,7 @@
                     </form>
 
                     <a href="form_contra_cheque.jsp" class="btn btn-primary" style="height: 38px;">
-                        <i class="fa fa-plus"></i> Novo Cadastro Manual
+                        <i class="fa fa-plus"></i> Novo
                     </a>
                 </div>
 
@@ -118,7 +118,9 @@
                                     <p><strong>Descontos:</strong> R$ ${c.descontos}</p>
                                     <p><strong>Valor Líquido:</strong> R$ ${c.valorLiquido}</p>
                                     <p><strong>Funcionário:</strong> ${c.nomeFuncionario}</p>
-                                    <div class="btn-group">
+                                    
+                                    <!-- Botões com espaçamento e layout responsivo -->
+                                    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px;">
                                         <a class="btn btn-primary btn-sm" href="GerenciarContraCheque?acao=alterar&idContraCheque=${c.idContraCheque}">
                                             <i class="fa fa-edit"></i> Editar
                                         </a>
@@ -126,6 +128,7 @@
                                             <i class="fa fa-trash"></i> Excluir
                                         </button>
                                     </div>
+
                                 </div>
                             </div>
                         </c:forEach>

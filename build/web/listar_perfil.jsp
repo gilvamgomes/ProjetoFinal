@@ -48,7 +48,7 @@
 
                     <!-- Botão Novo Cadastro -->
                     <a href="form_perfil.jsp" class="btn btn-primary" style="height: 38px;">
-                        <i class="fa fa-plus"></i> Novo Cadastro
+                        <i class="fa fa-plus"></i> Novo
                     </a>
                 </div>
 
@@ -57,7 +57,8 @@
                     <h2 style="margin: 0;"><i class="fa fa-id-badge"></i> Perfis</h2>
                 </div>
             </div>
-                  <br>
+            <br>
+
             <jsp:useBean class="model.PerfilDAO" id="pDAO"/>
             <c:set var="lista" value="${empty param.busca ? pDAO.lista : pDAO.buscarPorTermo(param.busca)}"/>
 
@@ -72,7 +73,8 @@
                                     <c:out value="${p.status == 1 ? 'Ativo' : 'Inativo'}"/>
                                 </span>
                             </p>
-                            <div class="btn-group">
+
+                            <div class="btn-group" style="display: flex; flex-wrap: wrap; gap: 5px;">
                                 <a class="btn btn-primary btn-sm" href="GerenciarPerfil?acao=alterar&idPerfil=${p.idPerfil}">
                                     <i class="fa fa-edit"></i> Editar
                                 </a>
