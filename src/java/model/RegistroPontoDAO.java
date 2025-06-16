@@ -241,60 +241,63 @@ public class RegistroPontoDAO extends DataBaseDAO {
     
      
     //Barra de busca
-    // Barra de busca com controle de perfil
-public List<RegistroPonto> buscarPorTermo(String termoBusca, int idFuncionarioFiltro, boolean isFuncionario) throws Exception {
-    this.conectar();
+   public List<RegistroPonto> buscarPorTermo(String termo) throws Exception {
     List<RegistroPonto> lista = new ArrayList<>();
-    String sql = "SELECT rp.*, f.nome AS nome_funcionario FROM registro_ponto rp " +
-                 "INNER JOIN funcionario f ON f.idFfuncionario = rp.funcionario_idFfuncionario " +
-                 "WHERE (CAST(rp.data AS CHAR) LIKE ? " +
-                 "OR CAST(rp.horaEntrada AS CHAR) LIKE ? " +
-                 "OR CAST(rp.horaAlmocoSaida AS CHAR) LIKE ? " +
-                 "OR CAST(rp.horaAlmocoVolta AS CHAR) LIKE ? " +
-                 "OR CAST(rp.horaSaida AS CHAR) LIKE ? " +
-                 "OR CAST(rp.horasTrabalhadas AS CHAR) LIKE ? " +
-                 "OR f.nome LIKE ?)";
 
-    if (isFuncionario) {
-        sql += " AND f.idFfuncionario = ?";
+    String[] palavras = termo.trim().split("\\s+");  // Divide o termo por espaços
+
+    StringBuilder sql = new StringBuilder();
+    sql.append("SELECT rp.*, f.nome AS nome_funcionario FROM registro_ponto rp ");
+    sql.append("INNER JOIN funcionario f ON f.idFfuncionario = rp.funcionario_idFfuncionario ");
+    sql.append("WHERE 1=1 ");
+
+    for (String palavra : palavras) {
+        sql.append("AND (");
+        sql.append("CAST(rp.idRegistro_ponto AS CHAR) LIKE ? OR ");
+        sql.append("CAST(rp.data AS CHAR) LIKE ? OR ");
+        sql.append("CAST(rp.horaEntrada AS CHAR) LIKE ? OR ");
+        sql.append("CAST(rp.horaAlmocoSaida AS CHAR) LIKE ? OR ");
+        sql.append("CAST(rp.horaAlmocoVolta AS CHAR) LIKE ? OR ");
+        sql.append("CAST(rp.horaSaida AS CHAR) LIKE ? OR ");
+        sql.append("CAST(rp.horasTrabalhadas AS CHAR) LIKE ? OR ");
+        sql.append("f.nome LIKE ? ");
+        sql.append(") ");
     }
 
-    sql += " ORDER BY rp.data DESC, rp.horaEntrada ASC";
+    this.conectar();
+    try (PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+        int paramIndex = 1;
+        for (String palavra : palavras) {
+            String filtro = "%" + palavra + "%";
+            for (int i = 0; i < 8; i++) {  // 8 campos por palavra
+                stmt.setString(paramIndex++, filtro);
+            }
+        }
 
-    PreparedStatement stmt = conn.prepareStatement(sql);
-    String like = "%" + termoBusca + "%";
-    for (int i = 1; i <= 7; i++) {
-        stmt.setString(i, like);
+        ResultSet rs = stmt.executeQuery();
+        FuncionarioDAO fdao = new FuncionarioDAO();
+        fdao.conectar();
+
+        while (rs.next()) {
+            RegistroPonto rp = new RegistroPonto();
+            rp.setIdRegistro_ponto(rs.getInt("idRegistro_ponto"));
+            rp.setData(rs.getDate("data").toLocalDate());
+            rp.setHoraEntrada(rs.getTime("horaEntrada") != null ? rs.getTime("horaEntrada").toLocalTime() : null);
+            rp.setHoraAlmocoSaida(rs.getTime("horaAlmocoSaida") != null ? rs.getTime("horaAlmocoSaida").toLocalTime() : null);
+            rp.setHoraAlmocoVolta(rs.getTime("horaAlmocoVolta") != null ? rs.getTime("horaAlmocoVolta").toLocalTime() : null);
+            rp.setHoraSaida(rs.getTime("horaSaida") != null ? rs.getTime("horaSaida").toLocalTime() : null);
+            rp.setHorasTrabalhadas(rs.getBigDecimal("horasTrabalhadas") != null ? rs.getBigDecimal("horasTrabalhadas").doubleValue() : 0);
+            int idFunc = rs.getInt("funcionario_idFfuncionario");
+            rp.setFuncionario_idFfuncionario(idFunc);
+            rp.setFuncionario(fdao.getCarregaPorID(idFunc));
+            lista.add(rp);
+        }
+    } finally {
+        this.desconectar();
     }
 
-    if (isFuncionario) {
-        stmt.setInt(8, idFuncionarioFiltro);
-    }
-
-    ResultSet rs = stmt.executeQuery();
-    FuncionarioDAO fdao = new FuncionarioDAO();
-    fdao.conectar();
-
-    while (rs.next()) {
-        RegistroPonto rp = new RegistroPonto();
-        rp.setIdRegistro_ponto(rs.getInt("idRegistro_ponto"));
-        rp.setData(rs.getDate("data").toLocalDate());
-        rp.setHoraEntrada(rs.getTime("horaEntrada").toLocalTime());
-        rp.setHoraAlmocoSaida(rs.getTime("horaAlmocoSaida") != null ? rs.getTime("horaAlmocoSaida").toLocalTime() : null);
-        rp.setHoraAlmocoVolta(rs.getTime("horaAlmocoVolta") != null ? rs.getTime("horaAlmocoVolta").toLocalTime() : null);
-        rp.setHoraSaida(rs.getTime("horaSaida") != null ? rs.getTime("horaSaida").toLocalTime() : null);
-        rp.setHorasTrabalhadas(rs.getBigDecimal("horasTrabalhadas") != null ? rs.getBigDecimal("horasTrabalhadas").doubleValue() : 0);
-        int idFunc = rs.getInt("funcionario_idFfuncionario");
-        rp.setFuncionario_idFfuncionario(idFunc);
-        rp.setFuncionario(fdao.getCarregaPorID(idFunc));
-        lista.add(rp);
-    }
-
-    this.desconectar();
     return lista;
 }
 
-
-   
     
 }

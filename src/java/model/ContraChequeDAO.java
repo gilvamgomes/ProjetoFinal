@@ -373,27 +373,26 @@ public class ContraChequeDAO extends DataBaseDAO {
     
     //Barra de busca
 //barra de busca para o funcionario
-public List<ContraCheque> buscarPorTermo(String termo) throws Exception {
-    List<ContraCheque> lista = new ArrayList<>();
+public List<RegistroPonto> buscarPorTermo(String termo) throws Exception {
+    List<RegistroPonto> lista = new ArrayList<>();
 
-    String[] palavras = termo.trim().split("\\s+"); // Divide o termo por espaços se tiver mais de um termo
+    String[] palavras = termo.trim().split("\\s+"); // Divide por espaços se tiver múltiplas palavras
 
     StringBuilder sql = new StringBuilder();
-    sql.append("SELECT c.*, f.nome AS nomeFuncionario FROM contra_cheque c ");
-    sql.append("INNER JOIN funcionario f ON f.idFfuncionario = c.funcionario_idFfuncionario ");
+    sql.append("SELECT r.*, f.nome AS nomeFuncionario FROM registro_ponto r ");
+    sql.append("INNER JOIN funcionario f ON f.idFfuncionario = r.funcionario_idFfuncionario ");
     sql.append("WHERE 1=1 ");
 
     for (String palavra : palavras) {
         sql.append("AND (");
-        sql.append("CAST(c.idContra_cheque AS CHAR) LIKE ? OR ");
-        sql.append("CAST(c.valorBruto AS CHAR) LIKE ? OR ");
-        sql.append("CAST(c.descontos AS CHAR) LIKE ? OR ");
-        sql.append("CAST(c.valorLiquido AS CHAR) LIKE ? OR ");
-        sql.append("CAST(c.funcionario_idFfuncionario AS CHAR) LIKE ? OR ");
-        sql.append("CAST(c.mes AS CHAR) LIKE ? OR ");
-        sql.append("CAST(c.ano AS CHAR) LIKE ? OR ");
-        sql.append("f.nome LIKE ? OR ");
-        sql.append("CONCAT(LPAD(c.mes, 2, '0'), '/', c.ano) LIKE ? ");  // <- Aqui a mágica pra "02/2024"
+        sql.append("CAST(r.idRegistro_ponto AS CHAR) LIKE ? OR ");
+        sql.append("CAST(r.data AS CHAR) LIKE ? OR ");
+        sql.append("CAST(r.horaEntrada AS CHAR) LIKE ? OR ");
+        sql.append("CAST(r.horaAlmocoSaida AS CHAR) LIKE ? OR ");
+        sql.append("CAST(r.horaAlmocoVolta AS CHAR) LIKE ? OR ");
+        sql.append("CAST(r.horaSaida AS CHAR) LIKE ? OR ");
+        sql.append("CAST(r.horasTrabalhadas AS CHAR) LIKE ? OR ");
+        sql.append("f.nome LIKE ? ");
         sql.append(") ");
     }
 
@@ -402,23 +401,27 @@ public List<ContraCheque> buscarPorTermo(String termo) throws Exception {
         int paramIndex = 1;
         for (String palavra : palavras) {
             String filtro = "%" + palavra + "%";
-            for (int j = 0; j < 9; j++) {  // Agora são 9 campos por palavra (8 antigos + 1 novo do CONCAT)
+            for (int j = 0; j < 8; j++) {  // São 8 campos por palavra
                 pstm.setString(paramIndex++, filtro);
             }
         }
 
         ResultSet rs = pstm.executeQuery();
         while (rs.next()) {
-            ContraCheque c = new ContraCheque();
-            c.setIdContraCheque(rs.getInt("idContra_cheque"));
-            c.setValorBruto(rs.getBigDecimal("valorBruto"));
-            c.setDescontos(rs.getBigDecimal("descontos"));
-            c.setValorLiquido(rs.getBigDecimal("valorLiquido"));
-            c.setFuncionarioId(rs.getInt("funcionario_idFfuncionario"));
-            c.setMes(rs.getInt("mes"));
-            c.setAno(rs.getInt("ano"));
-            c.setNomeFuncionario(rs.getString("nomeFuncionario"));
-            lista.add(c);
+            RegistroPonto r = new RegistroPonto();
+            r.setIdRegistro_ponto(rs.getInt("idRegistro_ponto"));
+            r.setData(rs.getDate("data").toLocalDate());
+            r.setHoraEntrada(rs.getTime("horaEntrada") != null ? rs.getTime("horaEntrada").toLocalTime() : null);
+            r.setHoraAlmocoSaida(rs.getTime("horaAlmocoSaida") != null ? rs.getTime("horaAlmocoSaida").toLocalTime() : null);
+            r.setHoraAlmocoVolta(rs.getTime("horaAlmocoVolta") != null ? rs.getTime("horaAlmocoVolta").toLocalTime() : null);
+            r.setHoraSaida(rs.getTime("horaSaida") != null ? rs.getTime("horaSaida").toLocalTime() : null);
+            r.setHorasTrabalhadas(rs.getDouble("horasTrabalhadas"));
+
+            Funcionario f = new Funcionario();
+            f.setNome(rs.getString("nomeFuncionario"));
+            r.setFuncionario(f);
+
+            lista.add(r);
         }
     } finally {
         this.desconectar();

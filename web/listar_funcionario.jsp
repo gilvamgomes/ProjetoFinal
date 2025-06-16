@@ -48,7 +48,7 @@
 
                     <!-- Botão Novo Cadastro -->
                     <a href="form_funcionario.jsp" class="btn btn-primary" style="height: 38px;">
-                        <i class="fa fa-user-plus"></i> Novo Cadastro
+                         <i class="fa fa-plus"></i> Novo
                     </a>
                 </div>
 

@@ -50,7 +50,7 @@
 
                     <!-- Botão Novo Cadastro -->
                     <a href="form_ferias.jsp" class="btn btn-primary" style="height: 38px;">
-                        <i class="fa fa-plus"></i> Novo Cadastro
+                        <i class="fa fa-plus"></i> Novo
                     </a>
                 </div>
 
