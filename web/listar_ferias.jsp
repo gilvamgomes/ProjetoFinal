@@ -30,7 +30,6 @@
     <div class="row">
         <div class="col-xs-12">
             <br>
-            <!-- TOPO: busca à esquerda, botão à direita -->
             <div class="clearfix" style="margin-bottom: 10px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                     
@@ -54,12 +53,12 @@
                     </a>
                 </div>
 
-                <!-- Título centralizado -->
                 <div style="text-align: center; margin-top: 20px;">
                     <h2 style="margin: 0;"><i class="fa fa-calendar"></i> Férias</h2>
                 </div>
             </div>
-                  <br>
+            <br>
+
             <jsp:useBean class="model.FeriasDAO" id="fDAO"/>
             <c:set var="lista" value="${empty param.busca ? fDAO.lista : fDAO.buscarPorTermo(param.busca)}"/>
 
@@ -77,9 +76,12 @@
                                     <p><strong>Funcionário:</strong> ${f.funcionario.nome}</p>
                                 </c:if>
 
-                                <a href="GerenciarFerias?acao=alterar&idFerias=${f.idFerias}" class="btn btn-primary btn-sm">
-                                    <i class="fa fa-edit"></i> Editar
-                                </a>
+                                <c:if test="${ulogado.perfil.nome != 'Funcionario' || f.status == 'Em analise'}">
+                                    <a href="GerenciarFerias?acao=alterar&idFerias=${f.idFerias}" class="btn btn-primary btn-sm">
+                                        <i class="fa fa-edit"></i> Editar
+                                    </a>
+                                </c:if>
+
                                 <c:if test="${ulogado.perfil.nome != 'Funcionario'}">
                                     <a href="GerenciarFerias?acao=excluir&idFerias=${f.idFerias}" class="btn btn-danger btn-sm" onclick="return confirm('Deseja excluir?');">
                                         <i class="fa fa-trash"></i> Excluir
