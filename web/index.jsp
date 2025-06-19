@@ -16,13 +16,14 @@
     <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/estilo.css">
-    <title>Bem-vindo(a) - Inicio</title>
+    <title>Bem-vindo(a) - Início</title>
 </head>
 <body>
 
 <%@include file="banner.jsp" %>
 <%@include file="menu.jsp" %>
 <%@include file="menu_mobile.jsp" %>
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 <div class="dashboard-milano">
@@ -49,22 +50,30 @@
         </div>
 =======
 <br>
+=======
+>>>>>>> Ton
 
 
-    <div class="dashboard-graficos">
-        <div class="grafico-box">
-            <h3 class="titulo-grafico">Distribuição de Benefícios</h3>
-            <canvas id="graficoPizza" width="300" height="300"></canvas>
-        </div>
-        <div class="grafico-box">
-            <h3 class="titulo-grafico">Registros de Ponto por Dia</h3>
-            <canvas id="graficoBarra" width="300" height="300"></canvas>
-        </div>
-        <div class="grafico-box">
-            <h3 class="titulo-grafico">Status de Férias</h3>
-            <canvas id="graficoDonut" width="300" height="300"></canvas>
-        </div>
+<!-- AVISO DE EM CONSTRUÇÃO -->
+<div style="text-align: center; padding: 15px; margin: 20px auto; max-width: 600px; background-color: #fff3cd; border: 1px solid #ffeeba; border-radius: 10px; color: #856404;">
+    <i class="fa fa-exclamation-triangle"></i>
+    <strong> Página em Construção:</strong> Dashboard da MILANO IU 2.1 estará disponível em breve!
+</div>
+
+<div class="dashboard-graficos">
+    <div class="grafico-box">
+        <h3 class="titulo-grafico">Distribuição de Benefícios</h3>
+        <canvas id="graficoPizza" width="300" height="300"></canvas>
     </div>
+    <div class="grafico-box">
+        <h3 class="titulo-grafico">Registros de Ponto por Dia</h3>
+        <canvas id="graficoBarra" width="300" height="300"></canvas>
+    </div>
+    <div class="grafico-box">
+        <h3 class="titulo-grafico">Status de Férias</h3>
+        <canvas id="graficoDonut" width="300" height="300"></canvas>
+    </div>
+</div>
 
 <div class="dashboard-milano">
     <div class="dashboard-cards">

@@ -28,11 +28,8 @@
     <div class="row">
         <div class="col-xs-12">
             <br>
-            <!-- TOPO: busca à esquerda, botão à direita -->
             <div class="clearfix" style="margin-bottom: 10px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-                    
-                    <!-- Barra de busca -->
                     <form method="get" id="formBusca" style="margin: 0;">
                         <input 
                             type="text" 
@@ -46,7 +43,6 @@
                         >
                     </form>
 
-                    <!-- Botão Novo Cadastro -->
                     <a href="form_perfil.jsp" class="btn btn-primary" style="height: 38px;">
 <<<<<<< HEAD
                         <i class="fa fa-plus"></i> Novo Cadastro
@@ -57,7 +53,6 @@
                     </a>
                 </div>
 
-                <!-- Título centralizado -->
                 <div style="text-align: center; margin-top: 20px;">
                     <h2 style="margin: 0;"><i class="fa fa-id-badge"></i> Perfis</h2>
                 </div>
@@ -76,6 +71,7 @@
 
             <div class="row">
                 <c:forEach var="p" items="${lista}">
+<<<<<<< HEAD
                     <div class="col-sm-6 col-xs-12">
                         <div class="card-funcionario">
                             <h4><i class="fa fa-user-shield"></i> ${p.nome}</h4>
@@ -100,9 +96,39 @@
                                 <button class="btn btn-danger btn-sm" onclick="confirmarExclusao(${p.idPerfil}, '${p.nome}')">
                                     <i class="fa fa-trash"></i> Excluir
                                 </button>
+=======
+                    <!-- Se o usuário for gerente, esconder o perfil Administrador -->
+                    <c:if test="${!(ulogado.perfil.idPerfil == 2 && p.idPerfil == 1)}">
+                        <div class="col-sm-6 col-xs-12">
+                            <div class="card-funcionario">
+                                <h4><i class="fa fa-user-shield"></i> ${p.nome}</h4>
+                                <p><strong>ID:</strong> ${p.idPerfil}</p>
+                                <p><strong>Status:</strong> 
+                                    <span class="label ${p.status == 1 ? 'label-success' : 'label-default'}">
+                                        <c:out value="${p.status == 1 ? 'Ativo' : 'Inativo'}"/>
+                                    </span>
+                                </p>
+
+                                <div class="btn-group" style="display: flex; flex-wrap: wrap; gap: 5px;">
+                                    <a class="btn btn-primary btn-sm" href="GerenciarPerfil?acao=alterar&idPerfil=${p.idPerfil}">
+                                        <i class="fa fa-edit"></i> Editar
+                                    </a>
+
+                                    <!-- Só Administrador vê o botão Acessos -->
+                                    <c:if test="${ulogado.perfil.idPerfil == 1}">
+                                        <a class="btn btn-default btn-sm" href="GerenciarMenuPerfil?acao=gerenciar&idPerfil=${p.idPerfil}">
+                                            <i class="fa fa-lock"></i> Acessos
+                                        </a>
+                                    </c:if>
+
+                                    <button class="btn btn-danger btn-sm" onclick="confirmarExclusao(${p.idPerfil}, '${p.nome}')">
+                                        <i class="fa fa-trash"></i> Desativar
+                                    </button>
+                                </div>
+>>>>>>> Ton
                             </div>
                         </div>
-                    </div>
+                    </c:if>
                 </c:forEach>
             </div>
         </div>

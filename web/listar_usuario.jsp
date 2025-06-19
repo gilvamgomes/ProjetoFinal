@@ -62,31 +62,35 @@
                     <h2 style="margin: 0;"><i class="fa fa-user"></i> Usuários</h2>
                 </div>
             </div>
-                     <br>
+            <br>
+            
             <jsp:useBean class="model.UsuarioDAO" id="uDAO"/>
             <c:set var="lista" value="${empty param.busca ? uDAO.lista : uDAO.buscarPorTermo(param.busca)}"/>
 
             <div class="row">
                 <c:forEach var="u" items="${lista}">
-                    <div class="col-sm-6 col-xs-12">
-                        <div class="card-funcionario">
-                            <h4><i class="fa fa-user-circle"></i> ${u.nome}</h4>
-                            <p><strong>ID:</strong> ${u.idUsuario}</p>
-                            <p><strong>Login:</strong> ${u.login}</p>
-                            <p><strong>Perfil:</strong> ${u.perfil.nome}</p>
-                            <p><strong>Status:</strong>
-                                <span class="label ${u.status == 1 ? 'label-success' : 'label-default'}">
-                                    <c:out value="${u.status == 1 ? 'Ativo' : 'Inativo'}"/>
-                                </span>
-                            </p>
-                            <a class="btn btn-primary btn-sm" href="GerenciarUsuario?acao=alterar&idUsuario=${u.idUsuario}">
-                                <i class="fa fa-edit"></i> Editar
-                            </a>
-                            <button class="btn btn-danger btn-sm" onclick="confirmarExclusao(${u.idUsuario}, '${u.nome}')">
-                                <i class="fa fa-trash"></i> Excluir
-                            </button>
+                    <!-- Se o usuário logado for Gerente, não mostrar usuários do perfil Administrador -->
+                    <c:if test="${!(ulogado.perfil.idPerfil == 2 && u.perfil.idPerfil == 1)}">
+                        <div class="col-sm-6 col-xs-12">
+                            <div class="card-funcionario">
+                                <h4><i class="fa fa-user-circle"></i> ${u.nome}</h4>
+                                <p><strong>ID:</strong> ${u.idUsuario}</p>
+                                <p><strong>Login:</strong> ${u.login}</p>
+                                <p><strong>Perfil:</strong> ${u.perfil.nome}</p>
+                                <p><strong>Status:</strong>
+                                    <span class="label ${u.status == 1 ? 'label-success' : 'label-default'}">
+                                        <c:out value="${u.status == 1 ? 'Ativo' : 'Inativo'}"/>
+                                    </span>
+                                </p>
+                                <a class="btn btn-primary btn-sm" href="GerenciarUsuario?acao=alterar&idUsuario=${u.idUsuario}">
+                                    <i class="fa fa-edit"></i> Editar
+                                </a>
+                                <button class="btn btn-danger btn-sm" onclick="confirmarExclusao(${u.idUsuario}, '${u.nome}')">
+                                    <i class="fa fa-trash"></i> Desativar
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    </c:if>
                 </c:forEach>
             </div>
         </div>
