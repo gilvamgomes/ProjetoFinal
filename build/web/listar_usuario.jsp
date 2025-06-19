@@ -79,7 +79,7 @@
                                 <i class="fa fa-edit"></i> Editar
                             </a>
                             <button class="btn btn-danger btn-sm" onclick="confirmarExclusao(${u.idUsuario}, '${u.nome}')">
-                                <i class="fa fa-trash"></i> Excluir
+                                <i class="fa fa-trash"></i> Desativar
                             </button>
                         </div>
                     </div>

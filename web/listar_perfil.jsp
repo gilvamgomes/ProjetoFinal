@@ -82,7 +82,7 @@
                                     <i class="fa fa-lock"></i> Acessos
                                 </a>
                                 <button class="btn btn-danger btn-sm" onclick="confirmarExclusao(${p.idPerfil}, '${p.nome}')">
-                                    <i class="fa fa-trash"></i> Excluir
+                                    <i class="fa fa-trash"></i> Desativar
                                 </button>
                             </div>
                         </div>

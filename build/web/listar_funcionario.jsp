@@ -90,7 +90,7 @@
                                 <i class="fa fa-gift"></i> Benefícios
                             </a>
                             <button class="btn btn-danger btn-sm" onclick="confirmarExclusao(${f.idFuncionario}, '${f.nome}')" title="Excluir">
-                                <i class="fa fa-trash"></i> Excluir
+                                <i class="fa fa-trash"></i> Desativar
                             </button>
                         </div>
                     </div>
