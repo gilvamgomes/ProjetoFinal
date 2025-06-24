@@ -77,37 +77,43 @@
 
 <div class="dashboard-milano">
     <div class="dashboard-cards">
-        <div class="card-dashboard"><div class="titulo-card">Funcionários</div><div class="valor-card">12</div></div>
-        <div class="card-dashboard"><div class="titulo-card">Férias Agendadas</div><div class="valor-card">5</div></div>
+        <div class="card-dashboard"><div class="titulo-card">Funcionários</div><div class="valor-card">4</div></div>
+        <div class="card-dashboard"><div class="titulo-card">Férias Agendadas</div><div class="valor-card">2</div></div>
         <div class="card-dashboard"><div class="titulo-card">Registros Semanais</div><div class="valor-card">47</div></div>
         <div class="card-dashboard"><div class="titulo-card">Benefícios Pagos</div><div class="valor-card">R$ 7.300</div></div>
+<<<<<<< HEAD
         <div class="card-dashboard"><div class="titulo-card">Contra-Cheques Emitidos</div><div class="valor-card">22</div></div>
 >>>>>>> Juntar_codigo
+=======
+        <div class="card-dashboard"><div class="titulo-card">ContraCheques Emitidos</div><div class="valor-card">2</div></div>
+>>>>>>> Ton
     </div>
 
     <div class="blocos-lista">
         <div class="bloco-recentes">
             <h4>Últimos Funcionários</h4>
             <ul>
-                <li>Maria - Atendente - 10/06/2025</li>
-                <li>João - Vendedor - 09/06/2025</li>
-                <li>Luciana - Gerente - 07/06/2025</li>
+                <li>Wevertton - Analista - 10/06/2025</li>
+                <li>Gilvam - Vendedor - 09/06/2025</li>
+                <li>Lucinha - Gerente - 07/06/2025</li>
+                <li>Daniel - Técnico em TI - 07/06/2025</li>
+                <li>Silvana - Gerente de projetos - 07/06/2025</li>
             </ul>
         </div>
         <div class="bloco-recentes">
             <h4>Últimos Registros de Ponto</h4>
             <ul>
-                <li>Maria - 10/06 08:00</li>
-                <li>João - 09/06 07:58</li>
-                <li>Luciana - 08/06 08:05</li>
+                <li>Daniel - 10/06 08:00</li>
+                <li>Silvana - 09/06 07:58</li>
+                <li>Gilvam - 08/06 08:05</li>
             </ul>
         </div>
         <div class="bloco-recentes">
             <h4>Últimos Pagamentos</h4>
             <ul>
-                <li>Maria - R$ 2.500 - 05/06</li>
-                <li>João - R$ 3.100 - 04/06</li>
-                <li>Luciana - R$ 4.200 - 03/06</li>
+                <li>Wevertton - R$ 2.500 - 05/06</li>
+                <li>Gilvam - R$ 3.100 - 04/06</li>
+                <li>Lucinha - R$ 4.200 - 03/06</li>
             </ul>
         </div>
     </div>

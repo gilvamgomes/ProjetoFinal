@@ -3,9 +3,18 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page import="model.Usuario" %>
 <%@page import="controller.GerenciarLogin" %>
+<%@page import="model.FuncionarioDAO" %>
+<%@page import="model.Funcionario" %>
+<%@page import="java.util.List" %>
+
 <%
     Usuario ulogado = GerenciarLogin.verificarAcesso(request, response);
     request.setAttribute("ulogado", ulogado);
+
+    // Carrega lista de funcionários
+    FuncionarioDAO fdao = new FuncionarioDAO();
+    List<Funcionario> listaFuncionarios = fdao.listar();
+    request.setAttribute("listaFuncionarios", listaFuncionarios);
 %>
 
 <!DOCTYPE html>
@@ -50,9 +59,18 @@
                     <input type="date" id="dataPagamento" name="dataPagamento" class="form-control" required
                            value="<fmt:formatDate value='${pagamento.dataPagamento}' pattern='yyyy-MM-dd'/>" />
                 </div>
+
+                <!-- Campo Funcionário como SELECT -->
                 <div class="campo-form">
-                    <label for="funcionario_idFfuncionario">ID do Funcionário</label>
-                    <input type="number" id="funcionario_idFfuncionario" name="funcionario_idFfuncionario" class="form-control" required value="${pagamento.funcionario_idFfuncionario}" />
+                    <label for="funcionario_idFfuncionario">Funcionário</label>
+                    <select id="funcionario_idFfuncionario" name="funcionario_idFfuncionario" class="form-control" required>
+                        <option value="">-- Selecione o Funcionário --</option>
+                        <c:forEach var="f" items="${listaFuncionarios}">
+                            <option value="${f.idFuncionario}" <c:if test="${pagamento.funcionario_idFfuncionario == f.idFuncionario}">selected</c:if>>
+                                ${f.nome}
+                            </option>
+                        </c:forEach>
+                    </select>
                 </div>
             </div>
 
