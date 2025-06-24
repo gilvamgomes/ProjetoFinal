@@ -16,7 +16,7 @@
                             <c:when test="${menu.nome eq 'Registro de Ponto'}"> fa-clock-o</c:when>
                             <c:when test="${menu.nome eq 'Férias'}"> fa-plane</c:when>
                             <c:when test="${menu.nome eq 'Contracheque'}"> fa-file-text</c:when>
-                            <c:when test="${menu.nome eq 'Contra-Cheque'}"> fa-file-text-o</c:when>
+                            <c:when test="${menu.nome eq 'Meus Contracheques'}"> fa-file-text-o</c:when>
                             <c:when test="${menu.nome eq 'Funcionários'}"> fa-users</c:when>
                             <c:when test="${menu.nome eq 'Benefícios'}"> fa-briefcase</c:when>
                             <c:when test="${menu.nome eq 'Usuário'}"> fa-user</c:when>
@@ -54,7 +54,7 @@
                             <c:when test="${menu.nome eq 'Registro de Ponto'}"> fa-clock-o</c:when>
                             <c:when test="${menu.nome eq 'Férias'}"> fa-plane</c:when>
                             <c:when test="${menu.nome eq 'Contracheque'}"> fa-file-text</c:when>
-                            <c:when test="${menu.nome eq 'Contra-Cheque'}"> fa-file-text-o</c:when>
+                            <c:when test="${menu.nome eq 'Meus Contracheques'}"> fa-file-text-o</c:when>
                             <c:when test="${menu.nome eq 'Funcionários'}"> fa-users</c:when>
                             <c:when test="${menu.nome eq 'Benefícios'}"> fa-briefcase</c:when>
                             <c:when test="${menu.nome eq 'Usuário'}"> fa-user</c:when>

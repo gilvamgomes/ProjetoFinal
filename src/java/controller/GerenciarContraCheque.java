@@ -32,7 +32,7 @@ public class GerenciarContraCheque extends HttpServlet {
 
                         if (idFuncionarioStr == null || anoStr == null || mesStr == null ||
                             idFuncionarioStr.isEmpty() || anoStr.isEmpty() || mesStr.isEmpty()) {
-                            mensagem = "Parâmetros ausentes para gerar contra-cheque.";
+                            mensagem = "Parâmetros ausentes para gerar contracheque.";
                         } else {
                             int idFuncionario = Integer.parseInt(idFuncionarioStr);
                             int ano = Integer.parseInt(anoStr);
@@ -43,11 +43,11 @@ public class GerenciarContraCheque extends HttpServlet {
                             double horasTrabalhadas = rDAO.getTotalHorasTrabalhadasMes(idFuncionario, mes, ano);
 
                             boolean sucesso = cDAO.gerarContraCheque(idFuncionario, ano, mes, trabalhaSabado, horasTrabalhadas);
-                            mensagem = sucesso ? "Contra-cheque gerado com sucesso!" : "Erro ao gerar contra-cheque.";
+                            mensagem = sucesso ? "Contracheque gerado com sucesso!" : "Erro ao gerar contracheque.";
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
-                        mensagem = "Erro na geração do contra-cheque: " + ex.getMessage();
+                        mensagem = "Erro na geração do contracheque: " + ex.getMessage();
                     }
 
                     request.getSession().setAttribute("mensagem", mensagem);
@@ -68,7 +68,7 @@ public class GerenciarContraCheque extends HttpServlet {
                             disp.forward(request, response);
                             return;
                         } else {
-                            mensagem = "Contra-cheque não encontrado";
+                            mensagem = "Contracheque não encontrado";
                         }
                     } else {
                         mensagem = "ID inválido";
@@ -83,9 +83,9 @@ public class GerenciarContraCheque extends HttpServlet {
                     if (idContraCheque != null && !idContraCheque.isEmpty()) {
                         c.setIdContraCheque(Integer.parseInt(idContraCheque));
                         if (cDAO.excluir(c)) {
-                            mensagem = "Contra-cheque excluído com sucesso";
+                            mensagem = "Contracheque excluído com sucesso";
                         } else {
-                            mensagem = "Erro ao excluir o contra-cheque";
+                            mensagem = "Erro ao excluir o contracheque";
                         }
                     } else {
                         mensagem = "ID inválido";
@@ -140,7 +140,7 @@ public class GerenciarContraCheque extends HttpServlet {
                 try {
                     c.setIdContraCheque(Integer.parseInt(idContraCheque));
                 } catch (NumberFormatException e) {
-                    request.getSession().setAttribute("mensagem", "ID de contra-cheque inválido");
+                    request.getSession().setAttribute("mensagem", "ID de contracheque inválido");
                     response.sendRedirect("form_contra_cheque.jsp");
                     return;
                 }
@@ -172,7 +172,7 @@ public class GerenciarContraCheque extends HttpServlet {
                     request.getSession().setAttribute("mensagem", "Gravado com sucesso");
                     response.sendRedirect("listar_contra_cheque.jsp");
                 } else {
-                    request.getSession().setAttribute("mensagem", "Erro ao gravar o contra-cheque");
+                    request.getSession().setAttribute("mensagem", "Erro ao gravar o contracheque");
                     response.sendRedirect("form_contra_cheque.jsp");
                 }
             } catch (Exception e) {
@@ -185,6 +185,6 @@ public class GerenciarContraCheque extends HttpServlet {
 
     @Override
     public String getServletInfo() {
-        return "Gerencia contra-cheques no sistema da Ótica";
+        return "Gerencia contracheques no sistema da Ótica";
     }
 }

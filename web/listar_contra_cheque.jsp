@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Contra-Cheques</title>
+    <title>Contracheques</title>
 </head>
 <body>
 
@@ -155,7 +155,7 @@
     }
 
     function confirmarExclusao(idContraCheque) {
-        if (confirm('Deseja realmente excluir o contra-cheque ID ' + idContraCheque + '?')) {
+        if (confirm('Deseja realmente excluir o contracheque ID ' + idContraCheque + '?')) {
             location.href = 'GerenciarContraCheque?acao=excluir&idContraCheque=' + idContraCheque;
         }
     }
