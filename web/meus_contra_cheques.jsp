@@ -53,7 +53,7 @@
 
                 <!-- Título centralizado -->
                 <div style="text-align: center; margin-top: 20px;">
-                    <h2 style="margin: 0;"><i class="fa fa-file-text-o"></i> Meus Contra-Cheques</h2>
+                    <h2 style="margin: 0;"><i class="fa fa-file-text-o"></i> Meus ContraCheques</h2>
                 </div>
                 <br>
             </div>
@@ -64,7 +64,7 @@
             <c:choose>
                 <c:when test="${empty minhaLista}">
                     <div class="alert alert-warning text-center">
-                        ⚠ Nenhum contra-cheque encontrado.
+                        ⚠ Nenhum contracheque encontrado.
                     </div>
                 </c:when>
                 <c:otherwise>

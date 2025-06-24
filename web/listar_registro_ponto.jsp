@@ -9,7 +9,6 @@
         response.sendRedirect("form_login.jsp");
         return;
     }
-
     request.setAttribute("ulogado", ulogado);
 %>
 
@@ -37,7 +36,7 @@
             <!-- TOPO: barra de busca à esquerda, botões à direita -->
             <div class="clearfix" style="margin-bottom: 10px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-                    
+
                     <!-- Barra de busca -->
                     <form method="get" id="formBusca" action="listar_registro_ponto.jsp" style="margin: 0;">
                         <input 
@@ -52,7 +51,7 @@
 
                     <!-- Botões -->
                     <div style="display: flex; gap: 10px;">
-                        <c:if test="${ulogado.perfil.nome == 'Funcionario' || ulogado.perfil.nome == 'Gerente'}">
+                        <c:if test="${ulogado.perfil.nome == 'Funcionario'}">
                             <form action="GerenciarRegistroPonto" method="post" style="margin: 0;">
                                 <input type="hidden" name="acao" value="registrarPonto" />
                                 <button type="submit" class="btn btn-primary" style="height: 38px;">

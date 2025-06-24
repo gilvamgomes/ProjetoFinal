@@ -102,8 +102,6 @@ public class GerenciarContraCheque extends HttpServlet {
 
         request.getSession().setAttribute("mensagem", mensagem);
         response.sendRedirect("listar_contra_cheque.jsp");
-        
-        
     }
 
     @Override
@@ -117,6 +115,8 @@ public class GerenciarContraCheque extends HttpServlet {
         String descontos = request.getParameter("descontos");
         String valorLiquido = request.getParameter("valorLiquido");
         String funcionarioId = request.getParameter("funcionarioId");
+        String mesStr = request.getParameter("mes");
+        String anoStr = request.getParameter("ano");
 
         ArrayList<String> erros = new ArrayList<>();
 
@@ -124,6 +124,8 @@ public class GerenciarContraCheque extends HttpServlet {
         if (descontos == null || descontos.trim().isEmpty()) erros.add("Preencha os descontos");
         if (valorLiquido == null || valorLiquido.trim().isEmpty()) erros.add("Preencha o valor líquido");
         if (funcionarioId == null || funcionarioId.trim().isEmpty()) erros.add("Informe o ID do funcionário");
+        if (mesStr == null || mesStr.trim().isEmpty()) erros.add("Informe o mês");
+        if (anoStr == null || anoStr.trim().isEmpty()) erros.add("Informe o ano");
 
         if (!erros.isEmpty()) {
             String campos = "";
@@ -149,6 +151,21 @@ public class GerenciarContraCheque extends HttpServlet {
                 c.setDescontos(new java.math.BigDecimal(descontos));
                 c.setValorLiquido(new java.math.BigDecimal(valorLiquido));
                 c.setFuncionarioId(Integer.parseInt(funcionarioId));
+
+                // Captura e validação de mês e ano
+                try {
+                    int mes = Integer.parseInt(mesStr);
+                    int ano = Integer.parseInt(anoStr);
+
+                    if (mes < 1 || mes > 12) {
+                        throw new Exception("Mês inválido! Escolha entre 1 e 12.");
+                    }
+
+                    c.setMes(mes);
+                    c.setAno(ano);
+                } catch (NumberFormatException e) {
+                    throw new Exception("Mês e ano devem ser números válidos.");
+                }
 
                 ContraChequeDAO cDAO = new ContraChequeDAO();
                 if (cDAO.gravar(c)) {

@@ -1,9 +1,17 @@
 <%@page import="model.Usuario" %>
 <%@page import="controller.GerenciarLogin" %>
+<%@page import="model.FuncionarioDAO" %>
+<%@page import="model.Funcionario" %>
+<%@page import="java.util.List" %>
 
 <%
     Usuario ulogado = GerenciarLogin.verificarAcesso(request, response);
     request.setAttribute("ulogado", ulogado);
+
+    // Carrega lista de funcionários
+    FuncionarioDAO fdao = new FuncionarioDAO();
+    List<Funcionario> listaFuncionarios = fdao.listar();
+    request.setAttribute("listaFuncionarios", listaFuncionarios);
 %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -50,14 +58,36 @@
                     <input type="number" step="0.01" id="valorLiquido" name="valorLiquido" required value="${c.valorLiquido}" />
                 </div>
 
+                <!-- Campo Funcionário com SELECT -->
                 <div class="campo-form">
-                    <label for="funcionarioId">ID do Funcionário</label>
-                    <input type="number" id="funcionarioId" name="funcionarioId" required value="${c.funcionarioId}" />
+                    <label for="funcionarioId">Funcionário</label>
+                    <select id="funcionarioId" name="funcionarioId" class="form-control" required>
+                        <option value="">-- Selecione o Funcionário --</option>
+                        <c:forEach var="f" items="${listaFuncionarios}">
+                            <option value="${f.idFuncionario}" <c:if test="${c.funcionarioId == f.idFuncionario}">selected</c:if>>
+                                ${f.nome}
+                            </option>
+                        </c:forEach>
+                    </select>
                 </div>
 
                 <div class="campo-form">
                     <label for="mes">Mês</label>
-                    <input type="number" min="1" max="12" id="mes" name="mes" required value="${c.mes}" />
+                    <select id="mes" name="mes" class="form-control" required>
+                        <option value="">-- Selecione o mês --</option>
+                        <option value="1" ${c.mes == 1 ? 'selected' : ''}>Janeiro</option>
+                        <option value="2" ${c.mes == 2 ? 'selected' : ''}>Fevereiro</option>
+                        <option value="3" ${c.mes == 3 ? 'selected' : ''}>Março</option>
+                        <option value="4" ${c.mes == 4 ? 'selected' : ''}>Abril</option>
+                        <option value="5" ${c.mes == 5 ? 'selected' : ''}>Maio</option>
+                        <option value="6" ${c.mes == 6 ? 'selected' : ''}>Junho</option>
+                        <option value="7" ${c.mes == 7 ? 'selected' : ''}>Julho</option>
+                        <option value="8" ${c.mes == 8 ? 'selected' : ''}>Agosto</option>
+                        <option value="9" ${c.mes == 9 ? 'selected' : ''}>Setembro</option>
+                        <option value="10" ${c.mes == 10 ? 'selected' : ''}>Outubro</option>
+                        <option value="11" ${c.mes == 11 ? 'selected' : ''}>Novembro</option>
+                        <option value="12" ${c.mes == 12 ? 'selected' : ''}>Dezembro</option>
+                    </select>
                 </div>
 
                 <div class="campo-form">

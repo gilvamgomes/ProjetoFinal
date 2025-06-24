@@ -45,14 +45,12 @@
                             id="campoBusca"
                             value="${param.busca}" 
                             class="form-control" 
-                            placeholder="Buscar contra-cheque..." 
+                            placeholder="Buscar contracheque..." 
                             style="min-width: 220px; border-radius: 20px; padding: 6px 14px; height: 38px;"
                         >
                     </form>
 
-                    <a href="form_contra_cheque.jsp" class="btn btn-primary" style="height: 38px;">
-                        <i class="fa fa-plus"></i> Novo
-                    </a>
+                   
                 </div>
 
                 <!-- FORMULÁRIO DE GERAÇÃO AUTOMÁTICA -->
@@ -68,7 +66,9 @@
                         <label>Funcionário:</label>
                         <select name="idFuncionario" class="form-control" required>
                             <option value="">-- Selecione --</option>
-                            <c:forEach var="f" items="${funcionarios}"><option value="${f.idFuncionario}">${f.nome}</option></c:forEach>
+                            <c:forEach var="f" items="${funcionarios}">
+                                <option value="${f.idFuncionario}">${f.nome}</option>
+                            </c:forEach>
                         </select>
                     </div>
 
@@ -76,7 +76,9 @@
                         <label>Mês:</label>
                         <select name="mes" class="form-control" required>
                             <option value="">-- Mês --</option>
-                            <c:forEach var="i" begin="1" end="12"><option value="${i}">${meses[i]}</option></c:forEach>
+                            <c:forEach var="i" begin="1" end="12">
+                                <option value="${i}">${meses[i]}</option>
+                            </c:forEach>
                         </select>
                     </div>
 
@@ -91,7 +93,7 @@
                 </form>
 
                 <div style="text-align: center; margin-top: 20px;">
-                    <h2 style="margin: 0;"><i class="fa fa-file-text-o"></i> Contra-Cheques</h2>
+                    <h2 style="margin: 0;"><i class="fa fa-file-text-o"></i> ContraCheques</h2>
                 </div><br>
             </div>
 
@@ -106,7 +108,7 @@
 
             <c:choose>
                 <c:when test="${empty lista}">
-                    <div class="alert alert-warning text-center">⚠ Nenhum contra-cheque encontrado.</div>
+                    <div class="alert alert-warning text-center">⚠ Nenhum contracheque encontrado.</div>
                 </c:when>
                 <c:otherwise>
                     <div class="row">
@@ -127,6 +129,9 @@
                                         <button class="btn btn-danger btn-sm" onclick="confirmarExclusao(${c.idContraCheque})">
                                             <i class="fa fa-trash"></i> Excluir
                                         </button>
+                                        <a class="btn btn-info btn-sm" target="_blank" href="GerarPDF?idContraCheque=${c.idContraCheque}">
+                                            <i class="fa fa-print"></i> PDF
+                                        </a>
                                     </div>
 
                                 </div>
