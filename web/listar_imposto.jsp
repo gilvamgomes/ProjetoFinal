@@ -30,12 +30,6 @@
 </head>
 <body>
 
-<<<<<<< HEAD
-  
-   <%@include file="banner.jsp" %>
-    <%@include file="menu.jsp" %>
-     <%@ include file="menu_mobile.jsp" %>   <!-- Menu mobile -->
-=======
 <%@include file="banner.jsp" %>
 <%@include file="menu.jsp" %>
 <%@include file="menu_mobile.jsp" %>
@@ -44,7 +38,6 @@
     <div class="row">
         <div class="col-xs-12">
             <br>
->>>>>>> Juntar_codigo
 
             <div class="clearfix" style="margin-bottom: 10px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">

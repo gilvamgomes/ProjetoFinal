@@ -125,11 +125,6 @@ public class BeneficioDAO extends DataBaseDAO {
             return false;
         }
     }
-<<<<<<< HEAD
-    
-    
-=======
->>>>>>> Juntar_codigo
     //Barra de busca
     public List<Beneficio> buscarPorTermo(String termo) throws Exception {
     List<Beneficio> lista = new ArrayList<>();

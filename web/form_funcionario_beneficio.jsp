@@ -15,17 +15,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-<<<<<<< HEAD
-    <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="datatables/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-</head>
-<body>
-
-   <%@include file="banner.jsp" %>
-<%@include file="menu.jsp" %>
- <%@ include file="menu_mobile.jsp" %>   <!-- Menu mobile -->
-=======
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Gerenciar Benefícios do Funcionário</title>
 </head>
@@ -38,7 +27,6 @@
 <div class="container lista-funcionario">
     <div class="form-funcionario">
         <h2 class="text-center"><i class="fa fa-briefcase"></i> Gerenciar Benefícios do Funcionário</h2>
->>>>>>> Juntar_codigo
 
         <form action="GerenciarFuncionarioBeneficio" method="POST">
             <input type="hidden" name="idFuncionario" value="${idFuncionario}" />

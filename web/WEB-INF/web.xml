@@ -65,13 +65,8 @@
         <servlet-class>controller.CarregarFuncionarioBeneficio</servlet-class>
     </servlet>
     <servlet>
-<<<<<<< HEAD
-        <servlet-name>GerenciarDashboard</servlet-name>
-        <servlet-class>controller.GerenciarDashboard</servlet-class>
-=======
         <servlet-name>GerarPDF</servlet-name>
         <servlet-class>controller.GerarPDF</servlet-class>
->>>>>>> Juntar_codigo
     </servlet>
     <servlet-mapping>
         <servlet-name>GerenciarLogin</servlet-name>
@@ -138,13 +133,8 @@
         <url-pattern>/CarregarFuncionarioBeneficio</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-<<<<<<< HEAD
-        <servlet-name>GerenciarDashboard</servlet-name>
-        <url-pattern>/GerenciarDashboard</url-pattern>
-=======
         <servlet-name>GerarPDF</servlet-name>
         <url-pattern>/GerarPDF</url-pattern>
->>>>>>> Juntar_codigo
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

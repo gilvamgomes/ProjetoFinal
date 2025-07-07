@@ -148,11 +148,7 @@ public class FeriasDAO extends DataBaseDAO {
         }
     }
     
-<<<<<<< HEAD
-    //Barra de busca
-=======
      //Barra de busca
->>>>>>> Juntar_codigo
     public List<Ferias> buscarPorTermo(String termo) throws Exception {
     List<Ferias> lista = new ArrayList<>();
 
@@ -192,8 +188,4 @@ public class FeriasDAO extends DataBaseDAO {
 
     return lista;
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> Juntar_codigo
 }

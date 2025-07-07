@@ -108,10 +108,6 @@ public class PagamentoDAO extends DataBaseDAO {
 
         return p;
     }
-<<<<<<< HEAD
-    
-    //Barra de busca
-=======
 
     // ✅ NOVO MÉTODO: retorna o último salário lançado para o funcionário
     public double getUltimoSalario(int idFuncionario) {
@@ -132,7 +128,6 @@ public class PagamentoDAO extends DataBaseDAO {
         return salario;
     }
      //Barra de busca
->>>>>>> Juntar_codigo
     public List<Pagamento> buscarPorTermo(String termo) throws Exception {
     List<Pagamento> lista = new ArrayList<>();
     String sql = "SELECT * FROM pagamento WHERE " +

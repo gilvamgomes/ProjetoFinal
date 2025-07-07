@@ -44,11 +44,6 @@
                     </form>
 
                     <a href="form_perfil.jsp" class="btn btn-primary" style="height: 38px;">
-<<<<<<< HEAD
-                        <i class="fa fa-plus"></i> Novo Cadastro
-                    </a>
-                </div>
-=======
                         <i class="fa fa-plus"></i> Novo
                     </a>
                 </div>
@@ -58,45 +53,12 @@
                 </div>
             </div>
             <br>
->>>>>>> Juntar_codigo
 
-                <!-- Título centralizado -->
-                <div style="text-align: center; margin-top: 20px;">
-                    <h2 style="margin: 0;"><i class="fa fa-id-badge"></i> Perfis</h2>
-                </div>
-            </div>
-                  <br>
             <jsp:useBean class="model.PerfilDAO" id="pDAO"/>
             <c:set var="lista" value="${empty param.busca ? pDAO.lista : pDAO.buscarPorTermo(param.busca)}"/>
 
             <div class="row">
                 <c:forEach var="p" items="${lista}">
-<<<<<<< HEAD
-                    <div class="col-sm-6 col-xs-12">
-                        <div class="card-funcionario">
-                            <h4><i class="fa fa-user-shield"></i> ${p.nome}</h4>
-                            <p><strong>ID:</strong> ${p.idPerfil}</p>
-                            <p><strong>Status:</strong> 
-                                <span class="label ${p.status == 1 ? 'label-success' : 'label-default'}">
-                                    <c:out value="${p.status == 1 ? 'Ativo' : 'Inativo'}"/>
-                                </span>
-                            </p>
-<<<<<<< HEAD
-                            <div class="btn-group">
-=======
-
-                            <div class="btn-group" style="display: flex; flex-wrap: wrap; gap: 5px;">
->>>>>>> Juntar_codigo
-                                <a class="btn btn-primary btn-sm" href="GerenciarPerfil?acao=alterar&idPerfil=${p.idPerfil}">
-                                    <i class="fa fa-edit"></i> Editar
-                                </a>
-                                <a class="btn btn-default btn-sm" href="GerenciarMenuPerfil?acao=gerenciar&idPerfil=${p.idPerfil}">
-                                    <i class="fa fa-lock"></i> Acessos
-                                </a>
-                                <button class="btn btn-danger btn-sm" onclick="confirmarExclusao(${p.idPerfil}, '${p.nome}')">
-                                    <i class="fa fa-trash"></i> Excluir
-                                </button>
-=======
                     <!-- Se o usuário for gerente, esconder o perfil Administrador -->
                     <c:if test="${!(ulogado.perfil.idPerfil == 2 && p.idPerfil == 1)}">
                         <div class="col-sm-6 col-xs-12">
@@ -125,7 +87,6 @@
                                         <i class="fa fa-trash"></i> Desativar
                                     </button>
                                 </div>
->>>>>>> Ton
                             </div>
                         </div>
                     </c:if>

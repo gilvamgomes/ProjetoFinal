@@ -92,12 +92,7 @@ public class MenuDAO extends DataBaseDAO {
             return false;
         }
     }
-<<<<<<< HEAD
-    
-    //Barra de busca
-=======
      //Barra de busca
->>>>>>> Juntar_codigo
     public List<Menu> buscarPorTermo(String termo) throws Exception {
     List<Menu> lista = new ArrayList<>();
     String sql = "SELECT * FROM menu WHERE " +
@@ -130,8 +125,6 @@ public class MenuDAO extends DataBaseDAO {
     return lista;
 }
 
-<<<<<<< HEAD
-=======
     // Barra de busca avançada (para perfil - só ID, Nome, Link)
     public List<Menu> buscarPorTermoAvancado(String termo) throws Exception {
         List<Menu> lista = new ArrayList<>();
@@ -160,5 +153,4 @@ public class MenuDAO extends DataBaseDAO {
         }
         return lista;
     }
->>>>>>> Juntar_codigo
 }

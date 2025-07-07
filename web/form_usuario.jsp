@@ -75,10 +75,7 @@
                 </div>
             </div>
 
-<<<<<<< HEAD
-=======
                     
->>>>>>> Juntar_codigo
             <!-- Botões -->
             <div class="mt-4 botoes-form">
                 <button class="btn btn-success">

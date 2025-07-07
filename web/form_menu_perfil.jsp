@@ -11,18 +11,6 @@
     <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
-<<<<<<< HEAD
-    <link rel="stylesheet" href="datatables/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Gerenciar Acessos</title>
-</head>
-<body>
-
-   
-   <%@include file="banner.jsp" %>
-    <%@include file="menu.jsp" %>
-     <%@ include file="menu_mobile.jsp" %>   <!-- Menu mobile -->
-=======
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Gerenciar Menus do Perfil</title>
 </head>
@@ -33,7 +21,6 @@
 <%@include file="menu_mobile.jsp" %>
 
 <div class="container lista-funcionario">
->>>>>>> Juntar_codigo
 
     <!-- Bloco Formulário -->
     <div class="form-funcionario">

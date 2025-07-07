@@ -151,25 +151,6 @@ public class ContraChequeDAO extends DataBaseDAO {
             return false;
         }
     }
-<<<<<<< HEAD
-    
-    //Barra de busca
-    public List<ContraCheque> buscarPorTermo(String termo) throws Exception {
-    List<ContraCheque> lista = new ArrayList<>();
-
-    String sql = "SELECT * FROM contra_cheque WHERE " +
-                 "CAST(idContra_cheque AS CHAR) LIKE ? OR " +
-                 "CAST(valorBruto AS CHAR) LIKE ? OR " +
-                 "CAST(descontos AS CHAR) LIKE ? OR " +
-                 "CAST(valorLiquido AS CHAR) LIKE ? OR " +
-                 "CAST(funcionario_idFfuncionario AS CHAR) LIKE ?";
-
-    this.conectar();
-    try (PreparedStatement pstm = conn.prepareStatement(sql)) {
-        String filtro = "%" + termo + "%";
-        for (int i = 1; i <= 5; i++) {
-            pstm.setString(i, filtro);
-=======
 
     public BigDecimal getTotalBeneficiosAtivos(int funcionarioId) throws Exception {
         this.conectar();
@@ -423,20 +404,10 @@ public List<RegistroPonto> buscarPorTermo(String termo) throws Exception {
             for (int j = 0; j < 8; j++) {  // São 8 campos por palavra
                 pstm.setString(paramIndex++, filtro);
             }
->>>>>>> Juntar_codigo
         }
 
         ResultSet rs = pstm.executeQuery();
         while (rs.next()) {
-<<<<<<< HEAD
-            ContraCheque c = new ContraCheque();
-            c.setIdContraCheque(rs.getInt("idContra_cheque"));
-            c.setValorBruto(rs.getBigDecimal("valorBruto"));
-            c.setDescontos(rs.getBigDecimal("descontos"));
-            c.setValorLiquido(rs.getBigDecimal("valorLiquido"));
-            c.setFuncionarioId(rs.getInt("funcionario_idFfuncionario"));
-            lista.add(c);
-=======
             RegistroPonto r = new RegistroPonto();
             r.setIdRegistro_ponto(rs.getInt("idRegistro_ponto"));
             r.setData(rs.getDate("data").toLocalDate());
@@ -451,7 +422,6 @@ public List<RegistroPonto> buscarPorTermo(String termo) throws Exception {
             r.setFuncionario(f);
 
             lista.add(r);
->>>>>>> Juntar_codigo
         }
     } finally {
         this.desconectar();
@@ -460,8 +430,4 @@ public List<RegistroPonto> buscarPorTermo(String termo) throws Exception {
     return lista;
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> Juntar_codigo
 }
